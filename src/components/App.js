@@ -1,14 +1,14 @@
 import React from 'react';
-import { BrowserRouter, Route, Link} from 'react-router-dom';
+import {  Router} from 'react-router-dom';
 import Header from './Header';
-// import Style from './Style.css';
-
+import Style from './Style.css';
+import history from './history';
 
 const App = () => {
     return(<div>
-    <BrowserRouter>
+    <Router history={history}>
       <Header />
-    </BrowserRouter>
+    </Router>
 </div>
 );
 };

@@ -4,3 +4,7 @@ body {
 .logo {
     text-align: center;
 }
+.container{
+    max-width: 650px;
+    margin: 0 auto;
+}

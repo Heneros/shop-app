@@ -6,10 +6,18 @@ import Style from './Style.css';
 const Header = () => {
     return(<div>
     <h1 className="logo">Shop APP</h1>
-<div class="ui secondary  menu">
+  <div className="container">
+  <div class="ui three item  menu">
+  <Link to="/" className="item"> 
+  Add new product
+  </Link>
   <Link to="/" className="item"> 
   Home
   </Link>
+  <Link to="/" className="item"> 
+   Search New Product
+  </Link>
+</div>
 </div>
 </div>);
 }
