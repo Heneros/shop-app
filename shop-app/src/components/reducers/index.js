@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
+import productsReducer from './productsReducer';
 
 export default combineReducers({
-    replaceMe: () => 'text321'
+     products: productsReducer
 });

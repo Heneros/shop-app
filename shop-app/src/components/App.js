@@ -4,7 +4,7 @@ import React from 'react';
 // import Product from './product/product';
 // import AddNewProduct from './product/add-new-product';
 // import actions from './actions';
-import PostList from './PostList';
+import PostList from './ProductList';
 
 
 // import Style from './Style.css';
