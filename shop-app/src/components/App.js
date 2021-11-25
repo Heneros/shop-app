@@ -5,6 +5,7 @@ import React from 'react';
 // import AddNewProduct from './product/add-new-product';
 // import actions from './actions';
 import PostList from './ProductList';
+import UserHeader from './UserHeader';
 
 // import history from './history';
 
