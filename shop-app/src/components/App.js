@@ -6,14 +6,14 @@ import React from 'react';
 // import actions from './actions';
 import PostList from './ProductList';
 
-
-// import Style from './Style.css';
 // import history from './history';
 
 
 
 const App = () => {
-    return(<div>
+    return(
+      <div className="container">
+ 
    <PostList />
     {/* <Router history={history}>
       <Header />
