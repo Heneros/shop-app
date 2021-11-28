@@ -15,7 +15,7 @@ class ProductList extends React.Component{
           return(
               <div className="item__block"  key={product.id} >
                         <div className="item__inside" >
-                  <img src={product.thumbnailUrl} />
+                  {/* <img src={product.thumbnailUrl} /> */}
                   <h2>{product.title}</h2>
                   </div> 
                   <UserHeader userId={product.userId} />
