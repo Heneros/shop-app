@@ -11,3 +11,9 @@ export const fetchUser = id => async dispatch => {
 
   dispatch({ type: 'FETCH_USER', payload: response.data });
 };
+
+export const fetchComment = id => async dispatch =>{
+  const response = await jsonPlaceholder.get(`/comments/${id}`);
+  
+  dispatch({ type: 'FETCH_COMMENTS', payload: response.data});
+}
