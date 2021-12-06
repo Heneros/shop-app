@@ -1,14 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchProducts,fetchComment } from './actions';
+import { fetchProducts,fetchComment, fetchProductsAndUsers } from './actions';
 import './Style.css';
 import UserHeader from './UserHeader';
 import CommentsSidebar from './CommentsSidebar';
 
 class ProductList extends React.Component{
   componentDidMount(){
-      this.props.fetchProducts();
-      this.props.fetchComment();
+    //   this.props.fetchProducts();
+    //   this.props.fetchComment();
+    this.props.fetchProductsAndUsers();
   }  
 
 
@@ -55,5 +56,8 @@ const mapStateToProps = state =>{
 
 }
 
-export default connect(mapStateToProps, {fetchProducts, fetchComment})(ProductList);
+export default connect(mapStateToProps, {
+    // fetchProducts, fetchComment
+    fetchProductsAndUsers
+})(ProductList);
  
