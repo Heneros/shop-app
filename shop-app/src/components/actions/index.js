@@ -5,7 +5,15 @@ import jsonPlaceholder from "../apis/jsonPlaceholder";
 export const fetchProductsAndUsers = () => async (dispatch, getState) =>{
 
   await dispatch(fetchProducts());
+//  const userIds = _.uniq(_.map(getState().products, 'userId'));
+// //  console.log(userIds);
+//  userIds.forEach(id => dispatch(fetchUser(id)));
 
+_.chain(getState().products)
+.map('userId')
+.uniq()
+.forEach(id => dispatch(fetchUser(id)))
+.value()
 };
 
 export const fetchProducts =  () => async dispatch => {

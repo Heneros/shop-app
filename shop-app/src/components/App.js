@@ -1,8 +1,8 @@
 import React from 'react';
-// import {BrowserRouter, Route,  Router} from 'react-router-dom';
-// import Header from './Header';
+import {BrowserRouter, Route,  Router} from 'react-router-dom';
+import Header from './Header';
 // import Product from './product/product';
-// import AddNewProduct from './product/add-new-product';
+import AddNewProduct from './product/AddNewProduct';
 // import actions from './actions';
 import PostList from './ProductList';
 import UserHeader from './UserHeader';
@@ -13,15 +13,17 @@ import UserHeader from './UserHeader';
 
 const App = () => {
     return(
+      <div className="ui container">
+
+    <BrowserRouter>
+    <div>
+    <Header/>
+    <Route path="/product/addnew" exact component={AddNewProduct} />
+      </div>
+    </BrowserRouter>
       <div className="container">
- 
    <PostList />
-    {/* <Router history={history}>
-      <Header />
-      <Product/>
- 
-      <AddNewProduct/>
-    </Router> */}
+</div>
 </div>
 );
 };
