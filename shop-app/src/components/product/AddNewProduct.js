@@ -1,5 +1,7 @@
 import React from 'react';
 import { Field, reduxForm} from 'redux-form';
+import { connect } from 'react-redux';
+import { createProduct } from '../actions';
 
 
 class AddNewProduct extends React.Component{
@@ -27,9 +29,8 @@ class AddNewProduct extends React.Component{
            );
      }
 
-     onSubmit(formValues){
-         console.log(formValues)
-        //  this.props.onSubmit(formValues);
+  onSubmit = (formValues) => {
+         this.props.createProduct(formValues);
      }
 
     render(){
@@ -57,7 +58,9 @@ const validate = (formValues) =>{
     return errors;
 }
 
-export default reduxForm({
+const formWrapped = reduxForm({
     form: 'addProduct',
     validate
 })(AddNewProduct);
+
+export default connect(null, { createProduct })(formWrapped);
