@@ -41,6 +41,7 @@ class AddNewProduct extends React.Component{
        className='ui form error'>
            <Field name="title" component={this.renderInput} label="Enter Name of Product" />
            <Field name="description" component={this.renderInput} label="Enter Description" />
+       
            <button className='ui button primary'>Submit</button>
      </form>
         )
