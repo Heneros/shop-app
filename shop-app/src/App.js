@@ -4,8 +4,6 @@ import Header from './Header';
 // import Product from './product/product';
 import AddNewProduct from './components/product/AddNewProduct';
 // import actions from './actions';
-import PostList from './ProductList';
-import UserHeader from './UserHeader';
 
 
 
