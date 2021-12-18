@@ -60,7 +60,7 @@ const validate = (formValues) =>{
 }
 
 const formWrapped = reduxForm({
-    form: 'addProduct',
+    form: 'AddNewProduct',
     validate
 })(AddNewProduct);
 

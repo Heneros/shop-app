@@ -7,5 +7,6 @@ import { reducer as formReducer } from 'redux-form';
 export default combineReducers({
      products: productsReducer,
      comments: commentsReducer,
-     form: formReducer
+     form: formReducer,
+     
 });

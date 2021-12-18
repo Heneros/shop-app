@@ -7,7 +7,7 @@ const Header = () => {
     return(<div>
     <h1 className="logo">Shop APP</h1>
   <div className="container">
-  <div class="ui three item  menu">
+  <div className="ui three item  menu">
   <Link to="/" className="item"> 
   Add new product
   </Link>

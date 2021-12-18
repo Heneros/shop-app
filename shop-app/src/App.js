@@ -5,7 +5,7 @@ import Header from './Header';
 import AddNewProduct from './components/product/AddNewProduct';
 // import actions from './actions';
 
-
+import ProductList from './components/product/ProductList';
 
 
 const App = () => {
@@ -18,6 +18,8 @@ const App = () => {
       </div>
     </BrowserRouter>
       <div className="container">
+        <ProductList/>
+
        </div>
 </div>
 );
