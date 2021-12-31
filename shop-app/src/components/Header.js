@@ -1,14 +1,18 @@
 import React from 'react';
 import { Link  } from 'react-router-dom';
-import Style from './Style.css';
-
+import Style from '../Style.css';
+  
 
 const Header = () => {
     return(<div>
-    <h1 className="logo">Shop APP</h1>
+    <h1 className="logo">
+      <Link to="/">
+      Shop APP
+      </Link>
+      </h1>
   <div className="container">
   <div className="ui three item  menu">
-  <Link to="/" className="item"> 
+  <Link to="/product/addnew" className="item"> 
   Add new product
   </Link>
   <Link to="/" className="item"> 
@@ -20,7 +24,7 @@ const Header = () => {
 </div>
 </div>
 </div>);
-}
+} 
 
 
 export default Header;

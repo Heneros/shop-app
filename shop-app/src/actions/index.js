@@ -1,5 +1,6 @@
 import products from '../apis/products';
-import _ from 'lodash';
+import history from '../history'; 
+import _ from 'lodash'; 
 
 // import jsonPlaceholder from "../apis/jsonPlaceholder";
 // import addProductReducer from './addProductReducer';
@@ -27,6 +28,7 @@ export const fetchProducts = () => async dispatch =>{
 export const createProduct = formValues => async dispatch =>{
   const response = await products.post('/products', formValues);
   dispatch({type: CREATE_PRODUCT, payload: response})
+  history.push('/');
 }
 
 

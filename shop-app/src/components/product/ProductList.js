@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { fetchProducts } from '../../actions';
 
 class ProductList extends React.Component{
@@ -7,19 +8,50 @@ class ProductList extends React.Component{
         this.props.fetchProducts();
     }
 
+    renderAdmin(product){
+        return(
+            <div className='right floated content'>
+                <Link 
+                to={`/product/edit/${product.id}`}
+                className='ui button primary'>
+                    Edit
+                </Link>
+                <button className='ui button negative'>
+                    Delete
+                </button>
+            </div>
+        )
+    }
+
      renderList(){
         return this.props.products.map(product =>{
             return (
                 <div className="item" key={product.id}>
+                     {this.renderAdmin(product)}
                     <div className='content'>
                      Title:     {product.title}
                     <div className='description'>
                       Description:   {product.description}
                     </div>
                     </div>
+                   
+
                 </div>
             )
         })
+     }
+
+     renderCreate(){
+         return (
+             <div style={{textAlign: 'right'}}>
+                 <Link 
+                 to="/product/addnew"
+                 className='ui button primary'
+                 >
+                 Create Product
+                 </Link>
+             </div>
+         )
      }
 
 
@@ -30,6 +62,7 @@ class ProductList extends React.Component{
        <div className="ui celled list"> 
        {this.renderList()}
        </div>
+       {this.renderCreate()}
         </div>
         )
     }
