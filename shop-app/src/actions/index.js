@@ -38,8 +38,9 @@ export const fetchProduct = (id) => async dispatch =>{
 }
 
 export const editProduct = (id, formValues) => async dispatch =>{
-  const response = await products.put(`/products/${id}`, formValues);
-  dispatch({type: EDIT_PRODUCT, payload: response})
+  const response = await products.patch(`/products/${id}`, formValues);
+  dispatch({type: EDIT_PRODUCT, payload: response});
+  history.push('/')
 }
 
 export const deleteProduct = (id) => async dispatch =>{
