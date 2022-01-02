@@ -7,20 +7,23 @@ const Header = () => {
     return(<div>
     <h1 className="logo">
       <Link to="/">
-      Shop APP
+      Shop 
       </Link>
       </h1>
   <div className="container">
-  <div className="ui three item  menu">
-  <Link to="/product/addnew" className="item"> 
+  <div className="navbar navbar-expand-lg navbar-light bg-light">
+    <div className='container-fluid'>
+  <Link to="/product/addnew" className="nav-link"> 
   Add new product
   </Link>
-  <Link to="/" className="item"> 
+
+  <Link to="/" className="nav-link"> 
   Home
   </Link>
-  <Link to="/" className="item"> 
+  <Link to="/" className="nav-link"> 
    Search New Product
   </Link>
+</div>
 </div>
 </div>
 </div>);

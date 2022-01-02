@@ -8,61 +8,65 @@ class ProductList extends React.Component{
         this.props.fetchProducts();
     }
 
-    renderAdmin(product){
-        return(
-            <div className='right floated content'>
-                <Link 
-                to={`/product/edit/${product.id}`}
-                className='ui button primary'>
-                    Edit
-                </Link>
-                <button className='ui button negative'>
-                    Delete
-                </button>
-            </div>
-        )
-    }
 
      renderList(){
         return this.props.products.map(product =>{
             return (
-                <div className="item" key={product.id}>
-                     {this.renderAdmin(product)}
-                    <div className='content'>
-                     Title:     {product.title}
-                    <div className='description'>
-                      Description:   {product.description}
+                <div className="col-6 col-sm-3" key={product.id}>
+                   < div className='card  text-center'>
+                <div className='card-body'>
+                   <h2 className='card-title'> {product.title}</h2> 
+                    <p className='card-text'>
+                      {product.description}
+                    </p>
+                    {this.renderAdmin(product)}
                     </div>
                     </div>
-                   
 
                 </div>
             )
         })
      }
 
+     renderAdmin(product){
+        return(
+            <div >
+                <Link 
+                to={`/product/edit/${product.id}`}
+                className='btn btn-primary me-md-2'>
+                    Edit
+                </Link>
+                <button className='btn btn-danger'>
+                    Delete
+                </button>
+
+            </div>
+        )
+    }
      renderCreate(){
          return (
-             <div style={{textAlign: 'right'}}>
+             <div className='col-md-12 text-center'>
+           
                  <Link 
                  to="/product/addnew"
-                 className='ui button primary'
+                 className='btn btn-primary'
                  >
                  Create Product
                  </Link>
-             </div>
+                 </div>
+     
          )
      }
 
 
     render(){
         return (
-            <div>
-       <h2>ProductList</h2> 
-       <div className="ui celled list"> 
+        <div className='row'>
+       <h2 className='text-center'>ProductList</h2> 
+     
        {this.renderList()}
-       </div>
        {this.renderCreate()}
+    
         </div>
         )
     }
