@@ -14,7 +14,7 @@ class ProductForm extends React.Component{
     }
 
     renderInput = ({input, label, meta}) =>{
-    const className = `mb-3 ${meta.error && meta.touched ? '' : ''}`;
+    const className = `mb-3 ${meta.error && meta.touched ? 'error' : ''}`;
      return ( <div className={className}>
            <label className="form-label">{label}</label>
            <input required className="form-control " {...input} /> 
@@ -28,7 +28,6 @@ class ProductForm extends React.Component{
      }
 
     render(){
-   console.log(this.props);
    return( 
        <form 
        onSubmit={this.props.handleSubmit(this.onSubmit)}
@@ -53,7 +52,7 @@ const validate = (formValues) =>{
 }
 
 export default  reduxForm({
-    form: 'ProductForm',
+    form: 'productForm',
     validate
 })(ProductForm);
 

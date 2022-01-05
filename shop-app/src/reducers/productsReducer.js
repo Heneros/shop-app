@@ -2,7 +2,6 @@ import _ from 'lodash';
 
 
 import { 
-  ADD_PRODUCT,
   CREATE_PRODUCT,
   FETCH_PRODUCTS,
   FETCH_PRODUCT,

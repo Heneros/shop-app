@@ -29,8 +29,8 @@ class ProductEdit extends React.Component{
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.log(ownProps)
     return { product: state.products[ownProps.match.params.id]};
 }
 
-export default connect(mapStateToProps, { fetchProduct, editProduct })(ProductEdit);
+export default connect(mapStateToProps, 
+  { fetchProduct, editProduct })(ProductEdit);
