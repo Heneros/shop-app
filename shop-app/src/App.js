@@ -3,6 +3,7 @@ import {Router,  Route, } from 'react-router-dom';
 import Header from './components/Header';
 import AddNewProduct from './components/product/AddNewProduct';
 import ProductEdit from './components/product/ProductEdit';
+import ProductDelete from './components/product/ProductDelete';
 
 import ProductList from './components/product/ProductList';
 import history from './history';
@@ -15,8 +16,9 @@ const App = () => {
     <div>
     <Header/> 
     <Route path="/" exact component={ProductList} />
-    <Route path="/products/addnew" exact component={AddNewProduct} />
-    <Route path="/products/edit/:id" exact component={ProductEdit} />
+    <Route path="/product/addnew" exact component={AddNewProduct} />
+    <Route path="/product/edit/:id" exact component={ProductEdit} />
+    <Route path="/product/delete" exact component={ProductDelete} />
     </div>
     </Router>
 </div>

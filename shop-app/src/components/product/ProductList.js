@@ -12,7 +12,7 @@ class ProductList extends React.Component{
             return(
                 <div >
                     <Link 
-                    to={`/products/edit/${product.id}`}
+                    to={`/product/edit/${product.id}`}
                     className='btn btn-primary me-md-2'>
                         Edit
                     </Link>
@@ -55,7 +55,7 @@ class ProductList extends React.Component{
              <div className='col-md-12 text-center'>
            
                  <Link 
-                 to="/products/addnew"
+                 to="/product/addnew"
                  className='btn btn-primary'
                  >
                  Create Product
