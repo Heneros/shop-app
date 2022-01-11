@@ -38,4 +38,5 @@ export const editProduct = (id, formValues) => async dispatch =>{
 export const deleteProduct = (id) => async dispatch =>{
    await products.delete(`/products/${id}`);
   dispatch({type: DELETE_PRODUCT, payload: id})
+  history.push('/')
 }

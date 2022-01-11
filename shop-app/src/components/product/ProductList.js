@@ -16,10 +16,15 @@ class ProductList extends React.Component{
                     className='btn btn-primary me-md-2'>
                         Edit
                     </Link>
-                    <button className='btn btn-danger'>
-                        Delete
-                    </button>
-    
+               
+                    <Link 
+
+                     to={`/product/delete/${product.id}`}
+                     className="btn btn-danger " 
+                  
+                     >
+                      Delete
+                     </Link>
                 </div>
             )
     }

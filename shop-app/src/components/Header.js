@@ -16,7 +16,6 @@ const Header = () => {
   <Link to="/product/addnew" className="nav-link"> 
   Add new product
   </Link>
-
   <Link to="/" className="nav-link"> 
   Home
   </Link>
