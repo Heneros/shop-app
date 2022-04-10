@@ -21,7 +21,7 @@ class ProductEdit extends React.Component{
     return (<div>
          <h3>Edit a product</h3>
         <ProductForm 
-        initialValues={_.pick(this.props.product, 'title', 'description')}
+        initialValues={_.pick(this.props.product, 'title', 'description', 'image')}
         onSubmit={this.onSubmit}/>
         </div>)
   } 

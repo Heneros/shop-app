@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field, reduxForm} from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 
 
 class ProductForm extends React.Component{
@@ -22,6 +22,16 @@ class ProductForm extends React.Component{
            </div>
            );
      }
+     renderImage = ({input, label, meta}) =>{
+        const className = `mb-3 ${meta.error && meta.touched ? 'error' : ''}`;
+        return ( <div className={className}>
+            <label className="form-label">{label}</label>
+            <input type="file" className="form-control " /> 
+            {this.renderError(meta)}
+            </div>
+            );
+     }
+
 
   onSubmit = (formValues) => {
          this.props.onSubmit(formValues);
@@ -34,6 +44,7 @@ class ProductForm extends React.Component{
        >
            <Field name="title" component={this.renderInput} label="Enter Name of Product" />
            <Field name="description" component={this.renderInput} label="Enter Description" />
+           <Field name="image" component={this.renderImage} label="Load Image" />
            <button className='btn btn-primary'>Submit</button>
      </form>
         )
@@ -47,6 +58,9 @@ const validate = (formValues) =>{
     }
     if(!formValues.description){
         errors.description = 'You must enter a description';
+    }
+    if(!formValues.test){
+        errors.test = 'You must load image';
     }
     return errors;
 }

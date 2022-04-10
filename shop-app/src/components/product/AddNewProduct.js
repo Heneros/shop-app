@@ -11,8 +11,7 @@ class AddNewProduct extends React.Component{
          this.props.createProduct(formValues);
      }
 
-    render(){
-   console.log(this.props);
+   render(){
    return( 
        <div>
            <h3>Create a Product</h3>
