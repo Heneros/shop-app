@@ -20,7 +20,6 @@ class ProductDelete  extends React.Component {
             <button 
             onClick={() => this.props.deleteProduct(id)}
             className="btn btn-danger me-md-2">Delete</button>
-
             <Link 
             to="/"
             className="btn btn-primary"

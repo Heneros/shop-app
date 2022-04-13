@@ -1,8 +1,19 @@
-import React from 'react';
+import React  from 'react';
 import { Field, reduxForm } from 'redux-form';
 
 
 class ProductForm extends React.Component{
+ 
+    constructor(props){
+       super(props);
+       this.state = {
+           setSelectedFile: null
+       }
+   }
+   changeHandler = ({setSelectedFile}) => {
+    setSelectedFile();
+  };
+
     renderError({error, touched}){
         if(touched && error){
             return (
@@ -12,6 +23,7 @@ class ProductForm extends React.Component{
             );
         }
     }
+
 
     renderInput = ({input, label, meta}) =>{
     const className = `mb-3 ${meta.error && meta.touched ? 'error' : ''}`;
@@ -44,7 +56,7 @@ class ProductForm extends React.Component{
        >
            <Field name="title" component={this.renderInput} label="Enter Name of Product" />
            <Field name="description" component={this.renderInput} label="Enter Description" />
-           <Field name="image" component={this.renderImage} label="Load Image" />
+           <Field name="image" onChange={this.changeHandler} component={this.renderImage} label="Load Image" />
            <button className='btn btn-primary'>Submit</button>
      </form>
         )
