@@ -7,11 +7,19 @@ class ProductForm extends React.Component{
     constructor(props){
        super(props);
        this.state = {
-           setSelectedFile: null
+           selectedFile: null,
+           setSelectedFile: null,
+           isFilePicked: false,
+           setIsFilePicked: false
        }
    }
-   changeHandler = ({setSelectedFile}) => {
-    setSelectedFile();
+   changeHandler = ({setSelectedFile, setIsSelected}, event) => {
+    setSelectedFile(event.target.files[0]);
+    setIsSelected(true);
+  };
+
+  handleSubmission = () =>{
+
   };
 
     renderError({error, touched}){
@@ -34,12 +42,14 @@ class ProductForm extends React.Component{
            </div>
            );
      }
-     renderImage = ({input, label, meta}) =>{
+     renderImage = ({input, label, meta, isSelected}) =>{
         const className = `mb-3 ${meta.error && meta.touched ? 'error' : ''}`;
         return ( <div className={className}>
             <label className="form-label">{label}</label>
-            <input type="file" className="form-control " /> 
-            {this.renderError(meta)}
+            <input type="file" className="form-control " />
+            {isSelected ? <div>
+            </div> : (<p>Select a File</p>)} 
+            {/* {this.renderError(meta)} */}
             </div>
             );
      }
@@ -57,7 +67,7 @@ class ProductForm extends React.Component{
            <Field name="title" component={this.renderInput} label="Enter Name of Product" />
            <Field name="description" component={this.renderInput} label="Enter Description" />
            <Field name="image" onChange={this.changeHandler} component={this.renderImage} label="Load Image" />
-           <button className='btn btn-primary'>Submit</button>
+           <button onClick={this.handleSubmission} className='btn btn-primary'>Submit</button>
      </form>
         )
    }
