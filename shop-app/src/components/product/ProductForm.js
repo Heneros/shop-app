@@ -1,26 +1,42 @@
+import axios from 'axios';
 import React  from 'react';
 import { Field, reduxForm } from 'redux-form';
 
 
 class ProductForm extends React.Component{
- 
-    constructor(props){
-       super(props);
-       this.state = {
-           selectedFile: null,
-           setSelectedFile: null,
-           isFilePicked: false,
-           setIsFilePicked: false
-       }
-   }
-   changeHandler = ({setSelectedFile, setIsSelected}, event) => {
-    setSelectedFile(event.target.files[0]);
-    setIsSelected(true);
-  };
+   
+    state ={
+        selectedFile: null        
+    };
 
-  handleSubmission = () =>{
+    onFileChange = event =>{
+      this.setState({ selectedFile: event.target.files[0]});
+    };
 
-  };
+    onFileUpload = () =>{
+        const formData = new FormData();
+        formData.append(
+            "myFile",
+            this.state.selectedFile,
+            this.state.selectedFile.name
+        );
+
+        console.log(this.state.selectedFile);
+        axios.post("api/uploadFile", formData);
+    };
+
+    fileData = () => {
+        if(this.state.selectedFile){
+            return (
+                <div>
+                    Working!!!
+                </div>
+            )
+        }
+
+    }
+
+
 
     renderError({error, touched}){
         if(touched && error){
@@ -42,16 +58,16 @@ class ProductForm extends React.Component{
            </div>
            );
      }
-     renderImage = ({input, label, meta, isSelected}) =>{
+     renderImage = ({input, label, meta, isSelected, selectedFile}) =>{
         const className = `mb-3 ${meta.error && meta.touched ? 'error' : ''}`;
         return ( <div className={className}>
             <label className="form-label">{label}</label>
-            <input type="file" className="form-control " />
-            {isSelected ? <div>
-            </div> : (<p>Select a File</p>)} 
-            {/* {this.renderError(meta)} */}
-            </div>
+            <input type="file" className="form-control " onChange={this.onFileChange} />
+            {this.fileData()}
+           </div>
+      
             );
+
      }
 
 
@@ -66,8 +82,8 @@ class ProductForm extends React.Component{
        >
            <Field name="title" component={this.renderInput} label="Enter Name of Product" />
            <Field name="description" component={this.renderInput} label="Enter Description" />
-           <Field name="image" onChange={this.changeHandler} component={this.renderImage} label="Load Image" />
-           <button onClick={this.handleSubmission} className='btn btn-primary'>Submit</button>
+           <Field name="image"  component={this.renderImage} label="Load Image" />
+           <button onClick={this.onFileUpload} className='btn btn-primary'>Submit</button>
      </form>
         )
    }
