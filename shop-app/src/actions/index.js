@@ -15,7 +15,7 @@ import {
 export const createProduct = formValues => async (dispatch) =>{
   const response = await products.post('/products', {...formValues});
   dispatch({type: CREATE_PRODUCT, payload: response.data})
-  history.push('/');
+  // history.push('/');
 }
 
 export const fetchProducts = () => async dispatch =>{

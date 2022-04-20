@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, {post} from 'axios';
 import React  from 'react';
 import { Field, reduxForm } from 'redux-form';
 
@@ -10,7 +10,18 @@ class ProductForm extends React.Component{
     };
 
     onFileChange = event =>{
-      this.setState({ selectedFile: event.target.files[0]});
+    //   this.setState({ selectedFile: event.target.files[0]});
+    let files = event.target.files;
+    let reader = new FileReader();
+    reader.readAsDataURL(files[0]);
+    reader.onload = (e) =>{
+        const url = "http://localhost:3000/product/addnew";
+        const formData = { file: e.target.result}
+        return post(url, formData)
+         .then(response => console.log("result" . response))
+        // console.warn("img data", e.target.result);
+    }
+
     };
 
     onFileUpload = () =>{
@@ -29,12 +40,22 @@ class ProductForm extends React.Component{
         if(this.state.selectedFile){
             return (
                 <div>
-                    Working!!!
+                    <p>File Name: {this.state.selectedFile.name}</p>
+                    <p>File Type {this.state.selectedFile.type}</p>
+                    <p> 
+                        Last Modified: {""}
+                        {this.state.selectedFile.lastModifiedDate.toDateString()}
+                    </p>
                 </div>
-            )
-        }
-
-    }
+            );
+        } else{
+            return(
+                <div>
+                    <h4> Choose before pressing </h4>
+                </div>
+            );
+        };
+    };
 
 
 
@@ -63,7 +84,7 @@ class ProductForm extends React.Component{
         return ( <div className={className}>
             <label className="form-label">{label}</label>
             <input type="file" className="form-control " onChange={this.onFileChange} />
-            {this.fileData()}
+            {/* {this.fileData()} */}
            </div>
       
             );
@@ -98,7 +119,7 @@ const validate = (formValues) =>{
         errors.description = 'You must enter a description';
     }
     if(!formValues.test){
-        errors.test = 'You must load image';
+        errors.test = 'You must load file';
     }
     return errors;
 }
