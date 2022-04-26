@@ -5,57 +5,64 @@ import { Field, reduxForm } from 'redux-form';
 
 class ProductForm extends React.Component{
    
-    state ={
-        selectedFile: null        
-    };
+    state = {
+        selectedFile: null
+      };
+      
+      onFileChange = event => {
+        this.setState({ selectedFile: event.target.files[0] });
+      
+      };
 
-    onFileChange = event =>{
-    //   this.setState({ selectedFile: event.target.files[0]});
-    let files = event.target.files;
-    let reader = new FileReader();
-    reader.readAsDataURL(files[0]);
-    reader.onload = (e) =>{
-        const url = "http://localhost:3000/product/addnew";
-        const formData = { file: e.target.result}
-        return post(url, formData)
-         .then(response => console.log("result" . response))
-        // console.warn("img data", e.target.result);
-    }
+    // onFileChange = event =>{
+    // //   this.setState({ selectedFile: event.target.files[0]});
+    // let files = event.target.files;
+    // let reader = new FileReader();
+    // reader.readAsDataURL(files[0]);
+    // reader.onload = (e) =>{
+    //     const url = "http://localhost:3000/product/addnew";
+    //     const formData = { file: e.target.result}
+    //     return post(url, formData)
+    //      .then(response => console.log("result" . response))
+    //     // console.warn("img data", e.target.result);
+    // }
 
-    };
+    // };
 
-    onFileUpload = () =>{
+    onFileUpload = () => {
         const formData = new FormData();
         formData.append(
-            "myFile",
-            this.state.selectedFile,
-            this.state.selectedFile.name
+          "myFile",
+          this.state.selectedFile,
+          this.state.selectedFile.name
         );
-
         console.log(this.state.selectedFile);
-        axios.post("api/uploadFile", formData);
-    };
+        axios.post("products/images", formData);
+      };
 
-    fileData = () => {
-        if(this.state.selectedFile){
-            return (
-                <div>
-                    <p>File Name: {this.state.selectedFile.name}</p>
-                    <p>File Type {this.state.selectedFile.type}</p>
-                    <p> 
-                        Last Modified: {""}
-                        {this.state.selectedFile.lastModifiedDate.toDateString()}
-                    </p>
-                </div>
-            );
-        } else{
-            return(
-                <div>
-                    <h4> Choose before pressing </h4>
-                </div>
-            );
-        };
-    };
+      fileData = () => {
+        if (this.state.selectedFile) {
+          return (
+            <div>
+              <h2>File Details:</h2>
+            <p>File Name: {this.state.selectedFile.name}</p> 
+            <p>File Type: {this.state.selectedFile.type}</p>
+                <p>
+                Last Modified:{" "}
+                {this.state.selectedFile.lastModifiedDate.toDateString()}
+              </p>
+   
+            </div>
+          );
+        } else {
+          return (
+            <div>
+              <br />
+              <h4>Choose before Pressing the Upload button</h4>
+            </div>
+          );
+        }
+      };
 
 
 
@@ -84,9 +91,7 @@ class ProductForm extends React.Component{
         return ( <div className={className}>
             <label className="form-label">{label}</label>
             <input type="file" className="form-control " onChange={this.onFileChange} />
-            {/* {this.fileData()} */}
            </div>
-      
             );
 
      }
@@ -101,10 +106,11 @@ class ProductForm extends React.Component{
        <form 
        onSubmit={this.props.handleSubmit(this.onSubmit)}
        >
-           <Field name="title" component={this.renderInput} label="Enter Name of Product" />
+           <Field name="title" component={this.renderInput}        label="Enter Name of Product" />
            <Field name="description" component={this.renderInput} label="Enter Description" />
-           <Field name="image"  component={this.renderImage} label="Load Image" />
+           <Field name="image"  component={this.renderImage}      label="Load Image" />
            <button onClick={this.onFileUpload} className='btn btn-primary'>Submit</button>
+           {this.fileData()}
      </form>
         )
    }
@@ -128,4 +134,3 @@ export default  reduxForm({
     form: 'productForm',
     validate
 })(ProductForm);
-
