@@ -1,6 +1,7 @@
 import products from '../apis/products';
 import history from '../history'; 
 import _ from 'lodash'; 
+import { useForm } from "react-hook-form";
 
 import { 
   FETCH_PRODUCTS,
@@ -39,4 +40,8 @@ export const deleteProduct = (id) => async dispatch =>{
    await products.delete(`/products/${id}`);
   dispatch({type: DELETE_PRODUCT, payload: id})
   history.push('/')
-}
+};
+// export const register = useForm();
+// export const Register = () =>{
+//   register = useForm()
+// }

@@ -1,10 +1,17 @@
 import axios, {post} from 'axios';
 import React  from 'react';
 import { Field, reduxForm } from 'redux-form';
+// import { useForm } from "react-hook-form";
+import { connect } from 'react-redux';
+// import { register } from "../../actions";
+
 
 
 class ProductForm extends React.Component{
-   
+
+
+  // register = useForm();
+
     state = {
         selectedFile: null
       };
@@ -24,9 +31,8 @@ class ProductForm extends React.Component{
     //     const formData = { file: e.target.result}
     //     return post(url, formData)
     //      .then(response => console.log("result" . response))
-    //     // console.warn("img data", e.target.result);
+    //     console.warn("img data", e.target.result);
     // }
-
     // };
 
     onFileUpload = () => {
@@ -51,7 +57,6 @@ class ProductForm extends React.Component{
                 Last Modified:{" "}
                 {this.state.selectedFile.lastModifiedDate.toDateString()}
               </p>
-   
             </div>
           );
         } else {
@@ -90,27 +95,32 @@ class ProductForm extends React.Component{
         const className = `mb-3 ${meta.error && meta.touched ? 'error' : ''}`;
         return ( <div className={className}>
             <label className="form-label">{label}</label>
-            <input type="file" className="form-control " onChange={this.onFileChange} />
+            {/* <input type="file" className="form-control" onChange={this.onFileChange} /> */}
+            {/* <input type="file" className="form-control" ref={register} /> */}
            </div>
             );
 
      }
 
 
-  onSubmit = (formValues) => {
+  onSubmit = (formValues, data) => {
          this.props.onSubmit(formValues);
+         console.log(data);
      }
 
     render(){
+ 
    return( 
        <form 
        onSubmit={this.props.handleSubmit(this.onSubmit)}
        >
            <Field name="title" component={this.renderInput}        label="Enter Name of Product" />
            <Field name="description" component={this.renderInput} label="Enter Description" />
-           <Field name="image"  component={this.renderImage}      label="Load Image" />
-           <button onClick={this.onFileUpload} className='btn btn-primary'>Submit</button>
-           {this.fileData()}
+           {/* <Field name="image"  component={this.renderImage}      label="Load Image" /> */}
+   
+           <button>Submit</button>
+           {/* <button onClick={this.onFileUpload} className='btn btn-primary'>Submit</button>
+           {this.fileData()} */}
      </form>
         )
    }
@@ -129,8 +139,8 @@ const validate = (formValues) =>{
     }
     return errors;
 }
-
-export default  reduxForm({
+//
+export default reduxForm({
     form: 'productForm',
-    validate
+    validate,
 })(ProductForm);
