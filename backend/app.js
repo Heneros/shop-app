@@ -2,10 +2,23 @@ require('dotenv').config();
 
 const express = require("express");
 const connectDB = require('./db/db');
+const productRouter = require('./routes/routesProduct');
+
 const app = express();
-// app.use('/', )
+
+app.use(express.json());
+
+
+app.get('/', (req, res) => {
+    res.send("<h1>Hello World</h1>");
+});
+
+
+app.use('/api/products', productRouter);
 
 const port = process.env.PORT || 4000;
+
+
 
 const start = async () => {
     try {
