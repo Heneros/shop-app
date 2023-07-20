@@ -1,7 +1,5 @@
 
 const Product = require("../models/product");
-
-
 const asyncWrapper = require("../middleware/async");;
 
 
@@ -15,7 +13,8 @@ const createProduct = asyncWrapper(async (req, res) => {
 const getAllProducts = asyncWrapper(async (req, res) => {
     const products = await Product.find({});
     res.status(200).json({ products });
-})
+});
+
 
 const getProduct = asyncWrapper(async (req, res) => {
     const { id: productId } = req.params;
