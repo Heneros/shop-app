@@ -23,7 +23,7 @@ root.render(
 
     <RouterProvider router={router}>
       <Provider>
-        
+
       </Provider>
     </RouterProvider>
   </React.StrictMode>
