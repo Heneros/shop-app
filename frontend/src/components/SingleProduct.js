@@ -3,27 +3,33 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom'
 import { fetchProducts } from '../redux/slices/products';
 
-
 export default function SingleProduct() {
-    // const { _id } = useParams();
 
-    // useEffect(() => {
 
-    // }, [id])
+    const { id } = useParams();
     const dispatch = useDispatch();
-    const { id, name } = useSelector((state) => state.products);
 
+    const products = useSelector((state) => state.products.products);
+    const isLoading = useSelector((state) => state.products.products.status === 'loading');
 
     useEffect(() => {
-        dispatch(fetchProducts());
+        dispatch(fetchProducts());//fetch posts
     }, [dispatch]);
 
+    const product = products.find((p) => p._id === id);
 
+    if (isLoading || !product) {
+        return <div>Loading...</div>;
+    }
     return (
         <div>
+
             SingleProduct
-            ???
-            {name}
+            <br />
+            <b>
+                {product?.name}
+            </b>
+            <br />
             {id}
         </div>
     )

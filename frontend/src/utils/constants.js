@@ -18,3 +18,5 @@ export const links = [
         url: '/contact-us'
     },
 ]
+
+export const products_url = 'http://localhost:3005/api/products/'
