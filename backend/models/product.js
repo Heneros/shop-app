@@ -27,6 +27,12 @@ const ProductSchema = new mongoose.Schema({
     imageUrl: {
         type: String,
     },
+    category: {
+        type: String
+    },
+    shipping: {
+        type: Boolean
+    }
 
 })
 module.exports = mongoose.model("Product", ProductSchema);
