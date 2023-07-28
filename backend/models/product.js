@@ -16,9 +16,9 @@ const ProductSchema = new mongoose.Schema({
     },
     company: {
         type: String,
-        enum: {
-            values: ['companyNameFirst', 'companyNameSecond'],
-        }
+        // enum: {
+        //     values: ['companyNameFirst', 'companyNameSecond'],
+        // }
     },
     createdAt: {
         type: Date,
