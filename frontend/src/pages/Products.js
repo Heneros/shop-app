@@ -3,6 +3,7 @@ import Product from '../components/Product'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProducts } from '../redux/slices/products';
 import { styled } from 'styled-components';
+import Filters from '../components/Filters';
 
 const Products = () => {
     const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const Products = () => {
 
     return (
         <Wrapper>
+            <Filters />
             <div className='products-container'>
                 {Array.isArray(products) ? (
                     products.map((product) => (

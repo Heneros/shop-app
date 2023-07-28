@@ -18,9 +18,19 @@ export default function Filters() {
     all_products,
     clearFilters } = useFilterContext();
 
-    // const categories =
+  const categories = getUniqueValues(all_products, 'category');
+  const companies = getUniqueValues(all_products, 'company');
 
   return (
-    <div>Filters</div>
+
+    <Wrapper>
+      <div className="form-control">
+        <h5>Category</h5>
+      </div>
+      Filters
+    </Wrapper>
   )
 }
+
+
+const Wrapper = styled.section``;
