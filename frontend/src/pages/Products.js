@@ -7,7 +7,7 @@ import Filters from '../components/Filters';
 
 const Products = () => {
     const dispatch = useDispatch();
-    const { products, status } = useSelector((state) => state.products);
+    const { products } = useSelector((state) => state.products);
 
     useEffect(() => {
         dispatch(fetchProducts());
@@ -20,7 +20,7 @@ const Products = () => {
             <div className='products-container'>
                 {Array.isArray(products) ? (
                     products.map((product) => (
-                        <Product key={product.id} {...product} />
+                        <Product key={product._id} {...product} />
                     ))
                 ) : (
                     <p>Loading...</p>

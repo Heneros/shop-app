@@ -11,10 +11,8 @@ export const fetchProducts = createAsyncThunk('api/products/fetchProducts', asyn
 });
 
 const initialState = {
-
     products: [],
     status: 'loading'
-
 };
 
 const productsSlice = createSlice({

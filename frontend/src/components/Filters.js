@@ -1,36 +1,39 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { styled } from 'styled-components';
-import { useFilterContext } from '../context/filter_context';
-import { getUniqueValues, formatPrice } from '../utils/helpers';
-
-
+import { getUniqueValues } from '../utils/helpers';
+import { fetchProducts } from '../redux/slices/products';
 
 export default function Filters() {
+  // const dispatch = useDispatch();
 
-  const { filters: {
-    text,
-    category,
-    company,
-    min_price,
-    max_price,
-    shipping
-  }, updateFilters,
-    all_products,
-    clearFilters } = useFilterContext();
+  // const {
+  //   filters: {
+  //     text,
+  //     category
+  //   }, all_products } = useSelector((state) => state.filter)
+  // const categories = getUniqueValues(all_products, 'category')
+  // console.log(category);
+  // const all_products = useSelector((state) => state.filter.all_products);
+  // console.log(all_products);
+  const dispatch = useDispatch();
+  const { products } = useSelector((state) => state.products);
 
-  const categories = getUniqueValues(all_products, 'category');
-  const companies = getUniqueValues(all_products, 'company');
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
   return (
-
     <Wrapper>
-      <div className="form-control">
-        <h5>Category</h5>
+      <div className='content'>
+        {products.map((name, _id) => (
+          <button key={_id}>{name}</button>
+        ))}
       </div>
-      Filters
     </Wrapper>
   )
 }
 
 
-const Wrapper = styled.section``;
+const Wrapper = styled.section`
+`
