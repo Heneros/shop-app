@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     all_products: [],
     sort: 'price-lowest',
+    filtered_products: [],
     filters: {
         text: '',
         company: 'all',
@@ -12,7 +13,7 @@ const initialState = {
         price: 0,
         shipping: false
     },
-    filtered_products: [],
+
 };
 
 const filterSlice = createSlice({
