@@ -3,25 +3,46 @@ import { useDispatch, useSelector } from 'react-redux'
 import { styled } from 'styled-components';
 import { getUniqueValues } from '../utils/helpers';
 import { fetchProducts } from '../redux/slices/products';
+import { useFilterContext } from '../context/filter_context';
 
 export default function Filters() {
-  const dispatch = useDispatch();
 
   const {
     filters: {
       text,
-      category
-    }, all_products } = useSelector((state) => state.filter)
+      category,
+      company,
+      color,
+      min_price,
+      price,
+      max_price,
+      shipping,
+    },
+    updateFilters,
+    all_products,
+    clearFilters,
+  } = useFilterContext()
+  console.log(all_products);
   const categories = getUniqueValues(all_products, 'category')
-  console.log(categories);
-
-
   return (
     <Wrapper>
       <div className='content'>
-        {/* {products.map((name, _id) => (
-          <button key={_id}>{name}</button>
-        ))} */}
+        <div>
+          {categories.map((c, index) => {
+            return (
+              <button
+                key={index}
+                onClick={updateFilters}
+                type='button'
+                name='category'
+                className={`${category === c.toLowerCase() ? 'active' : null
+                  }`}
+              >
+                {c}
+              </button>
+            )
+          })}
+        </div>
       </div>
     </Wrapper>
   )

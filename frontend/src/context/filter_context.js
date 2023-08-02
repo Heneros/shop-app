@@ -1,5 +1,5 @@
-
-import React, { useEffect, useContext, useReducer, createContext } from 'react'
+import React, { useEffect, useContext, useReducer } from 'react'
+import reducer from '../reducers/filter_reducer'
 import {
     LOAD_PRODUCTS,
     SET_GRIDVIEW,
@@ -9,19 +9,8 @@ import {
     UPDATE_FILTERS,
     FILTER_PRODUCTS,
     CLEAR_FILTERS,
-} from "../actions";
-// import filterReducer from '../redux/slices/filter';
-import filterReducer, {
-    loadProducts,
-    updateSort,
-    sortProducts,
-    updateFilters,
-    filterProducts,
-    clearFilters,
-} from '../redux/slices/filter';
-// filterReducer
-import { useProductsContext } from './products_context';
-
+} from '../actions'
+import { useProductsContext } from './products_context'
 
 const initialState = {
     filtered_products: [],
@@ -35,58 +24,53 @@ const initialState = {
         min_price: 0,
         max_price: 0,
         price: 0,
-        shipping: false
-    }
+        shipping: false,
+    },
 }
-const FilterContext = createContext();
+
+const FilterContext = React.createContext()
 
 export const FilterProvider = ({ children }) => {
-    const { products } = useProductsContext();
-    const [state, dispatch] = useReducer(filterReducer, initialState);
+    const { products } = useProductsContext()
+    const [state, dispatch] = useReducer(reducer, initialState)
+    useEffect(() => {
+        dispatch({ type: LOAD_PRODUCTS, payload: products })
+    }, [products])
 
     useEffect(() => {
-        dispatch(loadProducts(products));
-    }, [products]);
-
-    useEffect(() => {
-        dispatch(filterProducts());
-        dispatch(sortProducts());
-    }, [state.sort, state.filters]);
-
+        dispatch({ type: FILTER_PRODUCTS })
+        dispatch({ type: SORT_PRODUCTS })
+    }, [state.sort, state.filters])
+    // functions
     const setGridView = () => {
-        dispatch({ type: SET_GRIDVIEW });
-    };
-
+        dispatch({ type: SET_GRIDVIEW })
+    }
     const setListView = () => {
-        dispatch({ type: SET_LISTVIEW });
-    };
-
-
+        dispatch({ type: SET_LISTVIEW })
+    }
     const updateSort = (e) => {
-        const value = e.target.value;
-        dispatch(updateSort(value));
-    };
-
+        // just for demonstration;
+        // const name = e.target.name
+        const value = e.target.value
+        dispatch({ type: UPDATE_SORT, payload: value })
+    }
     const updateFilters = (e) => {
-        let name = e.target.name;
-        let value = e.target.value;
+        let name = e.target.name
+        let value = e.target.value
         if (name === 'category') {
-            value = e.target.textContent;
+            value = e.target.textContent
         }
         if (name === 'price') {
-            value = Number(value);
+            value = Number(value)
         }
         if (name === 'shipping') {
-            value = e.target.checked;
+            value = e.target.checked
         }
-        dispatch(updateFilters({ name, value }));
-    };
-
+        dispatch({ type: UPDATE_FILTERS, payload: { name, value } })
+    }
     const clearFilters = () => {
-        dispatch(clearFilters());
-    };
-
-
+        dispatch({ type: CLEAR_FILTERS })
+    }
     return (
         <FilterContext.Provider
             value={{
@@ -100,9 +84,9 @@ export const FilterProvider = ({ children }) => {
         >
             {children}
         </FilterContext.Provider>
-    );
-};
+    )
+}
 
 export const useFilterContext = () => {
-    return useContext(FilterContext);
-};
+    return useContext(FilterContext)
+}

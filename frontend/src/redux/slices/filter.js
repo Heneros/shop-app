@@ -1,58 +1,50 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    all_products: [],
-    sort: 'price-lowest',
-    filtered_products: [],
-    filters: {
-        text: '',
-        company: 'all',
-        category: 'all',
-        min_price: 0,
-        max_price: 0,
-        price: 0,
-        shipping: false
-    },
-
+    text: '',
+    category: 'all',
+    company: 'all',
+    color: 'all',
+    price: 0,
+    shipping: false,
 };
 
 const filterSlice = createSlice({
     name: 'filter',
     initialState,
     reducers: {
-        loadProducts(state, action) {
-            state.all_products = action.payload.products
+        updateTextFilter(state, action) {
+            state.text = action.payload;
         },
-        updateSort(state, action) {
-            state.sort = action.payload.products
+        updateCategoryFilter(state, action) {
+            state.category = action.payload;
         },
-        updateFilters(state, action) {
-            const { name, value } = action.payload.products
-            if (name == 'category') {
-                state.filters.category = value;
-            } else if (name == 'price') {
-                state.filters.price = Number(value);
-            } else if (name == 'shipping') {
-                state.filters.shipping = value;
-            } else {
-                state.filters[name] = value;
-            }
+        updateCompanyFilter(state, action) {
+            state.company = action.payload;
+        },
+        updateColorFilter(state, action) {
+            state.color = action.payload;
+        },
+        updatePriceFilter(state, action) {
+            state.price = action.payload;
+        },
+        updateShippingFilter(state, action) {
+            state.shipping = action.payload;
         },
         clearFilters(state) {
-            state.filters = {
-                text: '',
-                company: 'all',
-                category: 'all',
-                min_price: 0,
-                max_price: 0,
-                price: 0,
-                shipping: false
-            };
+            return initialState;
         },
     },
 });
 
+export const {
+    updateTextFilter,
+    updateCategoryFilter,
+    updateCompanyFilter,
+    updateColorFilter,
+    updatePriceFilter,
+    updateShippingFilter,
+    clearFilters,
+} = filterSlice.actions;
 
-export const { loadProducts, updateSort, updateFilters, clearFilters } = filterSlice.actions;
 export default filterSlice.reducer;
-
