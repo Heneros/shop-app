@@ -9,6 +9,19 @@ const createProduct = asyncWrapper(async (req, res) => {
 });
 
 
+const getLastFilters = async (req, res) => {
+    try {
+        const products = await Product.find().exec();
+        const filters = products.map((obj) => obj.category)
+        res.status(201).json({ filters });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: 'Failed to fetch filters.',
+        });
+    }
+};
+
 
 const getAllProducts = asyncWrapper(async (req, res) => {
     const { name, price, company, sort, rating, numFilters, fields } = req.query;
@@ -63,13 +76,13 @@ const getAllProducts = asyncWrapper(async (req, res) => {
     }
 
     const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 10;
+    const limit = Number(req.query.limit) || 25;
     const skip = (page - 1) * limit;
     result = result.skip(skip).limit(limit);
 
 
     const products = await result;
-    console.log(req.query);
+    // console.log(req.query);
     res.status(200).json({ products, countProducts: products.length })
 
     // const products = await Product.find({});
@@ -111,4 +124,4 @@ const updateProduct = asyncWrapper(async (req, res) => {
     res.status(200).json({ msg: `Id product been updated ${productId} ` });;
 })
 
-module.exports = { getAllProducts, createProduct, getProduct, deleteProduct, updateProduct };
+module.exports = { getAllProducts, createProduct, getProduct, deleteProduct, updateProduct, getLastFilters };

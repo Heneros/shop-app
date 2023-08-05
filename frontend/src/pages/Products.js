@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react'
 import Product from '../components/Product'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchProducts } from '../redux/slices/products';
+import { fetchFilters, fetchProducts } from '../redux/slices/products';
 import { styled } from 'styled-components';
 import Filters from '../components/Filters';
 
 const Products = () => {
     const dispatch = useDispatch();
-    const { products } = useSelector((state) => state.products);
+    const { products, category } = useSelector((state) => state.products);
 
     useEffect(() => {
         dispatch(fetchProducts());
+        // dispatch(fetchFilters());
     }, [dispatch]);
 
 
