@@ -13,8 +13,8 @@ export const fetchProducts = createAsyncThunk('api/products/fetchProducts', asyn
 export const fetchFilters = createAsyncThunk('api/products/fetchFilters', async () => {
     try {
         const { data } = await axios.get('/api/products/filters');
-        // return data;
-        console.log(data);
+        return data;
+        // console.log(data);
     } catch (error) {
         throw error;
     }
@@ -28,7 +28,7 @@ const initialState = {
         items: [],
         status: 'loading'
     },
-    filters: {
+    categories: {
         items: [],
         status: 'loading'
     }
@@ -56,16 +56,16 @@ const productsSlice = createSlice({
 
 
         [fetchFilters.pending]: (state) => {
-            state.filters = [];
-            state.filters.status = 'loading';
+            state.categories = [];
+            state.categories.status = 'loading';
         },
         [fetchFilters.fulfilled]: (state, action) => {
-            state.filters = action.payload.filters;
-            state.filters.status = 'loaded';
+            state.categories = action.payload.categories;
+            state.categories.status = 'loaded';
         },
         [fetchFilters.rejected]: (state) => {
-            state.filters = [];
-            state.filters.status = 'error';
+            state.categories = [];
+            state.categories.status = 'error';
         },
 
     }

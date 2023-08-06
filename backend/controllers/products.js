@@ -12,7 +12,7 @@ const createProduct = asyncWrapper(async (req, res) => {
 const getLastFilters = async (req, res) => {
     try {
         const products = await Product.find().exec();
-        const filters = products.map((obj) => obj.category)
+        const filters = products.map((obj) => obj.categories) //получение из объекта products все категории.
         res.status(201).json({ filters });
     } catch (error) {
         console.log(error);

@@ -8,9 +8,10 @@ import { useFilterContext } from '../context/filter_context';
 export default function Filters() {
 
   const dispatch = useDispatch();
-  const { products, category } = useSelector((state) => state.products)
+  const { products, categories } = useSelector((state) => state.products)
 
-  console.log(products)
+  // console.log(products)
+  console.log(categories)
   useEffect(() => {
     dispatch(fetchProducts());
   }, [])

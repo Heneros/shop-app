@@ -27,8 +27,12 @@ const ProductSchema = new mongoose.Schema({
     imageUrl: {
         type: String,
     },
-    category: {
-        type: String
+    categories: {
+        // type: Array,
+        // default: []
+
+        type: Array,
+        default: []
     },
     shipping: {
         type: Boolean
