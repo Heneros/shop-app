@@ -12,8 +12,8 @@ const createProduct = asyncWrapper(async (req, res) => {
 const getLastFilters = async (req, res) => {
     try {
         const products = await Product.find().exec();
-        const filters = products.map((obj) => obj.categories) //получение из объекта products все категории.
-        res.status(201).json({ filters });
+        const filters = products.map((obj) => obj.categories).flat().slice(0, 15) //получение из объекта products все категории.
+        res.status(201).json( filters );
     } catch (error) {
         console.log(error);
         res.status(500).json({
@@ -83,7 +83,8 @@ const getAllProducts = asyncWrapper(async (req, res) => {
 
     const products = await result;
     // console.log(req.query);
-    res.status(200).json({ products, countProducts: products.length })
+    res.status(200).json(products)
+    // res.status(200).json({ products, countProducts: products.length })
 
     // const products = await Product.find({});
     // res.status(200).json({ products });

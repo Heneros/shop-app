@@ -28,7 +28,7 @@ const initialState = {
         items: [],
         status: 'loading'
     },
-    categories: {
+    filters: {
         items: [],
         status: 'loading'
     }
@@ -46,7 +46,7 @@ const productsSlice = createSlice({
             state.products.status = 'loading';
         },
         [fetchProducts.fulfilled]: (state, action) => {
-            state.products = action.payload.products;
+            state.products = action.payload;
             state.products.status = 'loaded';
         },
         [fetchProducts.rejected]: (state) => {
@@ -56,16 +56,16 @@ const productsSlice = createSlice({
 
 
         [fetchFilters.pending]: (state) => {
-            state.categories = [];
-            state.categories.status = 'loading';
+            state.filters = [];
+            state.filters.status = 'loading';
         },
         [fetchFilters.fulfilled]: (state, action) => {
-            state.categories = action.payload.categories;
-            state.categories.status = 'loaded';
+            state.filters = action.payload;
+            state.filters.status = 'loaded';
         },
         [fetchFilters.rejected]: (state) => {
-            state.categories = [];
-            state.categories.status = 'error';
+            state.filters = [];
+            state.filters.status = 'error';
         },
 
     }
