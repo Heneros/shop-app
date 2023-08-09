@@ -31,15 +31,19 @@ const initialState = {
     filters: {
         items: [],
         status: 'loading'
-    }
-    // products: [],
-    // status: 'loading'
+    }, 
+    selectedCategory: null 
+
 };
 
 const productsSlice = createSlice({
     name: 'products',
     initialState,
-    reducers: {},
+    reducers: {
+        updateCategoryFilter(state, action) {
+            state.selectedCategory  = action.payload;
+        },
+    },
     extraReducers: {
         [fetchProducts.pending]: (state) => {
             state.products = [];
@@ -67,9 +71,12 @@ const productsSlice = createSlice({
             state.filters = [];
             state.filters.status = 'error';
         },
-
     }
 })
+
+export const { updateCategoryFilter } = productsSlice.actions;
+
+
 export const selectAllProducts = (state) => state.products.products;
 
 
