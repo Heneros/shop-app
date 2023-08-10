@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { styled } from 'styled-components';
 import { getUniqueValues } from '../utils/helpers';
-import { fetchFilters, fetchProducts, updateCategoryFilter  } from '../redux/slices/products';
+import { fetchFilters, fetchProducts, updateCategoryFilter } from '../redux/slices/products';
 
 
 export default function Filters() {
@@ -12,12 +12,19 @@ export default function Filters() {
 
   useEffect(() => {
     dispatch(fetchFilters());
-  }, [dispatch]);
+  }, []);
 
   const handleCategoryClick = (category) => {
-    dispatch(updateCategoryFilter(category)); 
-    console.log(category);
-};
+    dispatch(updateCategoryFilter(category));
+  };
+
+  // const allCategories = products.items.reduce((categories, product) => {
+  //   return categories.concat(product.categories);
+  // }, []);
+
+  // const uniqueCategories = [...new Set(allCategories)];
+
+
   return (
     <Wrapper>
       <div className='content'>

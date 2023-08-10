@@ -11,17 +11,17 @@ const Products = () => {
 
     useEffect(() => {
         dispatch(fetchProducts());
-    }, [dispatch]);
+    }, []);
 
     const filteredProducts = selectedCategory === null
         ? products
-        : products.filter(product => product.category === selectedCategory);
+        : products.filter(product => product.categories.includes(selectedCategory));
 
     return (
-        <>
+        <Wrapper>
             <Filters />
             <div className='products-container'>
-                {Array.isArray(filteredProducts)  ? (
+                {Array.isArray(filteredProducts) ? (
                     filteredProducts.map((product) => (
                         <Product key={product._id} {...product} />
                     ))
@@ -29,9 +29,24 @@ const Products = () => {
                     <p>No products found.</p>
                 )}
             </div>
-        </>
+        </Wrapper>
     );
 };
-// ... styled components ...
+const Wrapper = styled.section`
+ .products-container{
+    display: grid;
+    gap: 2rem 1.5rem;
+ }
+ @media (min-width: 992px) {
+    .products-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1170px) {
+    .products-container {
+      grid-template-columns: repeat(3, 1fr);
+    }  
+    }
+`;
 
 export default Products;

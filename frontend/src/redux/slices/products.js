@@ -31,8 +31,8 @@ const initialState = {
     filters: {
         items: [],
         status: 'loading'
-    }, 
-    selectedCategory: null 
+    },
+    selectedCategory: null
 
 };
 
@@ -41,7 +41,7 @@ const productsSlice = createSlice({
     initialState,
     reducers: {
         updateCategoryFilter(state, action) {
-            state.selectedCategory  = action.payload;
+            state.selectedCategory = action.payload;
         },
     },
     extraReducers: {
@@ -53,6 +53,7 @@ const productsSlice = createSlice({
             state.products = action.payload;
             state.products.status = 'loaded';
         },
+
         [fetchProducts.rejected]: (state) => {
             state.products = [];
             state.products.status = 'error';
