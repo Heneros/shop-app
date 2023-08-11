@@ -9,7 +9,7 @@ import store from './redux/store';
 import ReactDOM from 'react-dom/client';
 
 import Layout from './pages/Layout';
-import Products from './pages/Products';
+import HomePage from './pages/HomePage';
 import ContactUs from './pages/ContactUs';
 import './index.css';
 import About from './pages/About';
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Products />
+        element: <HomePage />
       },
       {
         path: 'products/:id',
