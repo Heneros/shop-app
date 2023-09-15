@@ -2,24 +2,33 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { styled } from 'styled-components';
 import { getUniqueValues } from '../utils/helpers';
-import { fetchFilters, fetchProducts, updateCategoryFilter } from '../redux/slices/products';
+import { fetchFilters, fetchProducts, selectAllProducts, updateCategoryFilter, updateCompanyFilter } from '../redux/slices/products';
 
 
 export default function Filters() {
 
   const dispatch = useDispatch();
-  const { filters, selectedCategory } = useSelector((state) => state.products);
+  const { filters, selectedCategory, selectedCompany } = useSelector((state) => state.products);
+  const products = useSelector(selectAllProducts);
 
   useEffect(() => {
     dispatch(fetchFilters());
   }, []);
 
-  const handleCategoryClick = (category) => {
+  const handleCategoryClick = (category, company) => {
     dispatch(updateCategoryFilter(category));
   };
 
+  const handleCompanyClick = (company) => {
+    dispatch(updateCompanyFilter(company));
+  };
 
-  console.log(selectedCategory)
+  // console.log(selectedCategory)
+
+  const companies = Array.isArray(products) ? products.map((product) => product.company) : [];
+  const companiesUniq = [...new Set(companies)];
+
+  console.log(companies);
 
   return (
     <Wrapper>
@@ -48,6 +57,20 @@ export default function Filters() {
             className={`${selectedCategory === null ? 'active' : 'all-btn'
               }`}
             onClick={() => handleCategoryClick(null)}>All</button>
+        </div>
+        <div className='form-control'>
+          <h5>Company</h5>
+          {companiesUniq.map((item, index) => (
+            <button
+              key={index}
+              type='button'
+              onClick={() => handleCompanyClick(item)}
+            >
+              {item}
+            </button>
+          ))}
+
+
         </div>
       </div>
     </Wrapper>

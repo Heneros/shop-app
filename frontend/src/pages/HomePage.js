@@ -3,22 +3,23 @@ import Filters from '../components/Filters';
 import ProductList from '../components/ProductList';
 
 import { styled } from 'styled-components';
+import PageHero from '../components/PageHero';
 
 const HomePage = () => {
- 
-    return (
-        <main >
 
-            <Wrapper className='page'>
-                <div className='section-center products'>
-                    <Filters />
-                    <div>
-                        <ProductList />
-                    </div>
-                </div>
-            </Wrapper>
-        </main>
-    );
+  return (
+    <main >
+      <PageHero />
+      <Wrapper className='page'>
+        <div className='section-center products'>
+          <Filters />
+          <div>
+            <ProductList />
+          </div>
+        </div>
+      </Wrapper>
+    </main>
+  );
 };
 const Wrapper = styled.section`
    .products {

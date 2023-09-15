@@ -1,36 +1,38 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom'
+
 import { fetchProducts } from '../redux/slices/products';
+import axios from '../axios';
 
 export default function SingleProduct() {
-
-
     const { id } = useParams();
-    const dispatch = useDispatch();
-
-    const products = useSelector((state) => state.products.products);
-    const isLoading = useSelector((state) => state.products.products.status === 'loading');
+    const [data, setData] = useState(null);
+    const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
-        dispatch(fetchProducts());//fetch posts
-    }, [dispatch]);
+        async function fetchData() {
+            try {
+                const response = await axios.get(`/api/products/${id}`);
+                setData(response.data);
+                setLoading(false);
+            } catch (error) {
+                console.error(error);
+                setLoading(false);
+            }
+        }
 
-    const product = products.find((p) => p._id === id);
+        fetchData();
+    }, [id]);
 
-    if (isLoading || !product) {
-        return <div>Loading...</div>;
+    if (isLoading) {
+        return <span>Loading...</span>;
     }
+
     return (
         <div>
-
-            SingleProduct
-            <br />
-            <b>
-                {product?.name}
-            </b>
-            <br />
-            {id}
+            <h3>Name: {data?.product?.name}</h3>
+            <p>ID: {data?.product?._id}</p>
         </div>
-    )
+    );
 }
