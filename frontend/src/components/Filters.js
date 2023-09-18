@@ -15,8 +15,8 @@ export default function Filters() {
     dispatch(fetchFilters());
   }, []);
 
-  const handleCategoryClick = (category, company) => {
-    dispatch(updateCategoryFilter(category));
+  const handleCategoryClick = (categories) => {
+    dispatch(updateCategoryFilter(categories));
   };
 
   const handleCompanyClick = (company) => {
@@ -25,26 +25,33 @@ export default function Filters() {
 
   // console.log(selectedCategory)
 
+
+  const categoriesNew = Array.isArray(products) ? products.map(product => product.categories) : [];
+  const allCategories = categoriesNew.flat();
+  const categoryUniq = [...new Set(allCategories)];
+
+
+
   const companies = Array.isArray(products) ? products.map((product) => product.company) : [];
   const companiesUniq = [...new Set(companies)];
 
-  console.log(companies);
+
+  // console.log(companiesUniq);
+  console.log(selectedCompany);
 
   return (
     <Wrapper>
       <div className='content'>
         <div className='form-control'>
-          <h5>Category</h5>
-          {Array.isArray(filters) ? (
-            filters.map((item, index) => (
+          <h5>Categories</h5>
+          {Array.isArray(categoryUniq) ? (
+            categoryUniq.map((item, index) => (
               <button
                 key={index}
                 type='button'
-                name='category'
                 onClick={() => handleCategoryClick(item)}
                 className={`${selectedCategory === item ? 'active' : ''
-                  }`}
-              >
+                  }`}  >
                 {item}
               </button>
             ))
@@ -59,21 +66,35 @@ export default function Filters() {
             onClick={() => handleCategoryClick(null)}>All</button>
         </div>
         <div className='form-control'>
-          <h5>Company</h5>
-          {companiesUniq.map((item, index) => (
+          <h5>Companies</h5>
+
+
+          {companiesUniq.length > 0 ? (companiesUniq.map((item, index) => (
             <button
               key={index}
               type='button'
               onClick={() => handleCompanyClick(item)}
+              className={`${selectedCompany === item ? 'active' : ''}`}
             >
               {item}
             </button>
-          ))}
-
+          ))) : (
+            <span>
+              No companies
+            </span>
+          )}
+          <button
+            type='button'
+            name='company'
+            className={`${selectedCompany === null ? 'active' : 'all-btn'}`}
+            onClick={() => handleCompanyClick(null)}
+          >
+            All
+          </button>
 
         </div>
       </div>
-    </Wrapper>
+    </Wrapper >
   );
 }
 

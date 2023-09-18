@@ -2,33 +2,35 @@ import React from 'react'
 import styled from 'styled-components';
 import { Link } from 'react-router-dom'
 import { links } from '../utils/constants';
+import CartButtons from './CartButtons';
 
 export default function Header() {
-    return (
-        <NavContainer>
-            <div className='nav-center'>
-                <div className='nav-header'>
-                    <Link to="/">
-                        Logo
-                    </Link>
-                </div>
-                <ul className='nav-links'>
-                    {/*  тернарный оператор для проверки существования массива  */}
-                    {links && links.length > 0 ? (links.map((link) => {
-                        const { id, text, url } = link;  // деструктризация из параметра.
-                        return (
-                            <li key={id}>
-                                <Link to={url}>{text}</Link>
-                            </li>
-                        )
-                    })) : (
-                        <>Doesnt exists</>
-                    )
-                    }
-                </ul>
-            </div>
-        </NavContainer>
-    )
+  return (
+    <NavContainer>
+      <div className='nav-center'>
+        <div className='nav-header'>
+          <Link to="/">
+            Logo
+          </Link>
+        </div>
+        <ul className='nav-links'>
+
+          {links && links.length > 0 ? (links.map((link) => {
+            const { id, text, url } = link;
+            return (
+              <li key={id}>
+                <Link to={url}>{text}</Link>
+              </li>
+            )
+          })) : (
+            <>Doesnt exists</>
+          )
+          }
+        </ul>
+        <CartButtons />
+      </div>
+    </NavContainer>
+  )
 }
 
 

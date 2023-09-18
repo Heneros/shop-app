@@ -7,30 +7,35 @@ import Product from '../components/Product';
 import { fetchProducts } from '../redux/slices/products';
 export default function ProductList() {
 
-    const dispatch = useDispatch();
-    const { products, selectedCategory } = useSelector((state) => state.products);
+  const dispatch = useDispatch();
+  const { products, selectedCategory, selectedCompany } = useSelector((state) => state.products);
 
-    useEffect(() => {
-        dispatch(fetchProducts());
-    }, []);
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, []);
 
-    const filteredProducts = selectedCategory === null
-        ? products
-        : products.filter((product) => product.categories.includes(selectedCategory)); /// используется для проверки, есть ли заданная категория в массиве категорий продукта.
 
-    return (
-        <Wrapper>
-            <div className='products-container'>
-                {Array.isArray(filteredProducts) ? (
-                    filteredProducts.map((product) => (
-                        <Product key={product._id} {...product} />
-                    ))
-                ) : (
-                    <p>No products found.</p>
-                )}
-            </div>
-        </Wrapper>
-    )
+  const filteredProducts = Array.isArray(products)
+    ? products.filter((product) => {
+      const categoryMatch = selectedCategory === null || product.categories.includes(selectedCategory)
+      // const companyMatch = selectedCompany === null || product.company === selectedCompany
+      const companyMatch = selectedCompany === null || product.company.includes(selectedCompany)
+      return categoryMatch && companyMatch;
+    }) : [];
+
+  return (
+    <Wrapper>
+      <div className='products-container'>
+        {Array.isArray(filteredProducts) ? (
+          filteredProducts.map((product) => (
+            <Product key={product._id} {...product} />
+          ))
+        ) : (
+          <p>No products found.</p>
+        )}
+      </div>
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled.section`
