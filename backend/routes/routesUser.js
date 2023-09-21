@@ -3,9 +3,10 @@
 const express = require('express');
 const router = express.Router();
 
-const { getAllUsers } = require('../controllers/users');
+const { getAllUsers, registerUser, authUser } = require('../controllers/users');
 
 
-router.route('/').get(getAllUsers);
+router.route('/').post(registerUser).get(getAllUsers);
+router.post('/auth', authUser)
 
 module.exports = router;
