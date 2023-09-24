@@ -4,17 +4,20 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components'
 
 export default function CartButtons() {
-    return (
-        <Wrapper className='cart-btn-wrapper'>
-            <Link to='/cart' className='cart-btn' >
-                Cart
-                <span className='cart-container'>
-                    <FaShoppingCart />
-                    <span className='cart-value'> 123</span>
-                </span>
-            </Link>
-        </Wrapper>
-    )
+  return (
+    <Wrapper className='cart-btn-wrapper'>
+      <Link to='/cart' className='cart-btn' >
+        Cart
+        <span className='cart-container'>
+          <FaShoppingCart />
+          <span className='cart-value'> 123</span>
+        </span>
+      </Link>
+      <Link to='/login' className='auth-btn'  >
+        Login <FaUserPlus />
+      </Link>
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled.div`

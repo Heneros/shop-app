@@ -14,7 +14,6 @@ export default function Header() {
           </Link>
         </div>
         <ul className='nav-links'>
-
           {links && links.length > 0 ? (links.map((link) => {
             const { id, text, url } = link;
             return (
@@ -24,8 +23,7 @@ export default function Header() {
             )
           })) : (
             <>Doesnt exists</>
-          )
-          }
+          ) }
         </ul>
         <CartButtons />
       </div>

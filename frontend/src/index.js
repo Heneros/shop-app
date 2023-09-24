@@ -22,6 +22,7 @@ import { ProductsProvider } from './context/products_context';
 import { FilterProvider } from './context/filter_context';
 import './index.css';
 
+
 const router = createBrowserRouter([
   {
     path: "/",
