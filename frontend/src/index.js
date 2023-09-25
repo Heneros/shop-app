@@ -15,13 +15,14 @@ import ContactUs from './pages/ContactUs';
 import About from './pages/About';
 import Cart from './pages/Cart';
 import Login from './pages/Login';
+import Register from './pages/Register';
+
 
 import SingleProduct from './components/SingleProduct';
 
 import { ProductsProvider } from './context/products_context';
 import { FilterProvider } from './context/filter_context';
 import './index.css';
-
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,9 @@ const router = createBrowserRouter([
       }, {
         path: 'login',
         element: <Login />
+      }, {
+        path: 'register',
+        element: <Register />
       },
     ]
   }
