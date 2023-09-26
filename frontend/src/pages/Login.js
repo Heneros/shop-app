@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
+import { fetchAuthMe } from '../redux/slices/auth';
 
 
 export default function Login() {
@@ -14,6 +15,14 @@ export default function Login() {
     const { search } = useLocation();
     const sp = new URLSearchParams(search);
     const redirect = sp.get('redirect') || '/';
+
+    const onSubmit = async(values) =>{;
+        const data = await dispatch(fetchAuthMe(values))
+        if(!data.payload){
+            return alert('Failed to log in')
+        }
+    }
+
     return (
         <>
             <Container component="main" maxWidth="xs" sx={{ mt: 5 }}>

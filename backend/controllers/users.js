@@ -1,5 +1,7 @@
 const asyncWrapper = require('../middleware/async');
 const User = require('../models/userModel');
+const generateToken = require('../utils/generateToken');
+
 
 const getAllUsers = asyncWrapper(async (req, res) => {
     const users = await User.find({});
@@ -8,15 +10,16 @@ const getAllUsers = asyncWrapper(async (req, res) => {
 
 const authUser = asyncWrapper(async (req, res) => {
     const { email, password } = req.body;
-    const user = await User.findOne({email});
-    if(user && (await user.matchPassword(password))){
+    const user = await User.findOne({ email });
+    if (user && (await user.matchPassword(password))) {
+        generateToken(res, user._id)
         res.json({
             _id: user._id,
             name: user.name,
             email: user.email,
             isAdmin: user.isAdmin,
         })
-    }else{
+    } else {
         res.status(400);
         throw new Error('Invalid email or password');
     }
