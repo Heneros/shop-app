@@ -37,7 +37,7 @@ export default function Filters() {
 
 
   // console.log(companiesUniq);
-  console.log(selectedCompany);
+  // console.log(selectedCompany);
 
   return (
     <Wrapper>

@@ -16,6 +16,7 @@ const authUser = asyncWrapper(async (req, res) => {
         res.json({
             _id: user._id,
             name: user.name,
+            // password: user.password,
             email: user.email,
             isAdmin: user.isAdmin,
         })

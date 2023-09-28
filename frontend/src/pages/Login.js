@@ -1,27 +1,50 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
-import { Link, useLocation } from 'react-router-dom';
-import { fetchAuthMe } from '../redux/slices/auth';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { fetchAuthMe, selectIsAuth } from '../redux/slices/auth';
+import { useForm } from 'react-hook-form';
 
 
 export default function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
+    // const [email, setEmail] = useState('');
+    // const [password, setPassword] = useState('');
+    const isAuth = useSelector(selectIsAuth);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const { search } = useLocation();
     const sp = new URLSearchParams(search);
     const redirect = sp.get('redirect') || '/';
 
-    const onSubmit = async(values) =>{;
+    const { register, handleSubmit, formState: {
+        error, isValie
+    } } = useForm({
+        defaultValues: {
+
+        },
+        mode: 'onChange'
+    })
+
+    const onSubmit = async (values) => {
         const data = await dispatch(fetchAuthMe(values))
-        if(!data.payload){
-            return alert('Failed to log in')
+        console.log(data);
+        if (!data.payload) {
+            return alert('data error payload')
         }
+        if ('token' in data.payload) {
+            window.localStorage.setItem('token', data.payload.token);
+            // navigate(redirect);
+        } else {
+            alert('Failed to log in')
+        }
+        dispatch(fetchAuthMe(values));
     }
+
+    // if (isAuth) {
+    //     return <Navigate to="/" />
+    // }
 
     return (
         <>
@@ -29,13 +52,14 @@ export default function Login() {
                 <Typography>
                     Login Page
                 </Typography>
-                <Box component="form" sx={{ mt: 3 }}>
+                <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={12}>
                             <TextField
                                 label="E-mail"
                                 type="email"
                                 fullWidth
+                                {...register('email', { required: 'Enter Email' })}
                             />
                         </Grid>
                         <Grid item xs={12} sm={12}>
@@ -43,6 +67,7 @@ export default function Login() {
                                 label="Password"
                                 type="password"
                                 fullWidth
+                                {...register('password', { required: 'Enter password' })}
                             />
                         </Grid>
                         <Grid item xs={12} sm={12}>
@@ -52,9 +77,11 @@ export default function Login() {
                         </Grid>
                     </Grid>
                 </Box>
+
                 <Typography variant="h5" > New Customer? <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
                     Register
-                </Link>  </Typography>
+                </Link></Typography>
+
             </Container>
         </>
     )
