@@ -30,15 +30,23 @@ export default function Login() {
     const onSubmit = async (values) => {
         const data = await dispatch(fetchAuthMe(values))
         console.log(data);
-        if (!data.payload) {
-            return alert('data error payload')
-        }
+
+        // try {
+        //     if (!data.payload) {
+        //         return alert('data error payload')
+        //     }
+        //     dispatch(fetchAuthMe(values));
+        // } catch (err) {
+        //     console.log(err?.data?.message || err.error);
+        // }
+
         if ('token' in data.payload) {
             window.localStorage.setItem('token', data.payload.token);
             // navigate(redirect);
         } else {
             alert('Failed to log in')
         }
+
         dispatch(fetchAuthMe(values));
     }
 
