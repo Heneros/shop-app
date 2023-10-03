@@ -18,3 +18,5 @@ export const links = [
 ]
 
 export const products_url = 'http://localhost:3005/api/products/'
+export const BASE_URL = 'http://localhost:3005';
+export const USERS_URL = '/api/users';

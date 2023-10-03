@@ -27,14 +27,7 @@ export default function Register() {
 
   const submitHandler = async (values) => {
 
-    const data = await dispatch(fetchRegister(values))
-    if (!data.payload) {
-      return alert('Failed to register')
-    }
-    if ('token' in data.payload) {
-      window.localStorage.setItem('token', data.payload.token);
 
-    }
     // console.log(123)
   }
 
