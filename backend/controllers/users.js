@@ -42,11 +42,19 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new Error('User already exists')
     }
 
-    const user = await User.create({
-        name,
-        email,
-        password
+    const doc = new User({
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
     });
+
+    const user = await doc.save();
+
+    // const user = await User.create({
+    //     name,
+    //     email,
+    //     password
+    // });
 
     if (user) {
         generateToken(res, user._id);
