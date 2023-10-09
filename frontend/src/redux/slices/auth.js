@@ -28,6 +28,10 @@ const authSlice = createSlice({
 
             const expirationTime = new Date().getTime() + 30 * 24 * 60 * 60 * 1000;
             localStorage.setItem('expirationTime', expirationTime);
+        },
+        logout: (state, action) => {
+            state.userInfo = null;
+            localStorage.clear();
         }
     }, extraReducers: {
         [fetchRegister.pending]: (state) => {
@@ -58,6 +62,6 @@ const authSlice = createSlice({
     }
 })
 // export const { setCredentials } = authSlice.reducer;
-export const { setCredentials } = authSlice.actions;
+export const { setCredentials, logout } = authSlice.actions;
 export const selectIsAuth = (state) => Boolean(state.auth.data);
 export const authReducer = authSlice.reducer;

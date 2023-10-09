@@ -32,6 +32,14 @@ const authUser = asyncHandler(async (req, res) => {
 
 });
 
+const logoutUser = asyncHandler(async (req, res) => {
+    res.cookie('jwt', '', {
+        httpOnly: true,
+        expires: new Date(0)
+    })
+    res.status(200).json({ message: 'Logout success' })
+});
+
 const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
 
@@ -42,19 +50,19 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new Error('User already exists')
     }
 
-    const doc = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-    });
-
-    const user = await doc.save();
-
-    // const user = await User.create({
-    //     name,
-    //     email,
-    //     password
+    // const doc = new User({
+    //     name: req.body.name,
+    //     email: req.body.email,
+    //     password: req.body.password,
     // });
+
+    // const user = await doc.save();
+
+    const user = await User.create({
+        name,
+        email,
+        password
+    });
 
     if (user) {
         generateToken(res, user._id);
@@ -73,4 +81,4 @@ const registerUser = asyncHandler(async (req, res) => {
 
 
 
-module.exports = { getAllUsers, registerUser, authUser };
+module.exports = { getAllUsers, registerUser, authUser, logoutUser };

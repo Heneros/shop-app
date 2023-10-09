@@ -1,9 +1,28 @@
 import React from 'react'
 import { FaShoppingCart, FaUserMinus, FaUserPlus } from 'react-icons/fa'
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components'
+import { useLogoutMutation } from '../redux/slices/usersApiSlice';
+import { logout } from '../redux/slices/auth';
 
 export default function CartButtons() {
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+  const [logoutApiCall] = useLogoutMutation();
+
+  const logoutHandler = async () => {
+
+    try {
+      await logoutApiCall().unwrap();
+      dispatch(logout());
+      console.log(logout());
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <Wrapper className='cart-btn-wrapper'>
       <Link to='/cart' className='cart-btn' >
@@ -13,9 +32,22 @@ export default function CartButtons() {
           <span className='cart-value'> 123</span>
         </span>
       </Link>
-      <Link to='/login' className='auth-btn'  >
-        Login <FaUserPlus />
-      </Link>
+      {userInfo ? (
+        <>
+          <span>   {userInfo.name}</span>
+          <span onClick={logoutHandler} >
+            Logout
+          </span>
+        </>
+      ) :
+        <>
+          <Link to='/login' className='auth-btn'  >
+            Login <FaUserPlus />
+          </Link>
+
+        </>
+
+      }
     </Wrapper>
   )
 }

@@ -3,8 +3,12 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom'
 import { links } from '../utils/constants';
 import CartButtons from './CartButtons';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 export default function Header() {
+
+
   return (
     <NavContainer>
       <div className='nav-center'>
@@ -23,7 +27,7 @@ export default function Header() {
             )
           })) : (
             <>Doesnt exists</>
-          ) }
+          )}
         </ul>
         <CartButtons />
       </div>

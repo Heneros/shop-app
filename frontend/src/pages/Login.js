@@ -6,7 +6,7 @@ import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { fetchAuthMe, selectIsAuth } from '../redux/slices/auth';
 import { useForm } from 'react-hook-form';
 import { useLoginMutation } from '../redux/slices/usersApiSlice';
-import { setCredentials } from '../redux/slices/authSlice';
+import { setCredentials } from '../redux/slices/auth';
 
 export default function Login() {
     const [email, setEmail] = useState('');
