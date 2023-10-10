@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const connectDB = require('./db/db');
 const productRouter = require('./routes/routesProduct');
 const routesUser = require('./routes/routesUser');
+const routesOrder = require('./routes/routesOrder');
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/products', productRouter);
 app.use('/api/users', routesUser);
+app.use('/api/orders', routesUser);
 
 const port = process.env.PORT || 4000;
 
