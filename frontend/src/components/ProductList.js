@@ -18,7 +18,6 @@ export default function ProductList() {
   const filteredProducts = Array.isArray(products)
     ? products.filter((product) => {
       const categoryMatch = selectedCategory === null || product.categories.includes(selectedCategory)
-      // const companyMatch = selectedCompany === null || product.company === selectedCompany
       const companyMatch = selectedCompany === null || product.company.includes(selectedCompany)
       return categoryMatch && companyMatch;
     }) : [];
