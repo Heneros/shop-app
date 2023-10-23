@@ -18,7 +18,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 
 
-import SingleProduct from './components/SingleProduct';
+import SingleProduct from './pages/SingleProduct';
 
 import { ProductsProvider } from './context/products_context';
 import { FilterProvider } from './context/filter_context';

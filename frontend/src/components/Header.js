@@ -26,7 +26,7 @@ export default function Header() {
               </li>
             )
           })) : (
-            <>Doesnt exists</>
+            <>No links</>
           )}
         </ul>
         <CartButtons />

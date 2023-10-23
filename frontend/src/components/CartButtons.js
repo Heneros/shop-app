@@ -1,15 +1,42 @@
-import React from 'react'
-import { FaShoppingCart, FaUserMinus, FaUserPlus } from 'react-icons/fa'
+import React, { useState } from 'react'
+import { FaShoppingCart, FaUser, FaUserMinus, FaUserPlus } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components'
 import { useLogoutMutation } from '../redux/slices/usersApiSlice';
 import { logout } from '../redux/slices/auth';
+import {
+  Button,
+  Menu,
+  MenuItem,
+  Typography,
+  Link as MuiLink,
+} from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
+
 
 export default function CartButtons() {
   const { userInfo } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state) => state.cart);
 
   const dispatch = useDispatch();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    setAnchorEl(null);
+  };
+
+
   const [logoutApiCall] = useLogoutMutation();
 
   const logoutHandler = async () => {
@@ -29,25 +56,51 @@ export default function CartButtons() {
         Cart
         <span className='cart-container'>
           <FaShoppingCart />
-          <span className='cart-value'> 123</span>
+          {
+            cartItems.length > 0 && (
+              <span className='cart-value'>
+                {cartItems.reduce((a, c) => a + c.qty, 0)}
+              </span>
+            )
+          }
         </span>
       </Link>
       {userInfo ? (
         <>
-          <span>   {userInfo.name}</span>
-          <span onClick={logoutHandler} >
-            Logout
-          </span>
+          <Button
+            color="inherit"
+            className='cart-btn'
+            aria-controls="user-menu"
+            aria-haspopup="true"
+            onClick={handleMenu}
+          >
+            {userInfo.name}
+            <AccountCircleIcon />
+          </Button>
+          <Menu
+            id="user-menu"
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem
+              onClick={handleClose}
+              component={Link}
+              to="/profile"
+              disableRipple
+            >
+              Profile
+            </MenuItem>
+            <MenuItem onClick={handleLogout} disableRipple>
+              Logout
+            </MenuItem>
+          </Menu>
         </>
-      ) :
-        <>
-          <Link to='/login' className='auth-btn'  >
-            Login <FaUserPlus />
-          </Link>
-
-        </>
-
-      }
+      ) : (
+        <Button color="inherit" component={Link} to="/login">
+          <FaUser /> Sign In
+        </Button>
+      )}
     </Wrapper>
   )
 }

@@ -8,44 +8,38 @@ import { useDispatch } from 'react-redux';
 import { useGetProductDetailsQuery } from '../redux/slices/productApiSlice';
 import { addToCart } from '../redux/slices/cartSlice';
 export default function Product({ _id, name, imageUrl, price, rating, company }) {
-  // const { id: productId } = useParams();
-
   const dispatch = useDispatch();
-  // const productId = Number(_id);
   const [qty, setQty] = useState(1);
-
-  // const { data: product, errror } = useGetProductDetailsQuery(_id);
-
   const { data, error } = useGetProductDetailsQuery(_id);
   const product = data?.product;
 
   const addToCartHandler = () => {
-    // const { _id, name, imageUrl, price, rating, company } = product;
-
     dispatch(addToCart({ ...product, qty }));
-    // console.log(_id);
-    // console.log(product);
   }
 
   return (
     <Wrapper>
       <div className="container">
-        <img src={imageUrl} alt={name} />
-        <Link to={`/products/${_id}`} className="link">
-          <FaSearch />
+
+        <Link to={`/products/${_id}`}>
+          <img src={imageUrl} alt={name} />
+          {/* <FaSearch /> */}
         </Link>
       </div>
-      <div>
-        <h5><Link to={`/products/${_id}`}>
-          {name}
-        </Link> </h5>
+      <footer>
+        <h5 className='name-product'>
+          <Link to={`/products/${_id}`}>
+            {name}
+          </Link>
+        </h5>
         <p> {formatPrice(price)} </p>
-      </div>
+      </footer >
       <button
+        className='btn'
         onClick={addToCartHandler}
       >Add To Cart
       </button>
-    </Wrapper>
+    </Wrapper >
   )
 }
 
@@ -81,5 +75,27 @@ const Wrapper = styled.article`
       font-size: 1.25rem;
       color: var(--clr-white);
     }
+  }
+  footer {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  footer h5,
+  footer p {
+    margin-bottom: 0;
+    font-weight: 400;
+
+  } 
+   footer h5 a,
+  footer p a {
+color : hsl(209, 61%, 16%);
+  }
+
+  footer p {
+    color: var(--clr-primary-5);
+    letter-spacing: var(--spacing);
   }
 `;

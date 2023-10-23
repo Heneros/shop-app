@@ -3,13 +3,13 @@ import styled from 'styled-components'
 
 
 export default function Footer() {
-    return (
-        <Container>   <h5>
-            &copy; {new Date().getFullYear()}
-            <span> Shop react </span>
-        </h5>
-            <h5>All rights reserved</h5></Container>
-    )
+  return (
+    <Container>   <h5>
+      &copy; {new Date().getFullYear()}
+      <span> Shop react </span>
+    </h5>
+      <h5>All rights reserved</h5></Container>
+  )
 }
 
 const Container = styled.footer`
