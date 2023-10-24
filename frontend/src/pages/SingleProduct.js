@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom'
 import { styled } from 'styled-components';
 
+import { formatPrice } from '../utils/helpers';
 import { useGetProductDetailsQuery } from '../redux/slices/productApiSlice';
 import { addToCart } from '../redux/slices/cartSlice';
 
@@ -13,36 +14,17 @@ import Stars from '../components/Stars';
 
 
 export default function SingleProduct() {
-  const { id } = useParams();
-  const [data, setData] = useState(null);
+  const { id: productId } = useParams();
   const [isLoading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const [qty, setQty] = useState(1);
 
-  const { data: productData } = useGetProductDetailsQuery(id);
 
-  console.log(productData);
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axios.get(`/api/products/${id}`);
-        setData(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-        setLoading(false);
-      }
-    }
-    fetchData();
-  }, [id]);
-  if (isLoading) {
-    return <span>Loading...</span>;
-  }
 
-  const { name, imageUrl, rating } = data.product;
-
+  const { data: product } = useGetProductDetailsQuery(productId);
+  const { name, imageUrl, rating, price, company, shipping } = product?.product || [];
   const addToCartHandler = () => {
-    dispatch(addToCart({ ...productData, qty }));
+    dispatch(addToCart({ ...product, qty }));
   }
 
   return (
@@ -54,11 +36,20 @@ export default function SingleProduct() {
         </Link>
         <div className='product-center'>
           <div>
-            <img src={imageUrl} alt="main image" />
+            <img src={imageUrl} alt="main image" className='main' />
           </div>
           <div className="content">
             <h2>{name}</h2>
             <Stars stars={rating} />
+            <h5 className='price'>{formatPrice(price)}</h5>
+            <p className='info'>
+              <span>Brand :</span>
+              {company}
+            </p>
+            <p className='info'>
+              <span>Free shipping :</span>
+              {shipping ? 'Yes' : 'No'}
+            </p>
             <button
               className='btn'
               onClick={addToCartHandler}
@@ -94,8 +85,24 @@ const Wrapper = styled.main`
       font-weight: 700;
     }
   }
-
+  .main {
+    height: 600px;
+  }
+  img {
+    width: 100%;
+    display: block;
+    border-radius: var(--radius);
+    object-fit: cover;
+  }
+  @media (max-width: 576px) {
+    .main {
+      height: 300px;
+    }
+  }
   @media (min-width: 992px) {
+    .main {
+      height: 500px;
+    }
     .product-center {
       grid-template-columns: 1fr 1fr;
       align-items: center;

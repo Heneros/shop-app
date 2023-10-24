@@ -84,6 +84,7 @@ export const { updateCompanyFilter } = productsSlice.actions;
 
 
 export const selectAllProducts = (state) => state.products.products;
+// export const selectProductById = (state, id) => state.products.products.find(product => product._id === id)
 
 // export const selectAllProducts = (state) => state.products.products;
 
