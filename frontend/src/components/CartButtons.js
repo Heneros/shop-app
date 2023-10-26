@@ -65,7 +65,7 @@ export default function CartButtons() {
           }
         </span>
       </Link>
-      {userInfo ? (
+      {/* {userInfo ? (
         <>
           <Button
             color="inherit"
@@ -100,7 +100,7 @@ export default function CartButtons() {
         <Button color="inherit" component={Link} to="/login">
           <FaUser /> Sign In
         </Button>
-      )}
+      )} */}
     </Wrapper>
   )
 }

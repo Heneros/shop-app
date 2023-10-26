@@ -233,4 +233,7 @@ p {
     min-height: calc(100vh - (20vh + 10rem));
 }
 
-.name-product a {}
+.toolbar-class {
+    display: flex;
+    justify-content: space-between;
+}

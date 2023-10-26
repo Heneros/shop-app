@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { links } from '../utils/constants';
 import CartButtons from './CartButtons';
 import { useDispatch, useSelector } from 'react-redux';
+import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
   Toolbar,
@@ -16,26 +17,30 @@ import {
   IconButton,
   ListItemText,
   Avatar,
+  Box,
+  List,
+  ListItem,
+  Drawer,
 } from '@mui/material';
 import { ShoppingCart, Person, ArrowDropDown } from '@mui/icons-material';
 import { useLogoutMutation } from '../redux/slices/usersApiSlice';
 import { logout } from '../redux/slices/auth';
 
 
-export default function Header() {
+export default function Header(props) {
+  const { window } = props;
+
   const { userInfo } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart)
-  const [anchorEl, setAnchorEl] = useState(null);
+
+  const [mobileOpen, setMobileOpen] = useState(false);
+
 
   const dispatch = useDispatch();
   const [logoutApiCall] = useLogoutMutation()
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+
+
   const logoutHandler = async () => {
     try {
       await logoutApiCall().unwrap();
@@ -44,71 +49,135 @@ export default function Header() {
       console.log(error)
     }
   }
+  const handleDrawerOpen = () => {
+    setMobileOpen(prevState => !prevState)
+  }
+
+
+  const drawer = (
+    <Box onClick={handleDrawerOpen} sx={{ display: "flex" }} component="header">
+      <Typography variant="h5" sx={{ textAlign: "left" }} >
+        React Shop
+      </Typography>
+      <List>
+        {links && links.length > 0 ? (links.map((link) => {
+          const { id, text, url } = link;
+          return (
+            <ListItem key={id} sx={{ textAlign: 'center' }}>
+              <Link to={url}>{text}</Link>
+            </ListItem>
+          )
+        })) : (
+          <>No links</>
+        )}
+      </List>
+
+    </Box>
+  );
+  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <AppBar position="static" >
-      <Container>
+    <Box sx={{ display: 'flex' }}>
+      <AppBar component="nav" position='static'>
         <Toolbar>
-          <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
-            <Typography variant="h6">
-              Logo
-            </Typography>
-          </Link>
-
-          {userInfo ? (
-            <>
-              <Button
-                color="inherit"
-                onClick={handleMenuOpen}
-                endIcon={<ArrowDropDown />}
-              >
-  
-                {userInfo.name}
-              </Button>
-            </>
-          ) : (
-            <Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
-              Sign In 1
-            </Link>
-          )}
-
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerOpen}
+            sx={{ mr: 2, display: { sm: 'none' } }}
           >
-            {userInfo ? (
-              <>
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1 }}
+          >
+            React Shop
+          </Typography>
+          <Box sx={{ display: { xs: 'none', sm: 'flex' } }} >
 
-                <MenuItem>
-                  <Link to="/profile" style={{ color: 'inherit', textDecoration: 'none' }}>
-                    <ListItemText primary="Profile" />
-                  </Link>
-                </MenuItem>
-                <MenuItem onClick={logoutHandler}>
-                  <ListItemText primary="Logout" />
-                </MenuItem>
+            <List style={flexContainer}>
+              {links.map((link) => {
+                const { id, text, url } = link;
+                return (
+                  <li key={id} style={{ padding: ' 0 15px' }} >
+                    <Link
+                      to={url}
+                      style={{ color: 'inherit', textDecoration: 'none' }}>
+                      {text}
+                    </Link>
+                  </li>
+                )
+              })}
+            </List>
 
-              </>
-            ) : (
-
-              <Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
-                <ListItemText primary="Sign In 13" />
-              </Link>
-
-            )}
-          </Menu>
-          {/* <CartButtons /> */}
-          {/* <Link to="/cart" style={{ color: 'inherit', textDecoration: 'none' }}>
-            <IconButton color="inherit">
-              <Badge badgeContent={cartItems.reduce((a, c) => a + c.qty, 0)} color="secondary">
-         
-              </Badge>
-            </IconButton>
-          </Link> */}
+          </Box>
         </Toolbar>
-      </Container>
-    </AppBar>
+      </AppBar>
+      <nav>
+        <Drawer
+          container={container}
+          open={mobileOpen}
+          onClose={handleDrawerOpen} >
+          {drawer}
+        </Drawer>
+      </nav>
+    </Box >
+    // <AppBar position="static" >
+    //   <Container>
+    //     <Toolbar className='toolbar-class'>
+    //       <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
+    //         <Typography variant="h6">
+    //           Logo
+    //         </Typography>
+    //       </Link>
+    //       <Box className="item">
+    //         {userInfo ? (
+    //           <>
+    //             <Button
+    //               color="inherit"
+    //               onClick={handleMenuOpen}
+    //               endIcon={<ArrowDropDown />}
+    //             >
+    //               {userInfo.name}
+    //             </Button>
+    //           </>
+    //         ) : (
+    //           <Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
+    //             Sign In
+    //           </Link>
+    //         )}
+
+    //         <Menu
+    //           anchorEl={anchorEl}
+    //           open={Boolean(anchorEl)}
+    //           onClose={handleMenuClose}
+    //         >
+    //           {userInfo ? (
+    //             <>
+    //               <MenuItem>
+    //                 <Link to="/profile" style={{ color: 'inherit', textDecoration: 'none' }}>
+    //                   <ListItemText primary="Profile" />
+    //                 </Link>
+    //               </MenuItem>
+    //               <MenuItem onClick={logoutHandler}>
+    //                 <ListItemText primary="Logout" />
+    //               </MenuItem>
+    //             </>
+    //           ) : (
+    //             <Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
+    //               <ListItemText primary="Sign In 13" />
+    //             </Link>
+    //           )}
+    //         </Menu>
+    //         <CartButtons />
+    //       </Box>
+
+    //     </Toolbar>
+    //   </Container>
+    // </AppBar>
   );
   // <NavContainer>
   //   <div className='nav-center'>
@@ -134,7 +203,10 @@ export default function Header() {
   // </NavContainer>
 
 }
-
+const flexContainer = {
+  display: 'flex',
+  flexDirection: 'row',
+}
 
 const NavContainer = styled.nav`
 height: 5rem;
