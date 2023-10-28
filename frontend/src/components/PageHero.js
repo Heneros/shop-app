@@ -7,14 +7,13 @@ import { Container } from '@mui/material'
 export default function PageHero({ title, product }) {
   return (
     <Wrapper>
-   
-        <div className='section-center'>
-          <h3>
-            <Link to="/">Home</Link>
-            {product && <Link to="/"> / Products</Link>} / {title}
-          </h3>
-        </div>
- 
+      <div className='section-center'>
+        <h3>
+          <Link to="/">Products</Link>
+          {product && <> / </>}
+          {title}
+        </h3>
+      </div>
     </Wrapper>
   )
 }

@@ -22,11 +22,12 @@ import {
   ListItem,
   Drawer,
   Divider,
+  ListItemIcon,
 } from '@mui/material';
-import { ShoppingCart, Person, ArrowDropDown, AccountCircle } from '@mui/icons-material';
+import { ShoppingCart, Person, ArrowDropDown, AccountCircle, Logout } from '@mui/icons-material';
 import { useLogoutMutation } from '../redux/slices/usersApiSlice';
 import { logout } from '../redux/slices/auth';
-import { FaShoppingCart } from 'react-icons/fa';
+import { FaShoppingCart, FaUserPlus } from 'react-icons/fa';
 
 
 export default function Header(props) {
@@ -41,7 +42,6 @@ export default function Header(props) {
 
   const dispatch = useDispatch();
   const [logoutApiCall] = useLogoutMutation()
-
 
 
   const logoutHandler = async () => {
@@ -65,222 +65,182 @@ export default function Header(props) {
 
 
   const drawer = (
-    <Box onClick={handleDrawerOpen} sx={{ display: "flex", textAlign: 'center', flexDirection: "column", justifyContent: 'center', m: 2 }} component="header">
-      <Typography variant="h5" sx={{ textAlign: "center", }} >
-        <Link to="/" className='logo'>
-          React Shop
-        </Link>
-      </Typography>
-      <Divider />
-      {userInfo ? (
-        <List sx={{ display: 'flex', flexDirection: "column", justifyContent: 'center', alignItems: 'center', m: '0 auto' }}>
-          <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
-            <Link className='item-mob' style={ItemMobile}>Hello, {userInfo.name}</Link>
-          </ListItem>
-          <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
-            <Link className='item-mob' style={ItemMobile} to='/cart'>Cart</Link>
-          </ListItem>
-          <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
-            <Link className='item-mob' style={ItemMobile} to='/profile'>Profile</Link>
-          </ListItem>
-          <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
-            <Link className='item-mob' style={ItemMobile} onClick={logoutHandler}>Logout</Link>
-          </ListItem>
-        </List>
-      ) : (
-        <List>
-          <ListItem sx={{ textAlign: 'center' }}>
-            <Link to="/login" style={ItemMobile} >Login</Link>
-          </ListItem>
-        </List>
-      )}
-    </Box>
+    <Wrapper>
+      <Box onClick={handleDrawerOpen} sx={{ display: "flex", textAlign: 'center', flexDirection: "column", justifyContent: 'center', m: 2 }} component="header">
+        <Typography variant="h5" sx={{ textAlign: "center", }} >
+          <Link to="/" className='logo'>
+            React Shop
+          </Link>
+        </Typography>
+        <Divider />
+        {userInfo ? (
+          <List sx={{ display: 'flex', flexDirection: "column", justifyContent: 'center', alignItems: 'center', m: '0 auto' }}>
+            <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
+              <Link className='item-mob' style={ItemMobile}>Hello, {userInfo.name}</Link>
+            </ListItem>
+            <ListItem sx={{ textAlign: 'center',  width: 'auto' }}>
+              <Link className='cart-btn' style={ItemMobile} to='/cart'>Cart
+                <div className="cart-container">
+                  <FaShoppingCart />
+                  {cartItems.length > 0 && (
+                    <span className='cart-value'>
+                      {cartItems.reduce((a, c) => a + c.qty, 0)}
+                    </span>
+                  )}
+                </div>
+              </Link>
+            </ListItem>
+            <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
+              <Link className='item-mob' style={ItemMobile} to='/profile'>Profile</Link>
+            </ListItem>
+            <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
+              <Link className='item-mob' style={ItemMobile} onClick={logoutHandler}>Logout</Link>
+            </ListItem>
+          </List>
+        ) : (
+          <List>
+            <ListItem sx={{ textAlign: 'center' }}>
+              <Link to="/login" style={ItemMobile} >Login</Link>
+            </ListItem>
+          </List>
+        )}
+      </Box>
+    </Wrapper>
   );
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <AppBar component="nav" position='static'>
-        <Container maxWidth="lg" >
-          <Box style={NavContainer}>
-            <IconButton
-              color="#000"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerOpen}
-              sx={{ mr: 2, display: { sm: 'none' } }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ marginRight: '5px' }}
-            >
-              <Link to="/" className='logo'>
-                React Shop
-              </Link>
-            </Typography>
-
-            <Box sx={{ display: { xs: 'none', sm: 'flex' } }} >
-              <List style={flexContainer}>
-                <li style={{ padding: ' 0 15px' }} >
-                  <Link to="/cart">
-                    <FaShoppingCart />
-                    Cart
-                  </Link>
-                </li>
-                {userInfo ? (
-                  <div>
-                    <IconButton
-                      size="large"
-                      aria-label="account of current user"
-                      aria-controls="menu-appbar"
-                      aria-haspopup="true"
-                      onClick={handleMenu}
-                    >
-                      <AccountCircle />
-                    </IconButton>
-                    <Menu
-                      id="menu-appbar"
-                      anchorEl={anchorEl}
-                      anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                      }}
-                      keepMounted
-                      transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                      }}
-                      open={Boolean(anchorEl)}
-                      onClose={handleClose}
-                    >
-                      <li style={{ padding: ' 0 15px' }} >
-                        <Link to="/profile">Profile</Link>
-                      </li>
-                      <li style={{ padding: ' 0 15px' }} >
-                        <Link onClick={logoutHandler}>Logout</Link>
-                      </li>
-                    </Menu>
-                  </div>
-                ) : (
-                  <li style={{ padding: ' 0 15px' }} >
-                    <Link to="/login">Login</Link>
-                  </li>
-                )}
-                {/* <li style={{ padding: ' 0 15px' }} >
-                  <Link to="/cart">
-                    Cart
-                  </Link>
-                </li> */}
-                {/* {links.map((link) => {
-                const { id, text, url } = link;
-                return (
-                  <li key={id} style={{ padding: ' 0 15px' }} >
-                    <Link
-                      to={url}
-                      style={{ color: '#000', textDecoration: 'none' }}>
-                      {text}
+    <Wrapper>
+      <Box sx={{ display: 'flex' }}>
+        <AppBar component="nav" position='static'>
+          <Container maxWidth="lg" >
+            <Box style={NavContainer}>
+              <IconButton
+                color="#000"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerOpen}
+                sx={{ mr: 2, display: { sm: 'none' } }}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ marginRight: '5px' }}
+              >
+                <Link to="/" className='logo'>
+                  React Shop
+                </Link>
+              </Typography>
+              <Box sx={{ display: { xs: 'none', sm: 'flex' } }} >
+                <List style={flexContainer}>
+                  <div style={{ padding: ' 0 15px' }} >
+                    <Link to="/cart" className='cart-btn'>
+                      Cart
+                      <div className="cart-container">
+                        <FaShoppingCart />
+                        {cartItems.length > 0 && (
+                          <span className='cart-value'>
+                            {cartItems.reduce((a, c) => a + c.qty, 0)}
+                          </span>
+                        )}
+                      </div>
                     </Link>
-                  </li>
-                )
-              })} */}
-              </List>
+                  </div>
+                  {userInfo ? (
+                    <div className='userInfo'>
+                      <Button
+                        size="large"
+                        aria-label="account of current user"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        onClick={handleMenu}
+                        className='auth-user'>
+                        {userInfo.name}
+                        <FaUserPlus />
+                      </Button>
+                      <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                        PaperProps={{
+                          elevation: 0,
+                          sx: {
+                            overflow: 'visible',
+                            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                            mt: 1.5,
+                            '& .MuiAvatar-root': {
+                              width: 32,
+                              height: 32,
+                              ml: -0.5,
+                              mr: 1,
+                            },
+                            '&:before': {
+                              content: '""',
+                              display: 'block',
+                              position: 'absolute',
+                              top: 0,
+                              right: 14,
+                              width: 10,
+                              height: 10,
+                              bgcolor: 'background.paper',
+                              transform: 'translateY(-50%) rotate(45deg)',
+                              zIndex: 0,
+                            },
+                          },
+                        }}
+                        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                      >
+                        <MenuItem onClick={handleClose} >
+                          <Avatar />
+                          <Link to="/profile" className='menu-item-nav'>Profile</Link>
+                        </MenuItem>
+                        <MenuItem onClick={logoutHandler}>
+                          <ListItemIcon>
+                            <Logout fontSize="small" />
+                          </ListItemIcon>
+                          Logout
+                        </MenuItem>
+                        {/* <li style={{ padding: ' 0 15px' }} >
+                          <Link to="/profile">Profile</Link>
+                        </li>
+                        <li style={{ padding: ' 0 15px' }} >
+                          <Link onClick={logoutHandler}>Logout</Link>
+                        </li> */}
+                      </Menu>
+                    </div>
+                  ) : (
+                    <li style={{ padding: ' 0 15px' }} >
+                      <Link to="/login" className='auth-btn'>
+                        Login
+                        <FaUserPlus />
+                      </Link>
+                    </li>
+                  )}
+                </List>
+              </Box>
             </Box>
-          </Box>
-        </Container>
-      </AppBar>
-      <nav>
-        <Drawer
-          container={container}
-          open={mobileOpen}
-          onClose={handleDrawerOpen} >
-          {drawer}
-        </Drawer>
-      </nav>
-    </Box >
-    // <AppBar position="static" >
-    //   <Container>
-    //     <Toolbar className='toolbar-class'>
-    //       <Link to="/" style={{ color: 'inherit', textDecoration: 'none' }}>
-    //         <Typography variant="h6">
-    //           Logo
-    //         </Typography>
-    //       </Link>
-    //       <Box className="item">
-    //         {userInfo ? (
-    //           <>
-    //             <Button
-    //               color="inherit"
-    //               onClick={handleMenuOpen}
-    //               endIcon={<ArrowDropDown />}
-    //             >
-    //               {userInfo.name}
-    //             </Button>
-    //           </>
-    //         ) : (
-    //           <Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
-    //             Sign In
-    //           </Link>
-    //         )}
-
-    //         <Menu
-    //           anchorEl={anchorEl}
-    //           open={Boolean(anchorEl)}
-    //           onClose={handleMenuClose}
-    //         >
-    //           {userInfo ? (
-    //             <>
-    //               <MenuItem>
-    //                 <Link to="/profile" style={{ color: 'inherit', textDecoration: 'none' }}>
-    //                   <ListItemText primary="Profile" />
-    //                 </Link>
-    //               </MenuItem>
-    //               <MenuItem onClick={logoutHandler}>
-    //                 <ListItemText primary="Logout" />
-    //               </MenuItem>
-    //             </>
-    //           ) : (
-    //             <Link to="/login" style={{ color: 'inherit', textDecoration: 'none' }}>
-    //               <ListItemText primary="Sign In 13" />
-    //             </Link>
-    //           )}
-    //         </Menu>
-    //         <CartButtons />
-    //       </Box>
-
-    //     </Toolbar>
-    //   </Container>
-    // </AppBar>
+          </Container>
+        </AppBar>
+        <nav>
+          <Drawer
+            container={container}
+            open={mobileOpen}
+            onClose={handleDrawerOpen} >
+            {drawer}
+          </Drawer>
+        </nav>
+      </Box >
+    </Wrapper>
   );
-  // <NavContainer>
-  //   <div className='nav-center'>
-  //     <div className='nav-header'>
-  //       <Link to="/">
-  //         Logo
-  //       </Link>
-  //     </div>
-  //     <ul className='nav-links'>
-  //       {links && links.length > 0 ? (links.map((link) => {
-  //         const { id, text, url } = link;
-  //         return (
-  //           <li key={id}>
-  //             <Link to={url}>{text}</Link>
-  //           </li>
-  //         )
-  //       })) : (
-  //         <>No links</>
-  //       )}
-  //     </ul>
-  //     <CartButtons />
-  //   </div>
-  // </NavContainer>
-
 }
 const flexContainer = {
   display: 'flex',
   flexDirection: 'row',
+  alignItems: 'center',
 }
 const NavContainer = {
   display: 'flex',
@@ -300,58 +260,77 @@ const ItemMobile = {
 }
 
 
+const Wrapper = styled.div`
+.cart-btn {
+  font-size: 1.5rem;
+  color: var(--clr-grey-1);
+  display: flex;
+  align-items: center;
+  svg{
+    fill: #000;
+  }
+}
 
-// const NavContainer = styled.nav`
-// height: 5rem;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   .nav-center {
-//     width: 90vw;
-//     margin: 0 auto;
-//     max-width: var(--max-width);
-//   }
-//   .nav-header {
-//     display: flex;
-//     align-items: center;
-//     justify-content: space-between;
-//   }
+.cart-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    svg {
+      height: 1.6rem;
+      margin-left: 5px;
+    }
+  }
 
-//   .nav-links {
-//       display: flex;
-//       justify-content: center;
-//       li {
-//         margin: 0 0.5rem;
-//       }
-//     }
-//     @media (min-width: 992px) {
-//     .nav-toggle {
-//       display: none;
-//     }
-//     .nav-center {
-//       display: grid;
-//       grid-template-columns: auto 1fr auto;
-//       align-items: center;
-//     }
-//     .nav-links {
-//       display: flex;
-//       justify-content: center;
-//       li {
-//         margin: 0 0.5rem;
-//       }
-//       a {
-//         color: var(--clr-grey-3);
-//         font-size: 1rem;
-//         text-transform: capitalize;
-//         letter-spacing: var(--spacing);
-//         padding: 0.5rem;
-//         &:hover {
-//           border-bottom: 2px solid var(--clr-primary-7);
-//         }
-//       }
-//     }
-//     .cart-btn-wrapper {
-//       display: grid;
-//     }
-//   }
-//                 `;
+  .menu-itemm{
+  color: #000;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.5;
+    letter-spacing: 0.00938em;
+}
+
+
+
+  .cart-value {
+    position: absolute;
+    top: -10px;
+    right: -16px;
+    background: var(--clr-primary-5);
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    color: var(--clr-white);
+    padding: 12px;
+  }
+  .auth-user{
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border-color: transparent;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--clr-grey-1);
+    letter-spacing: var(--spacing);
+    svg {
+      margin-left: 5px;
+    }
+  }
+  .auth-btn {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border-color: transparent;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--clr-grey-1);
+    letter-spacing: var(--spacing);
+    svg {
+      margin-left: 5px;
+    }
+  }
+`;
