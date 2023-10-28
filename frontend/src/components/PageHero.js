@@ -1,19 +1,22 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { Container } from '@mui/material'
 
 
 export default function PageHero({ title, product }) {
-    return (
-        <Wrapper>
-            <div className='section-center'>
-                <h3>
-                    <Link to="/">Home</Link>
-                    {product && <Link to="/"> / Products</Link>} / {title}
-                </h3>
-            </div>
-        </Wrapper>
-    )
+  return (
+    <Wrapper>
+   
+        <div className='section-center'>
+          <h3>
+            <Link to="/">Home</Link>
+            {product && <Link to="/"> / Products</Link>} / {title}
+          </h3>
+        </div>
+ 
+    </Wrapper>
+  )
 }
 const Wrapper = styled.section`
   background: var(--clr-primary-10);

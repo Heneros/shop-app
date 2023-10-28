@@ -41,6 +41,7 @@ export default function Login() {
             const res = await login({ email, password }).unwrap();
             console.log(res);
             dispatch(setCredentials({ ...res }));
+            navigate(redirect);
         } catch (err) {
             console.log(err);
         }

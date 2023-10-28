@@ -4,20 +4,24 @@ import ProductList from '../components/ProductList';
 
 import { styled } from 'styled-components';
 import PageHero from '../components/PageHero';
+import { Container } from '@mui/material';
 
 const HomePage = () => {
 
   return (
     <main >
+
       <PageHero />
-      <Wrapper className='page'>
-        <div className='section-center products'>
-          <Filters />
-          <div>
-            <ProductList />
+      <Container maxWidth="lg" >
+        <Wrapper className='page'>
+          <div className='section-center products'>
+            <Filters />
+            <div>
+              <ProductList />
+            </div>
           </div>
-        </div>
-      </Wrapper>
+        </Wrapper>
+      </Container>
     </main>
   );
 };

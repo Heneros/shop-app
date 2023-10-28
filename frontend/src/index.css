@@ -237,3 +237,14 @@ p {
     display: flex;
     justify-content: space-between;
 }
+
+.MuiBox-root .css-hip9hq-MuiPaper-root-MuiAppBar-root {
+    background-color: #fff;
+}
+
+.logo {
+    font-size: 2rem;
+    color: hsl(22, 28%, 37%);
+    text-decoration: none;
+    font-weight: 600;
+}
