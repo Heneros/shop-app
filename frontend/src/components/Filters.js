@@ -1,18 +1,22 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { styled } from 'styled-components';
+
 import { getUniqueValues } from '../utils/helpers';
-import { fetchFilters, fetchProducts, selectAllProducts, updateCategoryFilter, updateCompanyFilter } from '../redux/slices/products';
+import { fetchFilters, fetchProducts, selectAllProducts, updateCategoryFilter, updateCompanyFilter, updateShippingFilter } from '../redux/slices/products';
 
 
 export default function Filters() {
 
   const dispatch = useDispatch();
-  const { filters, selectedCategory, selectedCompany } = useSelector((state) => state.products);
+  const { selectedCategory, selectedCompany } = useSelector((state) => state.products);
   const products = useSelector(selectAllProducts);
+  const selectedShipping = useSelector((state) => state.products.selectedShipping);
 
   useEffect(() => {
     dispatch(fetchFilters());
+    // dispatch(updateShippingFilter(false));
+
   }, []);
 
   const handleCategoryClick = (categories) => {
@@ -23,7 +27,18 @@ export default function Filters() {
     dispatch(updateCompanyFilter(company));
   };
 
-  // console.log(selectedCategory)
+
+  // updateShipping
+  const handleShippingClick = () => {
+    dispatch(updateShippingFilter(!selectedShipping));
+  };
+
+  const clearFilters = () => {
+    dispatch(updateCategoryFilter(null));
+    dispatch(updateCompanyFilter(null));
+    dispatch(updateShippingFilter(null));
+  }
+
 
 
   const categoriesNew = Array.isArray(products) ? products.map(product => product.categories) : [];
@@ -35,9 +50,9 @@ export default function Filters() {
   const companies = Array.isArray(products) ? products.map((product) => product.company) : [];
   const companiesUniq = [...new Set(companies)];
 
+  // const shipping = Array.isArray(products) ? products.map((product) => product.shipping) : [];
 
-  // console.log(companiesUniq);
-  // console.log(selectedCompany);
+  // console.log(shipping);
 
   return (
     <Wrapper>
@@ -67,8 +82,6 @@ export default function Filters() {
         </div>
         <div className='form-control'>
           <h5>Companies</h5>
-
-
           {companiesUniq.length > 0 ? (companiesUniq.map((item, index) => (
             <button
               key={index}
@@ -91,8 +104,25 @@ export default function Filters() {
           >
             All
           </button>
-
         </div>
+        <div className='form-control shipping'>
+          <label htmlFor='shipping'>free shipping</label>
+          <input
+            type='checkbox'
+            name='shipping'
+            id='shipping'
+            checked={selectedShipping}
+            onChange={handleShippingClick}
+          />
+        </div>
+
+
+        <button
+          type='button' className='clear-btn'
+          onClick={clearFilters}
+        >Clear Filters</button>
+
+
       </div>
     </Wrapper >
   );

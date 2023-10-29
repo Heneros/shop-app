@@ -5,10 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Product from '../components/Product';
 import { fetchProducts } from '../redux/slices/products';
+
+
 export default function ProductList() {
 
   const dispatch = useDispatch();
-  const { products, selectedCategory, selectedCompany } = useSelector((state) => state.products);
+  const { products, selectedCategory, selectedCompany, selectedShipping } = useSelector((state) => state.products);
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -19,7 +21,10 @@ export default function ProductList() {
     ? products.filter((product) => {
       const categoryMatch = selectedCategory === null || product.categories.includes(selectedCategory)
       const companyMatch = selectedCompany === null || product.company.includes(selectedCompany)
-      return categoryMatch && companyMatch;
+      const shippingMatch = selectedShipping === null || product.shipping === selectedShipping;
+
+
+      return categoryMatch && companyMatch && shippingMatch;
     }) : [];
 
   return (

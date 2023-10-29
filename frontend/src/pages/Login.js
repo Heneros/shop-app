@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { useLoginMutation } from '../redux/slices/usersApiSlice';
 import { setCredentials } from '../redux/slices/auth';
 import { fetchAuthMe, selectIsAuth } from '../redux/slices/auth';
+import styled from 'styled-components';
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -24,19 +25,10 @@ export default function Login() {
     const sp = new URLSearchParams(search);
     const redirect = sp.get('redirect') || '/';
 
-    const { register, handleSubmit, formState: {
-        error, isValie
-    } } = useForm({
-        defaultValues: {
 
-        },
-        mode: 'onChange'
-    })
 
     const onSubmit = async (e) => {
         e.preventDefault();
-
-
         try {
             const res = await login({ email, password }).unwrap();
             console.log(res);
@@ -45,71 +37,60 @@ export default function Login() {
         } catch (err) {
             console.log(err);
         }
-        // console.log(data);
-
-        // try {
-        //         return alert('data error payload')
-        //     }
-        //     dispatch(fetchAuthMe(values));
-        // } catch (err) {
-        //     console.log(err?.data?.message || err.error);
-        // }
-
-        // if ('token' in data.payload) {
-        //     window.localStorage.setItem('token', data.payload.token);
-        //     // navigate(redirect);
-        // } else {
-        //     alert('Failed to log in')
-        // }
-
-        // dispatch(fetchAuthMe(values));
     }
 
-    // if (isAuth) {
-    //     return <Navigate to="/" />
-    // }
 
     return (
         <>
-            <Container component="main" maxWidth="xs" sx={{ mt: 5 }}>
-                <Typography>
-                    Login Page
-                </Typography>
-                <Box component="form" onSubmit={onSubmit} sx={{ mt: 3 }}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={12}>
-                            <TextField
-                                label="E-mail"
-                                type="email"
-                                fullWidth
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            // {...register('email', { required: 'Enter Email' })}
-                            />
+            <Wrapper>
+                <Container component="main" maxWidth="xs" sx={{ my: 10 }}>
+                    <Typography variant="h4" component="h4">
+                        Login Page
+                    </Typography>
+                    <Box component="form" onSubmit={onSubmit} sx={{ mt: 3 }}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={12}>
+                                <TextField
+                                    label="E-mail"
+                                    type="email"
+                                    fullWidth
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={12}>
+                                <TextField
+                                    label="Password"
+                                    type="password"
+                                    fullWidth
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={12}>
+                                <Button type="submit" size='large' fullWidth variant="outlined">
+                                    Log In
+                                </Button>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12} sm={12}>
-                            <TextField
-                                label="Password"
-                                type="password"
-                                fullWidth
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            // {...register('password', { required: 'Enter password' })}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={12}>
-                            <Button type="submit" size='large' fullWidth variant="outlined">
-                                Log In
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </Box>
-
-                <Typography variant="h5" > New Customer? <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
-                    Register
-                </Link></Typography>
-
-            </Container>
+                    </Box>
+                    <Typography variant="h5" sx={{ my: 2 }}>
+                        New Customer? <Link
+                            className='link'
+                            to={redirect ? `/register?redirect=${redirect}` : '/register'}>
+                            Register
+                        </Link></Typography>
+                </Container>
+            </Wrapper>
         </>
     )
 }
+
+const Wrapper = styled.div`
+.link{
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: hsl(22, 28%, 37%);
+    letter-spacing: var(--spacing);
+}
+`

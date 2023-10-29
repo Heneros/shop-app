@@ -33,8 +33,8 @@ const initialState = {
         status: 'loading'
     },
     selectedCategory: null,
-    selectedCompany: null
-
+    selectedCompany: null,
+    selectedShipping: null
 };
 
 const productsSlice = createSlice({
@@ -46,7 +46,11 @@ const productsSlice = createSlice({
         },
         updateCompanyFilter(state, action) {
             state.selectedCompany = action.payload;
+        },
+        updateShippingFilter(state, action) {
+            state.selectedShipping = action.payload;
         }
+
     },
     extraReducers: {
         [fetchProducts.pending]: (state) => {
@@ -81,11 +85,12 @@ const productsSlice = createSlice({
 
 export const { updateCategoryFilter } = productsSlice.actions;
 export const { updateCompanyFilter } = productsSlice.actions;
+export const { updateShippingFilter } = productsSlice.actions;
 
 
 export const selectAllProducts = (state) => state.products.products;
+
 // export const selectProductById = (state, id) => state.products.products.find(product => product._id === id)
 
-// export const selectAllProducts = (state) => state.products.products;
 
 export const productsReducer = productsSlice.reducer;
