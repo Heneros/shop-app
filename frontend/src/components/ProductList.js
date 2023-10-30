@@ -23,7 +23,6 @@ export default function ProductList() {
       const companyMatch = selectedCompany === null || product.company.includes(selectedCompany)
       const shippingMatch = selectedShipping === null || product.shipping === selectedShipping;
 
-
       return categoryMatch && companyMatch && shippingMatch;
     }) : [];
 

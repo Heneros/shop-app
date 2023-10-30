@@ -9,14 +9,12 @@ import { fetchFilters, fetchProducts, selectAllProducts, updateCategoryFilter, u
 export default function Filters() {
 
   const dispatch = useDispatch();
-  const { selectedCategory, selectedCompany } = useSelector((state) => state.products);
+  const { selectedCategory, selectedCompany, selectedShipping } = useSelector((state) => state.products);
   const products = useSelector(selectAllProducts);
-  const selectedShipping = useSelector((state) => state.products.selectedShipping);
+  // const selectedShipping = useSelector((state) => state.products.selectedShipping);
 
   useEffect(() => {
     dispatch(fetchFilters());
-    // dispatch(updateShippingFilter(false));
-
   }, []);
 
   const handleCategoryClick = (categories) => {
@@ -27,8 +25,6 @@ export default function Filters() {
     dispatch(updateCompanyFilter(company));
   };
 
-
-  // updateShipping
   const handleShippingClick = () => {
     dispatch(updateShippingFilter(!selectedShipping));
   };
