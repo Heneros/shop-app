@@ -13,14 +13,15 @@ import { fetchProducts } from '../redux/slices/products';
 import axios from '../axios';
 import PageHero from '../components/PageHero';
 import Stars from '../components/Stars';
+import { toast } from 'react-toastify';
 
 
 export default function SingleProduct() {
   const { id: productId } = useParams();
   const [isLoading, setLoading] = useState(true);
+
   const dispatch = useDispatch();
   const [qty, setQty] = useState(1);
-
 
 
   const { data: product } = useGetProductDetailsQuery(productId);
@@ -29,6 +30,20 @@ export default function SingleProduct() {
   console.log(categories);
   const addToCartHandler = () => {
     dispatch(addToCart({ ...product, qty }));
+    toast.success('Product added to cart!', {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      hideProgressBar: true,
+    });
+  }
+
+  const handleDecrease = () => {
+    if (qty > 1) {
+      setQty(qty - 1);
+    }
+
+  }
+  const handleIncrease = () => {
+    setQty(qty + 1);
   }
 
   return (
@@ -65,11 +80,11 @@ export default function SingleProduct() {
               {shipping ? 'Yes' : 'No'}
             </p>
             <div className="amount-btns">
-              <button type='button' className='amount-btn'>
+              <button type='button' className='amount-btn' onClick={handleDecrease} >
                 <FaMinus />
               </button>
-              <h2 className='amount'>1233</h2>
-              <button type='button' className='amount-btn'>
+              <h2 className='amount'>{qty}</h2>
+              <button type='button' className='amount-btn' onClick={handleIncrease} >
                 <FaPlus />
               </button>
             </div>
@@ -127,9 +142,15 @@ const Wrapper = styled.main`
     grid-template-columns: repeat(3,1fr);
     align-items: center;
     button {
-      width: 1rem;
-      height: 0.5rem;
-      font-size: 0.75rem;
+      background: transparent;
+    border-color: transparent;
+    cursor: pointer;
+    padding: 1rem 0;
+    width: 2rem;
+    height: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     }
     h2 {
       font-size: 1rem;
@@ -159,9 +180,11 @@ const Wrapper = styled.main`
         width: 1.5rem;
         height: 1rem;
         font-size: 1rem;
+
       }
       h2 {
-        font-size: 1.5rem;
+        font-size: 2.5rem;
+        margin-bottom: 15px;
       }
     }
   }

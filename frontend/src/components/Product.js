@@ -7,6 +7,7 @@ import { formatPrice } from '../utils//helpers';
 import { useDispatch } from 'react-redux';
 import { useGetProductDetailsQuery } from '../redux/slices/productApiSlice';
 import { addToCart } from '../redux/slices/cartSlice';
+import { toast } from 'react-toastify';
 export default function Product({ _id, name, imageUrl, price, rating, company }) {
   const dispatch = useDispatch();
   const [qty, setQty] = useState(1);
@@ -15,15 +16,17 @@ export default function Product({ _id, name, imageUrl, price, rating, company })
 
   const addToCartHandler = () => {
     dispatch(addToCart({ ...product, qty }));
+    toast.success('Product added to cart!', {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      hideProgressBar: true,
+    });
   }
 
   return (
     <Wrapper>
       <div className="container">
-
         <Link to={`/products/${_id}`}>
           <img src={imageUrl} alt={name} />
-          {/* <FaSearch /> */}
         </Link>
       </div>
       <footer>
