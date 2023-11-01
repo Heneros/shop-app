@@ -66,6 +66,15 @@ export default function SingleProduct() {
               {company}
             </p>
             {categories ? (
+              <>
+                <p className='info'>
+                  <span>Categories :</span>
+                  {categories.join(', ')}
+                </p>
+              </>
+            ) : <p className='info'>No categories added</p>}
+
+            {/* {categories ? (
               categories.map((item) => (
                 <>
                   <p className='info'>
@@ -74,7 +83,7 @@ export default function SingleProduct() {
                   </p>
                 </>
               ))
-            ) : <>No categories added</>}
+            ) : <>No categories added</>} */}
             <p className='info'>
               <span>Free shipping :</span>
               {shipping ? 'Yes' : 'No'}
