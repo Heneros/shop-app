@@ -25,11 +25,12 @@ export default function SingleProduct() {
 
 
   const { data: product } = useGetProductDetailsQuery(productId);
+
   const { name, imageUrl, rating, price, company, shipping, categories } = product?.product || [];
 
-  console.log(categories);
+  // console.log(categories);
   const addToCartHandler = () => {
-    dispatch(addToCart({ ...product, qty }));
+    dispatch(addToCart({ ...product.product, qty }));
     toast.success('Product added to cart!', {
       position: toast.POSITION.BOTTOM_RIGHT,
       hideProgressBar: true,

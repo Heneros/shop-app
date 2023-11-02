@@ -33,7 +33,14 @@ const ProductSchema = new mongoose.Schema({
     },
     shipping: {
         type: Boolean
+    },
+    qty: {
+        type: Number,
+        default: 0,
     }
+}, {
+    timestamps: true,
+}
 
-})
+)
 module.exports = mongoose.model("Product", ProductSchema);

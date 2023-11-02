@@ -1,29 +1,60 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { FaPlus, FaMinus } from 'react-icons/fa'
 
-export default function CartItem({ _id, name, imageUrl, price, rating, company }) {
-    const isBase64Image = imageUrl && imageUrl.startsWith('data:image/jpeg;base64,');
 
-    return (
-        <Wrapper key={_id}>
-            <div className="title">
-                {
-                    isBase64Image ? (
-                        <img src={imageUrl} alt={name} />
-                    ) : (
-                        <img src={imageUrl} alt={name} />
-                    )
-                }
-            </div>
-            <div>
-                <Link to={`/products/${_id}`}>
-                    <h5 className='name'>{name}</h5>
-                </Link>
+import { formatPrice } from '../utils/helpers';
 
-            </div>
-        </Wrapper>
-    )
+export default function CartItem({ _id, name, imageUrl, price, rating, company, qty, onQtyChange }) {
+  const isBase64Image = imageUrl && imageUrl.startsWith('data:image/jpeg;base64,');
+  const [qtyy, setQty] = useState(1);
+
+  const handleDecrease = () => {
+    if (qty > 1) {
+      setQty(qty - 1);
+    }
+
+  }
+  const handleIncrease = () => {
+    setQty(qty + 1);
+  }
+
+  return (
+    <Wrapper key={_id}>
+      <div className="title">
+        {
+          isBase64Image ? (
+            <img src={imageUrl} alt={name} />
+          ) : (
+            <img src={imageUrl} alt={name} />
+          )
+        }
+      </div>
+      <div>
+        <Link to={`/products/${_id}`}>
+          <h5 className='name'>{name}</h5>
+        </Link>
+      </div>
+      {/* <div className='quantity'>
+        {qty}
+      </div> */}
+      <div className="amount-btns">
+        <button type='button' className='amount-btn' onClick={handleDecrease} >
+          <FaMinus />
+        </button>
+        <h2 className='amount'>{qty}</h2>
+        <button type='button' className='amount-btn' onClick={handleIncrease} >
+          <FaPlus />
+        </button>
+      </div>
+
+      <div className='quantity'>
+        {formatPrice(price * qty)}
+      </div>
+
+    </Wrapper>
+  )
 }
 const Wrapper = styled.article`
  .subtotal {

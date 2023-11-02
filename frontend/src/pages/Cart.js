@@ -9,54 +9,58 @@ import CartItem from '../components/CartItem';
 
 
 export default function Cart() {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const cart = useSelector((state) => state.cart);
-    const { cartItems } = cart
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart
 
-    const addToCartHandler = (product, qty) => {
-        dispatch(addToCart({ ...product, qty }));
-    };
-    const removeFromCartHandler = (id) => {
-        dispatch(removeFromCart(id));
-    };
+  const addToCartHandler = (product, qty) => {
+    dispatch(addToCart({ ...product, qty }));
+  };
+  const removeFromCartHandler = (id) => {
+    dispatch(removeFromCart(id));
+  };
 
-    // console.log(cartItems);
-    if (cartItems.length < 1) {
-        return (
-            <Wrapper className='page-100'>
-                <div className='empty'>
-                    <h2>Your cart is empty</h2>
-                    <Link to='/' className='btn'>
-                        fill it
-                    </Link>
-                </div>
-            </Wrapper>
-        )
-    }
+  // console.log(cartItems);
+  if (cartItems.length < 1) {
     return (
-        <main>
-            <PageHero title='cart' />
-            <Wrapper className='section section-center'>
-                <div className="cart-columns">
-                    <div className='content'>
-                        <h5></h5>
-                        <h5>Name</h5>
-                        <h5>quantity</h5>
-                        <h5>subtotal</h5>
-                        <span></span>
-                    </div>
-                    <hr />
-                </div>
-                {cartItems.map((item) => (
-                    <>
-                        <CartItem key={item.key} {...item} />
-                    </>
-                ))}
-
-            </Wrapper>
-        </main>
+      <Wrapper className='page-100'>
+        <div className='empty'>
+          <h2>Your cart is empty</h2>
+          <Link to='/' className='btn'>
+            fill it
+          </Link>
+        </div>
+      </Wrapper>
     )
+  }
+  return (
+    <main>
+      <PageHero title='cart' />
+      <Wrapper className='section section-center'>
+        <div className="cart-columns">
+          <div className='content'>
+            <h5></h5>
+            <h5>Name</h5>
+            <h5>quantity</h5>
+            <h5>subtotal</h5>
+            <span></span>
+          </div>
+          <hr />
+        </div>
+        {cartItems.map((item) => (
+          <>
+            <CartItem
+              key={item.key}
+              qty={item.qty}
+              
+              {...item} />
+          </>
+        ))}
+
+      </Wrapper>
+    </main>
+  )
 }
 
 const Wrapper = styled.main`
