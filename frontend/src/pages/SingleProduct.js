@@ -49,7 +49,7 @@ export default function SingleProduct() {
 
   return (
     <Wrapper>
-      <PageHero title={name} product />
+      <PageHero title={name}  />
       <div className='section section-center page'>
         <Link to='/' className='btn'>
           back to products

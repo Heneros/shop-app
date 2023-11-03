@@ -1,34 +1,45 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { FaPlus, FaMinus } from 'react-icons/fa'
+import { FaPlus, FaMinus, FaTrash } from 'react-icons/fa'
+import { useDispatch } from "react-redux";
 
-
+import { removeFromCart, toggleAmount } from '../redux/slices/cartSlice'
 import { formatPrice } from '../utils/helpers';
 
 export default function CartItem({ _id, name, imageUrl, price, rating, company, qty, onQtyChange }) {
-  const isBase64Image = imageUrl && imageUrl.startsWith('data:image/jpeg;base64,');
-  const [qtyy, setQty] = useState(1);
+  // const isBase64Image = imageUrl && imageUrl.startsWith('data:image/jpeg;base64,');
+  const [amount, setAmount] = useState(qty);
+  const dispatch = useDispatch();
+
+
 
   const handleDecrease = () => {
-    if (qty > 1) {
-      setQty(qty - 1);
+    if (amount > 1) {
+      setAmount(amount - 1);
+      dispatch(toggleAmount({ _id, value: amount - 1 }));
+    }
+  }
+
+
+  const handleIncrease = () => {
+    if (amount < 15) {
+      setAmount(amount + 1);
+      dispatch(toggleAmount({ _id, value: amount + 1 }));
     }
 
+    // console.log(dispatch(toggleAmount({ _id, value: amount + 1 })))
   }
-  const handleIncrease = () => {
-    setQty(qty + 1);
+
+  const removeFromCartHandler = (id) => {
+    dispatch(removeFromCart(id))
   }
 
   return (
     <Wrapper key={_id}>
       <div className="title">
         {
-          isBase64Image ? (
-            <img src={imageUrl} alt={name} />
-          ) : (
-            <img src={imageUrl} alt={name} />
-          )
+          <img src={imageUrl} alt={name} />
         }
       </div>
       <div>
@@ -36,23 +47,25 @@ export default function CartItem({ _id, name, imageUrl, price, rating, company, 
           <h5 className='name'>{name}</h5>
         </Link>
       </div>
-      {/* <div className='quantity'>
-        {qty}
-      </div> */}
       <div className="amount-btns">
-        <button type='button' className='amount-btn' onClick={handleDecrease} >
+        <button type="button" className="amount-btn" onClick={handleDecrease}>
           <FaMinus />
         </button>
-        <h2 className='amount'>{qty}</h2>
-        <button type='button' className='amount-btn' onClick={handleIncrease} >
+        <h2 className='amount'>{amount}</h2>
+        <button type="button" className="amount-btn" onClick={handleIncrease}>
           <FaPlus />
         </button>
       </div>
-
       <div className='quantity'>
         {formatPrice(price * qty)}
       </div>
-
+      <button
+        type='button'
+        className='remove-btn'
+        onClick={() => removeFromCartHandler(_id)}
+      >
+        <FaTrash />
+      </button>
     </Wrapper>
   )
 }
@@ -137,6 +150,48 @@ const Wrapper = styled.article`
     font-size: 0.75rem;
     cursor: pointer;
   }
+  .amount-btns {
+    width: 75px;
+    display: grid;
+    width: 140px;
+    justify-items: center;
+    grid-template-columns: repeat(3,1fr);
+    align-items: center;
+    button {
+      background: transparent;
+    border-color: transparent;
+    cursor: pointer;
+    padding: 1rem 0;
+    width: 2rem;
+    height: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
+    h2 {
+      font-size: 1rem;
+    }
+  }
+  .remove-btn {
+    color: var(--clr-white);
+    background: transparent;
+    border: transparent;
+    letter-spacing: var(--spacing);
+    background: var(--clr-red-dark);
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+    font-size: 0.75rem;
+    cursor: pointer;
+  }
+  .name {
+      font-size: 0.85rem;
+      color: var(--clr-primary-5);
+      font-weight: 400;
+    }
   @media (min-width: 776px) {
     .subtotal {
       display: block;
@@ -184,9 +239,11 @@ const Wrapper = styled.article`
         width: 1.5rem;
         height: 1rem;
         font-size: 1rem;
+
       }
       h2 {
-        font-size: 1.5rem;
+        font-size: 2.5rem;
+        margin-bottom: 15px;
       }
     }
   }

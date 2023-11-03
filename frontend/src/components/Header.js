@@ -78,7 +78,7 @@ export default function Header(props) {
             <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
               <Link className='item-mob' style={ItemMobile}>Hello, {userInfo.name}</Link>
             </ListItem>
-            <ListItem sx={{ textAlign: 'center',  width: 'auto' }}>
+            <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
               <Link className='cart-btn' style={ItemMobile} to='/cart'>Cart
                 <div className="cart-container">
                   <FaShoppingCart />
@@ -101,6 +101,18 @@ export default function Header(props) {
           <List>
             <ListItem sx={{ textAlign: 'center' }}>
               <Link to="/login" style={ItemMobile} >Login</Link>
+            </ListItem>
+            <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
+              <Link className='cart-btn' style={ItemMobile} to='/cart'>Cart
+                <div className="cart-container">
+                  <FaShoppingCart />
+                  {cartItems.length > 0 && (
+                    <span className='cart-value'>
+                      {cartItems.reduce((a, c) => a + c.qty, 0)}
+                    </span>
+                  )}
+                </div>
+              </Link>
             </ListItem>
           </List>
         )}

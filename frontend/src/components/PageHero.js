@@ -5,13 +5,15 @@ import { Container } from '@mui/material'
 
 
 export default function PageHero({ title, product }) {
+  const isHome = title === "";
   return (
     <Wrapper>
       <div className='section-center'>
         <h3>
           <Link to="/">Products</Link>
-          {product && <> / </>}
+          {isHome ? null : " / "}
           {title}
+          {product}
         </h3>
       </div>
     </Wrapper>

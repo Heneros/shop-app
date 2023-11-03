@@ -14,16 +14,25 @@ const cartSlice = createSlice({
             // state.cartItems = [...state.cartItems, item];
             ///only unique products in cart
             const existItem = state.cartItems.find((x) => x._id === item._id);
-           
+
             if (existItem) {
                 //     state.cartItems = state.cartItems.map((x) => x._id === existItem._id ? item : x);
                 // } else {
                 //     state.cartItems = [...state.cartItems, item];
                 // }
-                existItem.qty += item.qty; ///можно сколько угодно добавлять в qty 
+                existItem.qty += item.qty; ///можно безграничное кол товаров добавлять qty
             } else {
                 state.cartItems.push(item);
             }
+            return updateCart(state);
+        },
+        toggleAmount: (state, action) => {
+            const { _id, value } = action.payload;
+            const existItem = state.cartItems.find((x) => x._id === _id);
+
+            if (existItem) {
+                existItem.qty = value;
+            } 
             return updateCart(state);
         },
         removeFromCart: (state, action) => {
@@ -54,6 +63,7 @@ export const {
     savePaymentMethod,
     clearCartItems,
     resetCart,
+    toggleAmount
 } = cartSlice.actions;
 export default cartSlice.reducer;
 

@@ -53,7 +53,7 @@ export default function Cart() {
             <CartItem
               key={item.key}
               qty={item.qty}
-              
+
               {...item} />
           </>
         ))}
