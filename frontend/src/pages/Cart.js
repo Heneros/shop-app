@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 
 import PageHero from '../components/PageHero';
-import { addToCart, removeFromCart } from '../redux/slices/cartSlice';
+import { addToCart, clearCartItems, removeFromCart } from '../redux/slices/cartSlice';
 import CartItem from '../components/CartItem';
 import CartTotal from '../components/CartTotal';
+import { Button } from '@mui/material';
 
 
 export default function Cart() {
@@ -15,12 +16,13 @@ export default function Cart() {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart
 
+
   // const addToCartHandler = (product, qty) => {
   //   dispatch(addToCart({ ...product, qty }));
   // };
-  // const removeFromCartHandler = (id) => {
-  //   dispatch(removeFromCart(id));
-  // };
+  const handlerClearAll = (id) => {
+    dispatch(clearCartItems());
+  };
 
   // console.log(cartItems);
   if (cartItems.length < 1) {
@@ -56,6 +58,20 @@ export default function Cart() {
               {...item} />
           </>
         ))}
+        <div className="items-btns">
+          <Link
+            className='link-btn'
+            to="/"
+          >
+            Continue Shopping
+          </Link>
+          <button
+            type='button'
+            className='link-btn clear-btn'
+            onClick={handlerClearAll}>
+            Clear All Items
+          </button>
+        </div>
         <CartTotal />
       </Wrapper>
 
@@ -70,6 +86,27 @@ const Wrapper = styled.main`
       margin-bottom: 1rem;
       text-transform: none;
     }
+  }
+  .items-btns{
+    display: flex;
+    justify-content: space-between;
+  }
+  .link-btn {
+    background: transparent;
+    border-color: transparent;
+    text-transform: capitalize;
+    padding: 0.25rem 0.5rem;
+    background: var(--clr-primary-5);
+    color: var(--clr-white);
+    border-radius: var(--radius);
+    letter-spacing: var(--spacing);
+    font-weight: 400;
+    cursor: pointer;
+  }
+  .clear-btn{
+    /* display: flex;
+    margin-left: auto; */
+    background-color: #000;
   }
   .cart-columns{
     display: none;

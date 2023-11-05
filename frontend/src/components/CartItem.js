@@ -47,7 +47,6 @@ export default function CartItem({ _id, name, imageUrl, price, rating, company, 
         </Link>
       </div>
       <div className="amount-btns">
-  
         <button type="button" className="amount-btn" onClick={handleDecrease}>
           <FaMinus />
         </button>
@@ -70,20 +69,24 @@ export default function CartItem({ _id, name, imageUrl, price, rating, company, 
   )
 }
 const Wrapper = styled.article`
- .subtotal {
-    display: none;
-  }
-  .price {
-    display: none;
-  }
-  display: grid;
+
+display: grid;
   grid-template-columns: 200px auto auto;
   grid-template-rows: 75px;
   gap: 3rem 1rem;
   justify-items: center;
   margin-bottom: 3rem;
   align-items: center;
+  .subtotal {
+    display: none;
+  }
+  .price {
+    display: none;
+  }
   .title {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
     grid-template-rows: 75px;
     display: grid;
     grid-template-columns: 75px 125px;
@@ -192,7 +195,30 @@ const Wrapper = styled.article`
       color: var(--clr-primary-5);
       font-weight: 400;
     }
+
+    @media (max-width: 776px) {
+      display: flex;
+  flex-direction: column;
+  .title{
+    display: flex;
+    margin: 0 auto;
+  }
+  img{
+    max-width: 200px;
+  }
+    }
   @media (min-width: 776px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr auto;
+    align-items: center;
+    grid-template-rows: 75px;
+    .title {
+    grid-template-rows: 75px;
+    display: grid;
+    grid-template-columns: 75px 125px;
+    align-items: center;
+    text-align: left;
+    gap: 1rem;
+  }
     .subtotal {
       display: block;
       margin-bottom: 0;
@@ -219,9 +245,7 @@ const Wrapper = styled.article`
         height: 0.75rem;
       }
     }
-    grid-template-columns: 1fr 1fr 1fr 1fr auto;
-    align-items: center;
-    grid-template-rows: 75px;
+
     img {
       height: 100%;
     }

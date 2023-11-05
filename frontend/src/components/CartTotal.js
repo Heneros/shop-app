@@ -16,14 +16,13 @@ export default function CartTotal() {
                     Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
                     items
                 </h5>
+                <hr />
                 <h4>
                     order Total : <span>
                         {formatPrice(subtotal.toFixed(2))}
-                        { }
-                        {/* {formatPrice(price * amount)} */}
                     </span>
                 </h4>
-                <Link to="/checkout">Checkout</Link>
+                <Link className='btn' to="/checkout">Checkout</Link>
             </article>
         </Wrapper>
     )
