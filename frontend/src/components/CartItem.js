@@ -27,12 +27,11 @@ export default function CartItem({ _id, name, imageUrl, price, rating, company, 
       setAmount(amount + 1);
       dispatch(toggleAmount({ _id, value: amount + 1 }));
     }
-
     // console.log(dispatch(toggleAmount({ _id, value: amount + 1 })))
   }
 
-  const removeFromCartHandler = (id) => {
-    dispatch(removeFromCart(id))
+  const removeFromCartHandler = () => {
+    dispatch(removeFromCart(_id))
   }
 
   return (
@@ -48,10 +47,11 @@ export default function CartItem({ _id, name, imageUrl, price, rating, company, 
         </Link>
       </div>
       <div className="amount-btns">
+  
         <button type="button" className="amount-btn" onClick={handleDecrease}>
           <FaMinus />
         </button>
-        <h2 className='amount'>{amount}</h2>
+        <h2 className='amount'>{qty}</h2>
         <button type="button" className="amount-btn" onClick={handleIncrease}>
           <FaPlus />
         </button>
@@ -62,7 +62,7 @@ export default function CartItem({ _id, name, imageUrl, price, rating, company, 
       <button
         type='button'
         className='remove-btn'
-        onClick={() => removeFromCartHandler(_id)}
+        onClick={removeFromCartHandler}
       >
         <FaTrash />
       </button>

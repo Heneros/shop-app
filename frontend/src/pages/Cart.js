@@ -6,6 +6,7 @@ import { styled } from 'styled-components';
 import PageHero from '../components/PageHero';
 import { addToCart, removeFromCart } from '../redux/slices/cartSlice';
 import CartItem from '../components/CartItem';
+import CartTotal from '../components/CartTotal';
 
 
 export default function Cart() {
@@ -14,12 +15,12 @@ export default function Cart() {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart
 
-  const addToCartHandler = (product, qty) => {
-    dispatch(addToCart({ ...product, qty }));
-  };
-  const removeFromCartHandler = (id) => {
-    dispatch(removeFromCart(id));
-  };
+  // const addToCartHandler = (product, qty) => {
+  //   dispatch(addToCart({ ...product, qty }));
+  // };
+  // const removeFromCartHandler = (id) => {
+  //   dispatch(removeFromCart(id));
+  // };
 
   // console.log(cartItems);
   if (cartItems.length < 1) {
@@ -52,13 +53,12 @@ export default function Cart() {
           <>
             <CartItem
               key={item.key}
-              qty={item.qty}
-
               {...item} />
           </>
         ))}
-
+        <CartTotal />
       </Wrapper>
+
     </main>
   )
 }
