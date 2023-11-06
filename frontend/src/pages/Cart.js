@@ -17,14 +17,12 @@ export default function Cart() {
   const { cartItems } = cart
 
 
-  // const addToCartHandler = (product, qty) => {
-  //   dispatch(addToCart({ ...product, qty }));
-  // };
+
   const handlerClearAll = (id) => {
     dispatch(clearCartItems());
   };
 
-  // console.log(cartItems);
+
   if (cartItems.length < 1) {
     return (
       <Wrapper className='page-100'>

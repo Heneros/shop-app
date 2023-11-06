@@ -2,30 +2,38 @@ import React from 'react'
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { formatPrice } from '../utils/helpers';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function CartTotal() {
-    const cart = useSelector((state) => state.cart);
-    const { cartItems } = cart
-    const subtotal = cartItems.reduce((total, item) => total + item.price * item.qty, 0);
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart
+  const subtotal = cartItems.reduce((total, item) => total + item.price * item.qty, 0);
+  const navigate = useNavigate();
 
-    return (
-        <Wrapper>
-            <article>
-                <h5>
-                    Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
-                    items
-                </h5>
-                <hr />
-                <h4>
-                    order Total : <span>
-                        {formatPrice(subtotal.toFixed(2))}
-                    </span>
-                </h4>
-                <Link className='btn' to="/checkout">Checkout</Link>
-            </article>
-        </Wrapper>
-    )
+  const checkoutHandler = () => {
+    navigate('/login?redirect=/shipping');
+  }
+  return (
+    <Wrapper>
+      <article>
+        <h5>
+          Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
+          items
+        </h5>
+        <hr />
+        <h4>
+          order Total : <span>
+            {formatPrice(subtotal.toFixed(2))}
+          </span>
+        </h4>
+        <button className='btn'
+          onClick={checkoutHandler}
+        >
+          Checkout
+        </button>
+      </article>
+    </Wrapper>
+  )
 }
 const Wrapper = styled.section`
   margin-top: 3rem;

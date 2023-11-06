@@ -25,6 +25,7 @@ import SingleProduct from './pages/SingleProduct';
 import { ProductsProvider } from './context/products_context';
 import { FilterProvider } from './context/filter_context';
 import './index.css';
+import Shipping from './pages/Shipping';
 
 const router = createBrowserRouter([
   {
@@ -49,9 +50,14 @@ const router = createBrowserRouter([
       }, {
         path: 'login',
         element: <Login />
-      }, {
+      },
+      {
         path: 'register',
         element: <Register />
+      },
+      {
+        path: 'shipping',
+        element: <Shipping />
       },
     ]
   }
