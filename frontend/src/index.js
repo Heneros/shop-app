@@ -26,6 +26,7 @@ import { ProductsProvider } from './context/products_context';
 import { FilterProvider } from './context/filter_context';
 import './index.css';
 import Shipping from './pages/Shipping';
+import PrivateRoute from './components/PrivateRoute';
 
 const router = createBrowserRouter([
   {
@@ -33,7 +34,8 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: '/',
+        index: true,
+        // path: '/',
         element: <HomePage />
       }, {
         path: 'products/:id',
@@ -56,9 +58,14 @@ const router = createBrowserRouter([
         element: <Register />
       },
       {
-        path: 'shipping',
-        element: <Shipping />
-      },
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: 'shipping',
+            element: <Shipping />
+          },
+        ]
+      }
     ]
   }
 ])

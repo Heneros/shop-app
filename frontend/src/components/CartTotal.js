@@ -29,7 +29,7 @@ export default function CartTotal() {
         <button className='btn'
           onClick={checkoutHandler}
         >
-          Checkout
+          Shipping Address
         </button>
       </article>
     </Wrapper>

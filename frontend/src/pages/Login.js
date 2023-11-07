@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Container, Grid, TextField, Typography } from '@mui/material';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
@@ -25,6 +25,11 @@ export default function Login() {
     const sp = new URLSearchParams(search);
     const redirect = sp.get('redirect') || '/';
 
+    useEffect(() => {
+        if (userInfo) {
+            navigate(redirect);
+        }
+    }, [navigate, redirect, userInfo]);
 
 
     const onSubmit = async (e) => {

@@ -11,7 +11,6 @@ import { Button } from '@mui/material';
 
 
 export default function Cart() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart
