@@ -22,11 +22,12 @@ export default function Shipping() {
         e.preventDefault();
         dispatch(saveShippingAddress({ address, city, postalCode, country }));
         // console.log(123)
+        navigate('/payment');
     }
 
     return (<>
-        <main>
-            <PageHero title='Shipping Address' />
+        <PageHero title='Shipping Address' />
+        <Box sx={{ py: 4 }}>
             <Wrapper className='section section-center'>
                 <Box component="form" onSubmit={submitHandler} sx={{ mt: 3 }}>
                     <Grid container spacing={2}>
@@ -36,6 +37,7 @@ export default function Shipping() {
                                 type="text"
                                 fullWidth
                                 value={address}
+                                required
                                 onChange={(e) => setAddress(e.target.value)}
                             />
                         </Grid>
@@ -45,6 +47,7 @@ export default function Shipping() {
                                 type="text"
                                 fullWidth
                                 value={city}
+                                required
                                 onChange={(e) => setCity(e.target.value)}
                             />
                         </Grid>
@@ -54,6 +57,7 @@ export default function Shipping() {
                                 type="text"
                                 fullWidth
                                 value={postalCode}
+                                required
                                 onChange={(e) => setPostalCode(e.target.value)}
                             />
                         </Grid>
@@ -63,21 +67,22 @@ export default function Shipping() {
                                 type="text"
                                 fullWidth
                                 value={country}
+                                required
                                 onChange={(e) => setCountry(e.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12} sm={12}>
                             <button
                                 type='submit'
-                                className='link-btn clear-btn'
-                                size='large' fullWidth variant="outlined">
-                                Send
+                                className='link-btn'
+                            >
+                                Save Information
                             </button>
                         </Grid>
                     </Grid>
                 </Box>
             </Wrapper>
-        </main>
+        </Box>
     </>
     )
 }
@@ -96,6 +101,8 @@ const Wrapper = styled.main`
     letter-spacing: var(--spacing);
     font-weight: 400;
     cursor: pointer;
+    min-width: 25%;
+    min-height: 50px;
   }
   
 `

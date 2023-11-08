@@ -1,8 +1,5 @@
 import React from 'react';
 
-
-
-
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './redux/store';
@@ -18,15 +15,13 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-
-import SingleProduct from './pages/SingleProduct';
-
-import { ProductsProvider } from './context/products_context';
-import { FilterProvider } from './context/filter_context';
-import './index.css';
-import Shipping from './pages/Shipping';
 import PrivateRoute from './components/PrivateRoute';
+
+import './index.css';
+import SingleProduct from './pages/SingleProduct';
+import Shipping from './pages/Shipping';
+import PlaceOrder from './pages/PlaceOrder';
+import Payment from './pages/Payment';
 
 const router = createBrowserRouter([
   {
@@ -64,6 +59,13 @@ const router = createBrowserRouter([
             path: 'shipping',
             element: <Shipping />
           },
+          {
+            path: 'placeorder',
+            element: <PlaceOrder />
+          }, {
+            path: 'payment',
+            element: <Payment />
+          },
         ]
       }
     ]
@@ -74,12 +76,12 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ProductsProvider>
-        <FilterProvider>
-          <RouterProvider router={router}>
-          </RouterProvider>
-        </FilterProvider>
-      </ProductsProvider>
+
+
+      <RouterProvider router={router}>
+      </RouterProvider>
+
+
       <ToastContainer />
     </Provider>
   </React.StrictMode>
