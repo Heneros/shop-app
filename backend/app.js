@@ -11,11 +11,13 @@ const routesOrder = require('./routes/routesOrder');
 
 const app = express();
 
-app.use(express.json()); 
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+// app.use(cookieParser());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
 
 app.get('/', (req, res) => {
     res.send("<h1>Hello World</h1>");
@@ -24,7 +26,9 @@ app.get('/', (req, res) => {
 
 app.use('/api/products', productRouter);
 app.use('/api/users', routesUser);
-app.use('/api/orders', routesUser);
+app.use('/api/orders', routesOrder);
+
+
 
 const port = process.env.PORT || 4000;
 

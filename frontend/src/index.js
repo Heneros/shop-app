@@ -22,6 +22,7 @@ import SingleProduct from './pages/SingleProduct';
 import Shipping from './pages/Shipping';
 import PlaceOrder from './pages/PlaceOrder';
 import Payment from './pages/Payment';
+import Order from './pages/Order';
 
 const router = createBrowserRouter([
   {
@@ -65,6 +66,9 @@ const router = createBrowserRouter([
           }, {
             path: 'payment',
             element: <Payment />
+          }, {
+            path: 'order',
+            element: <Order />
           },
         ]
       }
