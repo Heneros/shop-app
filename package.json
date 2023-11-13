@@ -6,26 +6,28 @@
   "scripts": {
     "start": "nodemon app.js",
     "server": "nodemon backend/app.js",
-    "client": "set PORT=7200 &&  npm start --prefix frontend",
+    "client": " npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cookie": "^9.1.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
     "express-validator": "^7.0.1",
+    "fastify-cookie": "^5.7.0",
     "json-server": "^0.17.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.3.4"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1",
+    "concurrently": "^8.2.1",
     "dotenv": "^16.3.1",
-    "concurrently": "^8.2.1"
+    "nodemon": "^3.0.1"
   }
 }

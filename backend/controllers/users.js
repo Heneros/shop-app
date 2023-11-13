@@ -16,13 +16,33 @@ const authUser = asyncHandler(async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
-        generateToken(res, user._id);
+    //  generateToken(res, user._id);
+
+    //     res.json({
+    //         _id: user._id,
+    //         name: user.name,
+    //         email: user.email,
+    //         isAdmin: user.isAdmin
+    //     })
+
+        const token = jwt.sign(
+            {
+                _id: user._id, //must fit with id in database, 
+            },
+            'secret123',
+            {
+                expiresIn: '30d' //token stop be valid
+            },
+        );
+
+
+        const { passwordHash, ...userData } = user._doc;
+
+
 
         res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            isAdmin: user.isAdmin
+            ...userData,
+            token
         })
     } else {
         res.status(401);
@@ -33,7 +53,7 @@ const authUser = asyncHandler(async (req, res) => {
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
-    res.cookie('jwt', '', {
+    res.cookie('jwtt', '', {
         httpOnly: true,
         expires: new Date(0)
     })

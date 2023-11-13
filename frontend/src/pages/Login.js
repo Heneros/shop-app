@@ -10,8 +10,8 @@ import { setCredentials } from '../redux/slices/auth';
 import { fetchAuthMe, selectIsAuth } from '../redux/slices/auth';
 import styled from 'styled-components';
 export default function Login() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('rustam@gmail.com');
+    const [password, setPassword] = useState('123456');
 
     const isAuth = useSelector(selectIsAuth);
     const dispatch = useDispatch();
@@ -36,7 +36,8 @@ export default function Login() {
         e.preventDefault();
         try {
             const res = await login({ email, password }).unwrap();
-            console.log(res);
+            // const data = await dispatch(fetchAuthMe());
+            // console.log(res);
             dispatch(setCredentials({ ...res }));
             navigate(redirect);
         } catch (err) {
