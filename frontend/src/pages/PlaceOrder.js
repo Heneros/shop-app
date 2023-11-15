@@ -42,12 +42,12 @@ export default function PlaceOrder() {
                 totalPrice: cart.totalPrice,
             }).unwrap();
 
-            dispatch(clearCartItems());
-            // console.log(res._id)
-            navigate(`/order/${res._id}`);
+            // dispatch(clearCartItems());
+            console.log(res)
+            // navigate(`/order/${res._id}`);
         } catch (error) {
             console.log(error)
-            toast.error(error?.message || "An error occurred"); 
+            // toast.error(error?.message || "An error occurred"); 
 
         }
     }
@@ -183,7 +183,7 @@ export default function PlaceOrder() {
                                     <ListItem>
                                         {error && (
                                             <Typography variant="body1" color="error">
-                                                {/* {error.data.message} */}
+                                                {error.data.message}
                                             </Typography>
                                         )}
                                     </ListItem>

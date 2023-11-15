@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon app.js",
     "server": "nodemon backend/app.js",
-    "client": " npm start --prefix frontend",
+    "client": "set PORT=7200 && npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "keywords": [],

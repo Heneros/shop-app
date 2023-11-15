@@ -31,7 +31,7 @@ const authSlice = createSlice({
             const expirationTime = new Date().getTime() + 30 * 24 * 60 * 60 * 1000;
             localStorage.setItem('expirationTime', expirationTime);
 
-            Cookies.set('jwt', action.payload.token, { expires: 30 });
+            // Cookies.set('jwt', action.payload.token, { expires: 30 });
 
 
         },

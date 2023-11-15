@@ -18,22 +18,20 @@ const app = express();
 //     credentials: true, 
 // }));
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:7200',
     methods: '*',
     // credentials: true,
     credentials: 'include',
     optionsSuccessStatus: 204,
-}; 
+};
 
-app.use(cors(corsOptions));
-
-
-app.use(cookieParser());
-
+app.use(
+    cors({ credentials: true, origin: true, exposedHeaders: ["Set-Cookie"] })
+);
 // app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cookieParser());
 
 
 app.get('/', (req, res) => {
