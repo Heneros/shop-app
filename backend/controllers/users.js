@@ -16,7 +16,7 @@ const authUser = asyncHandler(async (req, res, userId) => {
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
-        generateToken(res, user._id);
+        // generateToken(res, user._id);
 
         // const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
         //     expiresIn: '30d',
@@ -31,29 +31,29 @@ const authUser = asyncHandler(async (req, res, userId) => {
         //     // sameSite: 'None',
         //     // maxAge: 30 * 24 * 60 * 60 * 1000,
         // });
-        res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            isAdmin: user.isAdmin
-        })
-
-
-        // const token = jwt.sign(
-        //     {
-        //         _id: user._id,
-        //     },
-        //     process.env.JWT_SECRET,
-        //     {
-        //         expiresIn: '30d'
-        //     },
-        // );
-        // const { passwordHash, ...userData } = user._doc;
-
         // res.json({
-        //     ...userData,
-        //     token
+        //     _id: user._id,
+        //     name: user.name,
+        //     email: user.email,
+        //     isAdmin: user.isAdmin
         // })
+
+
+        const token = jwt.sign(
+            {
+                _id: user._id,
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: '30d'
+            },
+        );
+        const { passwordHash, ...userData } = user._doc;
+
+        res.json({
+            ...userData,
+            token
+        })
     } else {
         res.status(401);
         throw new Error('Invalid email or password')

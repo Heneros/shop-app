@@ -22,6 +22,7 @@ const cartSlice = createSlice({
                 // }
                 existItem.qty += item.qty; ///можно безграничное кол товаров добавлять qty
             } else {
+
                 state.cartItems.push(item);
             }
             return updateCart(state);
@@ -32,7 +33,7 @@ const cartSlice = createSlice({
 
             if (existItem) {
                 existItem.qty = value;
-            } 
+            }
             return updateCart(state);
         },
         removeFromCart: (state, action) => {

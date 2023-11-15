@@ -31,7 +31,8 @@ const authSlice = createSlice({
             const expirationTime = new Date().getTime() + 30 * 24 * 60 * 60 * 1000;
             localStorage.setItem('expirationTime', expirationTime);
 
-            // Cookies.set('jwt', action.payload.token, { expires: 30 });
+            Cookies.set('jwt', action.payload.token, { expires: 30 });
+            console.log('JWT Token:', action.payload.token);
 
 
         },
@@ -60,7 +61,7 @@ const authSlice = createSlice({
         [fetchAuthMe.fulfilled]: (state, action) => {
             state.status = 'loaded';
             state.data = action.payload;
-        }, 
+        },
         [fetchAuthMe.rejected]: (state) => {
             state.status = 'error';
             state.data = null;

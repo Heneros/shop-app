@@ -11,11 +11,12 @@ import PageHero from '../components/PageHero';
 export default function PlaceOrder() {
     const navigate = useNavigate();
     const cart = useSelector((state) => state.cart);
+    console.log(cart);
     // const { cartItems } =useSelector((state) => state.cart); 
     const subTotal = cart.cartItems.reduce((total, item) => total + item.price * item.qty, 0);
     const totalItems = cart.cartItems.reduce((total, item) => total + item.qty, 0)
 
-    // console.log(totalItems);
+
 
 
 
@@ -44,7 +45,7 @@ export default function PlaceOrder() {
 
             // dispatch(clearCartItems());
             console.log(res)
-            // navigate(`/order/${res._id}`);
+            navigate(`/order/${res._id}`);
         } catch (error) {
             console.log(error)
             // toast.error(error?.message || "An error occurred"); 
