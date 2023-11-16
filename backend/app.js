@@ -38,10 +38,10 @@ app.get('/', (req, res) => {
     res.send("<h1>Hello World</h1>");
 });
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Credentials', true);
-    next();
-});
+// app.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Credentials', true);
+//     next();
+// });
 
 app.use('/api/products', productRouter);
 app.use('/api/users', routesUser);

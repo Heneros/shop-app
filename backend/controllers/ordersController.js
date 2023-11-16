@@ -16,24 +16,11 @@ const addOrderItems = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('No order items')
     } else {
-        const order = new Order({
-            orderItems: orderItems.map((x) => ({
-                ...x,
-                product: x._id,
-                _id: undefined
-            })),
-            user: req.user._id,
-            shippingAddress,
-            paymentMethod,
-            itemsPrice,
-            taxPrice,
-            shippingPrice,
-            totalPrice,
-        })
-
-        const createdOrder = await order.save()
-
-        res.status(201).json(createdOrder)
+        // req.set('Authorization', `Bearer ${req.user.token}`);
+        // res.setHeader("Authorization", req.headers.authorization);
+        const newOrder = new Order(req.body);
+        const savedOrder = await newOrder.save();
+        res.status(200).json(savedOrder);
     }
 })
 const getOrders = asyncHandler(async (req, res) => {
