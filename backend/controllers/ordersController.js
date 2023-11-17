@@ -1,28 +1,37 @@
 const asyncHandler = require("../middleware/asyncHandler");
 const Order = require("../models/orderModel");
+const Orderr = require("../models/Order");
+
 
 const addOrderItems = asyncHandler(async (req, res) => {
-    const {
-        orderItems,
-        shippingAddress,
-        paymentMethod,
-        itemsPrice,
-        taxPrice,
-        shippingPrice,
-        totalPrice,
-    } = req.body
+    const newOrder = new Orderr(req.body);
 
-    if (orderItems && orderItems.length === 0) {
-        res.status(400)
-        throw new Error('No order items')
-    } else {
-        // req.set('Authorization', `Bearer ${req.user.token}`);
-        // res.setHeader("Authorization", req.headers.authorization);
-        const newOrder = new Order(req.body);
+    try {
         const savedOrder = await newOrder.save();
         res.status(200).json(savedOrder);
+    } catch (err) {
+        res.status(500).json(err);
     }
 })
+// const {
+//     orderItems,
+//     shippingAddress,
+//     paymentMethod,
+//     itemsPrice,
+//     taxPrice,
+//     shippingPrice,
+//     totalPrice,
+// } = req.body
+
+// if (orderItems && orderItems.length === 0) {
+//     res.status(400)
+//     throw new Error('No order items')
+// } else {
+//     const newOrder = new Order(req.body);
+//     const savedOrder = await newOrder.save();
+//     res.status(200).json(savedOrder);
+// }
+
 const getOrders = asyncHandler(async (req, res) => {
     res.send('getOrders')
     // const orders = await Order.find({}).populate('user', 'id name');

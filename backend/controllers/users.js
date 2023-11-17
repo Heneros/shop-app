@@ -10,20 +10,19 @@ const getAllUsers = asyncWrapper(async (req, res) => {
     res.json(users);
 });
 
-const authUser = asyncHandler(async (req, res, userId) => {
+const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
+
         const token = jwt.sign({
-            id: user._id,
+            userId: user._id,
             isAdmin: user.isAdmin
         }, process.env.JWT_SECRET, { expiresIn: '3d' })
 
-        res.setHeader("Authorization", `Bearer ${token}`);
-
-        res.json({
+        res.status(200).json({
             _id: user._id,
             name: user.name,
             email: user.email,

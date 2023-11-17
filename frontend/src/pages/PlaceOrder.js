@@ -11,14 +11,19 @@ import PageHero from '../components/PageHero';
 export default function PlaceOrder() {
     const navigate = useNavigate();
     const cart = useSelector((state) => state.cart);
-    console.log(cart);
+    // const { cartItems } = cart;
+
+    // console.log(cart.cartItems);
     // const { cartItems } =useSelector((state) => state.cart); 
+
+    const orderItems = cart.cartItems.map(item => ({
+        ...item,
+        product: item._id,
+        _id: undefined
+    }));
+
     const subTotal = cart.cartItems.reduce((total, item) => total + item.price * item.qty, 0);
     const totalItems = cart.cartItems.reduce((total, item) => total + item.qty, 0)
-
-
-
-
 
     const [createOrder, { isLoading, error }] = useCreateOrderMutation();
     useEffect(() => {
@@ -30,18 +35,22 @@ export default function PlaceOrder() {
     }, [cart.paymentMethod, cart.shippingAddress, navigate])
 
     const dispatch = useDispatch();
+    const { userInfo } = useSelector((state) => state.auth);
+
+    // const { user } = useSelector((state) => state.auth);
+    // console.log(userInfo._id)
 
     const placeOrderHandler = async () => {
         try {
             const res = await createOrder({
-                
-                // orderItems: cart.cartItems,
-                // shippingAddress: cart.shippingAddress,
-                // paymentMethod: cart.paymentMethod,
-                // itemsPrice: cart.itemsPrice,
-                // shippingPrice: cart.shippingPrice,
-                // taxPrice: cart.taxPrice,
-                // totalPrice: cart.totalPrice,
+                user: userInfo._id,
+                orderItems: orderItems,
+                shippingAddress: cart.shippingAddress,
+                paymentMethod: cart.paymentMethod,
+                itemsPrice: cart.itemsPrice,
+                shippingPrice: cart.shippingPrice,
+                taxPrice: cart.taxPrice,
+                totalPrice: cart.totalPrice,
             }).unwrap();
 
             // dispatch(clearCartItems());

@@ -13,10 +13,7 @@ const routesOrder = require('./routes/routesOrder');
 const app = express();
 
 
-// app.use(cors({
-//     origin: 'http://localhost:7200', 
-//     credentials: true, 
-// }));
+
 const corsOptions = {
     origin: 'http://localhost:7200',
     methods: '*',
@@ -25,9 +22,7 @@ const corsOptions = {
     optionsSuccessStatus: 204,
 };
 
-app.use(
-    cors({ credentials: true, origin: true, exposedHeaders: ["Set-Cookie"] })
-);
+app.use(cors());
 // app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
