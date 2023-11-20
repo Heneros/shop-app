@@ -103,7 +103,6 @@ export default function PlaceOrder() {
                                 <Typography variant="h5">Order Items</Typography>
                             </ListItem>
                             <ListItem>
-
                                 {cart.cartItems.length === 0 ? (
                                     <ListItemText>
                                         <Typography variant="body1">Your cart is empty</Typography>

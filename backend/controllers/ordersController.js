@@ -39,12 +39,12 @@ const getOrders = asyncHandler(async (req, res) => {
 });
 
 const getMyOrders = asyncHandler(async (req, res) => {
-    const orders = Order.find({ user: req.user._id });
+    const orders = Orderr.find({ user: req.user._id });
     res.json(orders);
 })
 
 const getOrderById = asyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id).populate(
+    const order = await Orderr.findById(req.params.id).populate(
         'user',
         'name email'
     );
