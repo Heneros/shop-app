@@ -15,6 +15,7 @@ export default function Order() {
   const dispatch = useDispatch();
 
   const { data: order, isLoading, error } = useGetOrderDetailsQuery(orderId);
+  // const totalItems = order.
   console.log(order);
   return isLoading ? (
     <Loader />
@@ -24,39 +25,51 @@ export default function Order() {
     <>
       <PageHero title="Details" />
       <Container>
-        <Typography variant="h3">Order #{order._id}</Typography>
-
+        <Typography sx={{
+          my: 5,
+          fontSize: {
+            xl: 30,
+            lg: 30, 
+            md: 20,
+            sm: 20, 
+            xs: 20,
+          },
+          fontWeight: 600
+        }} variant="h3">Order #{order._id}</Typography>
         <Box sx={{
+          my: 3,
           display: 'flex',
           flexDirection: {
             md: 'row',
             sm: 'column',
             xs: 'column',
+
           }
         }}>
-
-          <Grid item md={8}>
+          <Grid item md={7}>
             <List>
-              <ListItem>
-
+              <ListItem sx={{ mt: 2 }}>
+                <Typography variant="h5">Address:</Typography>
               </ListItem>
+              <ListItemText>
+                <strong>Address:</strong>
+                {order.shippingAddress.address}, {order.shippingAddress.city}{' '}
+                {order.shippingAddress.postalCode},{' '}
+                {order.shippingAddress.country}
+              </ListItemText>
               <ListItem>
                 <ListItemText>
-                  <strong>Address:</strong>
-                  {order.shippingAddress.address}, {order.shippingAddress.city}{' '}
-                  {order.shippingAddress.postalCode},{' '}
-                  {order.shippingAddress.country}
+                  {order.isDelivered ? (
+                    <Alert severity='success'>
+                      Delivered on {order.deliveredAt}
+                    </Alert>
+                  ) : (
+                    <Alert severity='error'>Not Delivered</Alert>
+                  )}
                 </ListItemText>
               </ListItem>
               <hr />
-              {order.isDelivered ? (
-                <Alert severity='success'>
-                  Delivered on {order.deliveredAt}
-                </Alert>
-              ) : (
-                <Alert severity='error'>Not Delivered</Alert>
-              )}
-              <ListItem>
+              <ListItem sx={{ mt: 2 }}>
                 <Typography variant="h5">Payment Method</Typography>
               </ListItem>
               <ListItem>
@@ -76,11 +89,10 @@ export default function Order() {
                 </ListItemText>
               </ListItem>
               <hr />
-              <ListItem>
+              <ListItem sx={{ mt: 2 }}>
                 <Typography variant="h5">Order Items</Typography>
               </ListItem>
               <List sx={{ margin: '20px 0' }}>
-                <Typography variant="h6">Order Items</Typography>
                 {order.orderItems.length === 0 ? (
                   <ListItem>
                     <ListItemText secondary="Order is empty" />
@@ -88,13 +100,30 @@ export default function Order() {
                 ) : (
                   order.orderItems.map((item, index) => (
                     <ListItem key={index}>
-                      <ListItemText primary={`${item.qty} x ${item.name}`} />
-                      <ListItemText secondary={`$${item.qty * item.price}`} />
+                      <Grid container spacing={2} sx={{ display: { xs: 'flex', justifyContent: 'center', margin: '0 auto' } }}>
+                        <Grid item xs={5} md={1}  >
+                          <img
+                            src={item.imageUrl}
+                            alt={item.name}
+                            style={{ width: '100%', borderRadius: '5px' }}
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={8} sx={{ display: { xs: 'flex', justifyContent: 'center', margin: '0 auto' } }}>
+                          <Link to={`/products/${item.product}`}>
+                            <Typography variant="body1">{item.name}</Typography>
+                          </Link>
+                        </Grid>
+                        <Grid item xs={12} md={3} sx={{ display: { xs: 'flex', justifyContent: 'center', margin: '0 auto' } }}>
+                          <Typography variant="body1">
+                            {item.qty} x {formatPrice(item.price)} ={' '}
+                            {formatPrice(item.qty * item.price)}
+                          </Typography>
+                        </Grid>
+                      </Grid>
                     </ListItem>
                   ))
                 )}
               </List>
-
             </List>
           </Grid>
           <Grid item md={5}>
@@ -109,11 +138,12 @@ export default function Order() {
                       </Grid>
                       <Grid item xs={6}>
                         <Typography variant="body1">
-                          {/* {totalItems} */}
+                          {formatPrice(order.itemsPrice)}
                         </Typography>
                       </Grid>
                     </Grid>
                   </ListItem>
+                  <hr />
                   <ListItem>
                     <Grid container>
                       <Grid item xs={6}>
@@ -121,49 +151,41 @@ export default function Order() {
                       </Grid>
                       <Grid item xs={6}>
                         <Typography variant="body1">
+                          {formatPrice(order.shippingPrice)}
                         </Typography>
                       </Grid>
                     </Grid>
                   </ListItem>
+                  <hr />
                   <ListItem>
                     <Grid container>
                       <Grid item xs={6}>
                         <Typography variant="body1">Tax</Typography>
                       </Grid>
                       <Grid item xs={6}>
-                        {/* <Typography variant="body1">{formatPrice(subTotal)}</Typography> */}
+                        <Typography variant="body1">{formatPrice(order.taxPrice)}</Typography>
                       </Grid>
                     </Grid>
                   </ListItem>
+                  <hr />
                   <ListItem>
                     <Grid container>
                       <Grid item xs={6}>
                         <Typography variant="body1">Total</Typography>
                       </Grid>
                       <Grid item xs={6}>
-                        {/* <Typography variant="body1">{formatPrice(subTotal)}
-                        </Typography> */}
+                        <Typography variant="body1">{formatPrice(order.totalPrice)}
+                        </Typography>
                       </Grid>
                     </Grid>
                   </ListItem>
+                  <hr />
                   <ListItem>
                     {error && (
                       <Typography variant="body1" color="error">
                         {error.data.message}
                       </Typography>
                     )}
-                  </ListItem>
-                  <ListItem>
-                    <Button
-                      type="button"
-                      fullWidth
-                      variant="contained"
-                      color="primary"
-
-                    >
-                      Place Order
-                    </Button>
-
                   </ListItem>
                 </List>
               </CardContent>

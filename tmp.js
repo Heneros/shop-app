@@ -1,40 +1,86 @@
-router.post('/', async (req,res)=>{
-    const orderItemsIds = Promise.all(req.body.orderItems.map(async (orderItem) =>{
-        let newOrderItem = new OrderItem({
-            quantity: orderItem.quantity,
-            product: orderItem.product
-        })
+import React from 'react';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
 
-        newOrderItem = await newOrderItem.save();
-
-        return newOrderItem._id;
-    }))
-    const orderItemsIdsResolved =  await orderItemsIds;
-
-    const totalPrices = await Promise.all(orderItemsIdsResolved.map(async (orderItemId)=>{
-        const orderItem = await OrderItem.findById(orderItemId).populate('product', 'price');
-        const totalPrice = orderItem.product.price * orderItem.quantity;
-        return totalPrice
-    }))
-
-    const totalPrice = totalPrices.reduce((a,b) => a +b , 0);
-
-    let order = new Order({
-        orderItems: orderItemsIdsResolved,
-        shippingAddress1: req.body.shippingAddress1,
-        shippingAddress2: req.body.shippingAddress2,
-        city: req.body.city,
-        zip: req.body.zip,
-        country: req.body.country,
-        phone: req.body.phone,
-        status: req.body.status,
-        totalPrice: totalPrice,
-        user: req.body.user,
-    })
-    order = await order.save();
-
-    if(!order)
-    return res.status(400).send('the order cannot be created!')
-
-    res.send(order);
-})
+export default function OrderDetails({ order }) {
+  return (
+    <Grid container spacing={3}>
+      <Grid item md={8}>
+        <Card>
+          <CardContent>
+            <Typography variant="h6">Shipping</Typography>
+            <List>
+              <ListItem>
+                <ListItemText primary={`Name: ${order.user.name}`} />
+              </ListItem>
+              <ListItem>
+                <ListItemText primary={`Email: ${order.user.email}`} />
+              </ListItem>
+              <ListItem>
+                <ListItemText
+                  primary={`Address: ${order.shippingAddress.address}, ${order.shippingAddress.city}, ${order.shippingAddress.postalCode}, ${order.shippingAddress.country}`}
+                />
+              </ListItem>
+              {order.isDelivered ? (
+                <ListItem>
+                  <ListItemText primary={`Delivered on ${order.deliveredAt}`} />
+                </ListItem>
+              ) : (
+                <ListItem>
+                  <ListItemText primary="Not Delivered" />
+                </ListItem>
+              )}
+              <ListItem>
+                <ListItemText primary={`Payment Method: ${order.paymentMethod}`} />
+              </ListItem>
+            </List>
+            <Typography variant="h6">Order Items</Typography>
+            {order.orderItems.length === 0 ? (
+              <Typography variant="body1">Order is empty</Typography>
+            ) : (
+              <List>
+                {order.orderItems.map((item, index) => (
+                  <ListItem key={index}>
+                    <ListItemText
+                      primary={`${item.qty} x ${item.name} = $${item.qty * item.price}`}
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            )}
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid item md={4}>
+        <Card>
+          <CardContent>
+            <Typography variant="h6">Order Summary</Typography>
+            <List>
+              <ListItem>
+                <ListItemText primary={`Items: $${order.itemsPrice}`} />
+              </ListItem>
+              <Divider />
+              <ListItem>
+                <ListItemText primary={`Shipping: $${order.shippingPrice}`} />
+              </ListItem>
+              <Divider />
+              <ListItem>
+                <ListItemText primary={`Tax: $${order.taxPrice}`} />
+              </ListItem>
+              <Divider />
+              <ListItem>
+                <ListItemText primary={`Total: $${order.totalPrice}`} />
+              </ListItem>
+            </List>
+          </CardContent>
+        </Card>
+      </Grid>
+    </Grid>
+  );
+}
