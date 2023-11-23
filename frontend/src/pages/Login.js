@@ -49,45 +49,48 @@ export default function Login() {
     return (
         <>
             <Wrapper>
-                <Container component="main" maxWidth="xs" sx={{ my: 10 }}>
-                    <Typography variant="h4" component="h4">
-                        Login Page
-                    </Typography>
-                    <Box component="form" onSubmit={onSubmit} sx={{ mt: 3 }}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} sm={12}>
-                                <TextField
-                                    label="E-mail"
-                                    type="email"
-                                    fullWidth
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
+                <Box sx={{ my: 30 }}>
+                    <Container component="main" maxWidth="xs" >
+                        <Typography variant="h4" component="h4">
+                            Login Page
+                        </Typography>
+                        <Box component="form" onSubmit={onSubmit} sx={{ mt: 3 }}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={12}>
+                                    <TextField
+                                        label="E-mail"
+                                        type="email"
+                                        fullWidth
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={12}>
+                                    <TextField
+                                        label="Password"
+                                        type="password"
+                                        fullWidth
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={12}>
+                                    <Button type="submit" size='large' fullWidth variant="outlined">
+                                        Log In
+                                    </Button>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12} sm={12}>
-                                <TextField
-                                    label="Password"
-                                    type="password"
-                                    fullWidth
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={12}>
-                                <Button type="submit" size='large' fullWidth variant="outlined">
-                                    Log In
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </Box>
-                    <Typography variant="h5" sx={{ my: 2 }}>
-                        New Customer? <Link
-                            className='link'
-                            to={redirect ? `/register?redirect=${redirect}` : '/register'}>
-                            Register
-                        </Link></Typography>
-                </Container>
+                        </Box>
+                        <Typography variant="h5" sx={{ my: 2 }}>
+                            New Customer? <Link
+                                className='link'
+                                to={redirect ? `/register?redirect=${redirect}` : '/register'}>
+                                Register
+                            </Link></Typography>
+                    </Container>
+                </Box>
             </Wrapper>
+
         </>
     )
 }

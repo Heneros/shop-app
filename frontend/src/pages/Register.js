@@ -41,59 +41,62 @@ export default function Register() {
   }
 
   return (
-    <Wrapper>
-      <Container component="main" maxWidth="xs" sx={{ mt: 5 }}>
-        <Typography variant="h4" component="h4">
-          Create account
-        </Typography>
-        <FormControl component="form" onSubmit={onSubmit} sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={12}>
-              <TextField
-                label="Name"
-                type="name"
-                focused
-                fullWidth
-                placeholder="Please enter name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <TextField
-                label="E-mail"
-                type="email"
-                fullWidth
-                focused
-                placeholder="Please enter email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <TextField
-                label="Password"
-                type="password"
-                fullWidth
-                focused
-                placeholder="Please enter password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12}>
-              <Button type='submit' size="large" fullWidth variant="contained" color='success' >Submit</Button>
-            </Grid>
-          </Grid>
-        </FormControl>
 
-        <Typography variant="h5" sx={{ my: 2 }}>
-          Have account? <Link
-            className='link'
-            to={redirect ? `/login?redirect=${redirect}` : '/login'}>
-            Login
-          </Link></Typography>
-      </Container>
+    <Wrapper>
+      <Box sx={{ my: 30 }}>
+        <Container component="main" maxWidth="xs" >
+          <Typography variant="h4" component="h4">
+            Create account
+          </Typography>
+          <FormControl component="form" onSubmit={onSubmit} sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={12}>
+                <TextField
+                  label="Name"
+                  type="name"
+                  focused
+                  fullWidth
+                  placeholder="Please enter name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <TextField
+                  label="E-mail"
+                  type="email"
+                  fullWidth
+                  focused
+                  placeholder="Please enter email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <TextField
+                  label="Password"
+                  type="password"
+                  fullWidth
+                  focused
+                  placeholder="Please enter password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <Button type='submit' size="large" fullWidth variant="contained" color='success' >Submit</Button>
+              </Grid>
+            </Grid>
+          </FormControl>
+
+          <Typography variant="h5" sx={{ my: 2 }}>
+            Have account? <Link
+              className='link'
+              to={redirect ? `/login?redirect=${redirect}` : '/login'}>
+              Login
+            </Link></Typography>
+        </Container>
+      </Box>
     </Wrapper>
   )
 }

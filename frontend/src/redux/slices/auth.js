@@ -32,7 +32,6 @@ const authSlice = createSlice({
             localStorage.setItem('expirationTime', expirationTime);
 
             Cookies.set('jwt', action.payload.token, { expires: 3 });
-            // console.log('JWT Token:', action.payload.token);
         },
         logout: (state, action) => {
             state.userInfo = null;

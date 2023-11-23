@@ -7,14 +7,12 @@ import { clearCartItems } from '../redux/slices/cartSlice'
 import { Box, Button, Card, CardContent, Container, Typography, ListGroupItem, ListGroup, ListItem, Grid, List, ListItemText } from '@mui/material';
 import { formatPrice } from '../utils/helpers';
 import PageHero from '../components/PageHero';
+import Loader from '../components/Loader';
 
 export default function PlaceOrder() {
     const navigate = useNavigate();
     const cart = useSelector((state) => state.cart);
-    // const { cartItems } = cart;
-
-    // console.log(cart.cartItems);
-    // const { cartItems } =useSelector((state) => state.cart); 
+    const dispatch = useDispatch();
 
     const orderItems = cart.cartItems.map(item => ({
         ...item,
@@ -22,10 +20,10 @@ export default function PlaceOrder() {
         _id: undefined
     }));
 
-    const subTotal = cart.cartItems.reduce((total, item) => total + item.price * item.qty, 0);
     const totalItems = cart.cartItems.reduce((total, item) => total + item.qty, 0)
-
+    const { userInfo } = useSelector((state) => state.auth);
     const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+
     useEffect(() => {
         if (!cart.shippingAddress.address) {
             navigate('/shipping')
@@ -34,14 +32,13 @@ export default function PlaceOrder() {
         }
     }, [cart.paymentMethod, cart.shippingAddress, navigate])
 
-    const dispatch = useDispatch();
-    const { userInfo } = useSelector((state) => state.auth);
 
-    // const { user } = useSelector((state) => state.auth);
-    // console.log(userInfo._id)
+
+ 
 
     const placeOrderHandler = async () => {
         try {
+
             const res = await createOrder({
                 user: userInfo._id,
                 orderItems: orderItems,
@@ -53,30 +50,37 @@ export default function PlaceOrder() {
                 totalPrice: cart.totalPrice,
             }).unwrap();
 
-            // dispatch(clearCartItems());
-            console.log(res)
+            dispatch(clearCartItems());
+            // console.log(res._id)
             navigate(`/order/${res._id}`);
         } catch (error) {
             console.log(error)
             // toast.error(error?.message || "An error occurred"); 
-
         }
     }
 
 
-    return (
+
+
+    return isLoading ? (
+        <Loader />
+    ) : error ? (
+        <>Error</>
+    ) : (
         <>
+            {isLoading && <Loader />}
             <PageHero title="Order" />
             <Container>
                 <Box sx={{
                     display: 'flex',
+                    my: 12,
                     flexDirection: {
                         md: 'row',
                         sm: 'column',
                         xs: 'column',
                     }
                 }}>
-                    <Grid item md={7}>
+                    <Grid item md={8} sx={{ minWidth: '50%' }}>
                         <List>
                             <ListItem>
                                 <Typography variant="h5">Shipping</Typography>
@@ -139,7 +143,7 @@ export default function PlaceOrder() {
 
                         </List>
                     </Grid>
-                    <Grid item md={5}>
+                    <Grid item md={5} sx={{ minWidth: '45%' }}>
                         <Card>
                             <CardContent>
                                 <Typography variant="h3">Order Summary</Typography>
@@ -175,7 +179,7 @@ export default function PlaceOrder() {
                                                 <Typography variant="body1">Tax</Typography>
                                             </Grid>
                                             <Grid item xs={6}>
-                                                <Typography variant="body1">{formatPrice(subTotal)}</Typography>
+                                                <Typography variant="body1">$ {cart.taxPrice}</Typography>
                                             </Grid>
                                         </Grid>
                                     </ListItem>
@@ -185,7 +189,7 @@ export default function PlaceOrder() {
                                                 <Typography variant="body1">Total</Typography>
                                             </Grid>
                                             <Grid item xs={6}>
-                                                <Typography variant="body1">{formatPrice(subTotal)}
+                                                <Typography variant="body1">$ {cart.totalPrice}
                                                 </Typography>
                                             </Grid>
                                         </Grid>

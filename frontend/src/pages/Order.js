@@ -1,6 +1,6 @@
-import React from 'react'
-import { useDispatch } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Typography, Card, Container, List, ListItem, ListItemText, Divider, CardContent, Grid, Button, Box, Alert } from '@mui/material';
 
 
@@ -13,14 +13,15 @@ import { formatPrice } from '../utils/helpers';
 export default function Order() {
   const { id: orderId } = useParams();
   const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
 
   const { data: order, isLoading, error } = useGetOrderDetailsQuery(orderId);
-  // const totalItems = order.
-  console.log(order);
+
+
   return isLoading ? (
     <Loader />
   ) : error ? (
-    <Message severity="error" />
+    <Alert security='error'>Error</Alert>
   ) : (
     <>
       <PageHero title="Details" />
@@ -29,9 +30,9 @@ export default function Order() {
           my: 5,
           fontSize: {
             xl: 30,
-            lg: 30, 
+            lg: 30,
             md: 20,
-            sm: 20, 
+            sm: 20,
             xs: 20,
           },
           fontWeight: 600
