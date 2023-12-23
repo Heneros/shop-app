@@ -4,12 +4,35 @@ const asyncHandler = require('./asyncHandler.js');
 const User = require('../models/userModel.js');
 
 
+
+
+const auth = asyncHandler(async (req, res, next) => {
+    // let token = req.header("x-auth-token");
+    let token;
+    token = req.cookies.jwt;
+    if (!token) {
+        res.status(401);
+        throw new Error("Not authorized, No token");
+    }
+
+    try {
+        const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+
+        req.user = await User.findById(decoded.id, "-password");
+        next();
+    } catch (err) {
+        res.status(401);
+        throw new Error("Not authorized, Invalid token");
+    }
+});
+
+
+
 const protect = asyncHandler(async (req, res, next) => {
+
     let token;
     // token = res.cookies.jwt;
     token = req.cookies.jwt;
-
-
 
     console.log(token)
     if (token) {
@@ -38,4 +61,4 @@ const admin = (req, res, next) => {
     }
 };
 
-module.exports = { protect, admin }
+module.exports = { protect, admin, auth }

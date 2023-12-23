@@ -11,9 +11,14 @@ import { formatPrice } from '../utils/helpers';
 
 export default function Order() {
   const { id: orderId } = useParams();
-  const { data: order, isLoading, error } = useGetOrderDetailsQuery(orderId);
+  const {
+    data: order,
+    refetch,
+    isLoading,
+    error,
+  } = useGetOrderDetailsQuery(orderId);
 
-  
+
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
 
