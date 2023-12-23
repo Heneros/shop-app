@@ -31,25 +31,14 @@ const authSlice = createSlice({
             const expirationTime = new Date().getTime() + 30 * 24 * 60 * 60 * 1000;
             localStorage.setItem('expirationTime', expirationTime);
 
-            Cookies.set('jwt', action.payload.token, { expires: 3 });
+            // Cookies.set('jwt', action.payload.token, { expires: 30 });
         },
         logout: (state, action) => {
             state.userInfo = null;
+            Cookies.remove('jwt')
             localStorage.clear();
         }
     }, extraReducers: {
-        // [fetchRegister.pending]: (state) => {
-        //     state.status = 'loading';
-        //     state.data = null;
-        // },
-        // [fetchRegister.fulfilled]: (state, action) => {
-        //     state.status = 'loaded';
-        //     state.data = action.payload;
-        // }, [fetchRegister.rejected]: (state) => {
-        //     state.status = 'error';
-        //     state.data = null;
-        // },
-
 
         [fetchAuthMe.pending]: (state) => {
             state.status = 'loading';

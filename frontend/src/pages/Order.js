@@ -6,16 +6,18 @@ import { Typography, Card, Container, List, ListItem, ListItemText, Divider, Car
 
 import { useGetOrderDetailsQuery } from '../redux/slices/orderApiSlice';
 import Loader from '../components/Loader';
-import Message from '../components/Message';
 import PageHero from '../components/PageHero';
 import { formatPrice } from '../utils/helpers';
 
 export default function Order() {
   const { id: orderId } = useParams();
+  const { data: order, isLoading, error } = useGetOrderDetailsQuery(orderId);
+
+  
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
 
-  const { data: order, isLoading, error } = useGetOrderDetailsQuery(orderId);
+
 
 
   return isLoading ? (

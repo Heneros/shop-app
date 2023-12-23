@@ -33,9 +33,6 @@ export default function PlaceOrder() {
     }, [cart.paymentMethod, cart.shippingAddress, navigate])
 
 
-
- 
-
     const placeOrderHandler = async () => {
         try {
 

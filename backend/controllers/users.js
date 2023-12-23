@@ -10,30 +10,26 @@ const getAllUsers = asyncWrapper(async (req, res) => {
     res.json(users);
 });
 
+
 const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
-
-        const token = jwt.sign({
-            userId: user._id,
-            isAdmin: user.isAdmin
-        }, process.env.JWT_SECRET, { expiresIn: '3d' })
-
-        res.status(200).json({
+        generateToken(res, user._id);
+        res.json({
             _id: user._id,
             name: user.name,
             email: user.email,
-            isAdmin: user.isAdmin,
-            token
+            isAdmin: user.isAdmin
         })
-
     } else {
         res.status(401);
         throw new Error('Invalid email or password')
     }
+    // res.send('auth user')
+
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
@@ -43,7 +39,6 @@ const logoutUser = asyncHandler(async (req, res) => {
     })
     res.status(200).json({ message: 'Logout success' })
 });
-
 const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
 
@@ -51,36 +46,28 @@ const registerUser = asyncHandler(async (req, res) => {
 
     if (userExists) {
         res.status(400);
-        throw new Error('User already exists')
+        throw new Error('User already exists');
     }
-
-    // const doc = new User({
-    //     name: req.body.name,
-    //     email: req.body.email,
-    //     password: req.body.password,
-    // });
-
-    // const user = await doc.save();
 
     const user = await User.create({
         name,
         email,
-        password
+        password,
     });
 
     if (user) {
         generateToken(res, user._id);
+
         res.status(201).json({
             _id: user._id,
             name: user.name,
             email: user.email,
-            isAdmin: user.isAdmin
-        })
+            isAdmin: user.isAdmin,
+        });
     } else {
         res.status(400);
         throw new Error('Invalid user data');
     }
-
 });
 
 
