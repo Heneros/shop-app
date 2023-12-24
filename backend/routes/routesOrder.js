@@ -4,7 +4,7 @@ const express = require("express");
 const { addOrderItems, getMyOrders, getOrders, getOrderById } = require("../controllers/ordersController");
 const { protect, admin, auth } = require("../middleware/authMiddleware");
 const { verifyToken } = require("../utils/verifyToken");
-const Orderr = require("../models/Order");
+// const Orderr = require("../models/Order");
 const router = express.Router();
 
 // router.post("/", , addOrderItems).get(protect, admin, getOrders);

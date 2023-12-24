@@ -9,13 +9,13 @@ export const orderApiSlice = apiSlice.injectEndpoints({
                 url: ORDERS_URL,
                 method: 'POST',
                 body: order,
-                // credentials: 'include',
+                credentials: 'include',
             }),
         }),
         getOrderDetails: builder.query({
             query: (id) => ({
                 url: `${ORDERS_URL}/${id}`,
-                credentials: 'include',
+                // credentials: 'include',
             }),
             keepUnusedDataFor: 5,
 

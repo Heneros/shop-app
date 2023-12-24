@@ -1,10 +1,10 @@
 const asyncHandler = require("../middleware/asyncHandler");
-const Order = require("../models/orderModel");
-const Orderr = require("../models/Order");
+ const Order = require("../models/orderModel");
+// const Order = require("../models/Order");
 
 
 const addOrderItems = asyncHandler(async (req, res) => {
-    const newOrder = new Orderr(req.body);
+    const newOrder = new Order(req.body);
 
     try {
         const savedOrder = await newOrder.save();
@@ -39,12 +39,12 @@ const getOrders = asyncHandler(async (req, res) => {
 });
 
 const getMyOrders = asyncHandler(async (req, res) => {
-    const orders = Orderr.find({ user: req.user._id });
+    const orders = Order.find({ user: req.user._id });
     res.json(orders);
 })
 
 const getOrderById = asyncHandler(async (req, res) => {
-    const order = await Orderr.findById(req.params.id).populate(
+    const order = await Order.findById(req.params.id).populate(
         'user',
         'name email'
     );

@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const asyncHandler = require('./asyncHandler.js');
 const User = require('../models/userModel.js');
+const Order = require('../models/orderModel.js');
 
 
 
@@ -29,17 +30,31 @@ const auth = asyncHandler(async (req, res, next) => {
 
 
 const protect = asyncHandler(async (req, res, next) => {
-
     let token;
-    // token = res.cookies.jwt;
+
+
     token = req.cookies.jwt;
 
-    console.log(token)
     if (token) {
         try {
+
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
             req.user = await User.findById(decoded.userId).select('-password');
-            next();
+
+            const order = await Order.findById(req.params.id);
+            // console.log(order.user);
+            // console.log(decoded.userId);
+            // console.log('Decoded'.decoded.userId);
+            // if (order.user = decoded.userId) {
+            if (order && order.user.toString() === decoded.userId) {
+
+                req.user = await User.findById(decoded.userId).select('-password');
+                next();
+            } else {
+                res.status(403);
+                throw new Error('Forbidden');
+            }
         } catch (error) {
             console.error(error);
             res.status(401);
@@ -50,7 +65,6 @@ const protect = asyncHandler(async (req, res, next) => {
         throw new Error('Not authorized, no token');
     }
 });
-
 
 const admin = (req, res, next) => {
     if (req.user && req.user.isAdmin) {
