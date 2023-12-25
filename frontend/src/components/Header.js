@@ -208,7 +208,7 @@ export default function Header(props) {
                       >
                         <MenuItem onClick={handleClose} >
                           <Avatar />
-                          <Link to="/profile" className='menu-item-nav'>Profile</Link>
+                          <Link to='/profile' className='menu-item-nav'>Profile</Link>
                         </MenuItem>
                         <MenuItem onClick={logoutHandler}>
                           <ListItemIcon>

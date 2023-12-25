@@ -28,7 +28,7 @@ export default function Order() {
   return isLoading ? (
     <Loader />
   ) : error ? (
-    <Alert security='error'>Error</Alert>
+    <Alert severity="error">error  </Alert>
   ) : (
     <>
       <PageHero title="Details" />

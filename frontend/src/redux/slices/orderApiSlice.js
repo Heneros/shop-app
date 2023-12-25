@@ -15,12 +15,25 @@ export const orderApiSlice = apiSlice.injectEndpoints({
         getOrderDetails: builder.query({
             query: (id) => ({
                 url: `${ORDERS_URL}/${id}`,
-                // credentials: 'include',
+                credentials: "include"
             }),
             keepUnusedDataFor: 5,
-
-        })
+        }),
+        getMyOrders: builder.query({
+            query: () => ({
+                url: `${ORDERS_URL}/mine`,
+                credentials: "include"
+            }),
+            keepUnusedDataFor: 60,
+        }),
+        getOrders: builder.query({
+            query: () => ({
+                url: ORDERS_URL,
+                credentials: "include"
+            }),
+            keepUnusedDataFor: 5,
+        }),
     })
 })
 
-export const { useCreateOrderMutation, useGetOrderDetailsQuery } = orderApiSlice;
+export const { useCreateOrderMutation, useGetOrderDetailsQuery, useGetMyOrdersQuery, useGetOrdersQuery } = orderApiSlice;

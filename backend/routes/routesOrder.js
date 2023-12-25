@@ -11,18 +11,7 @@ const router = express.Router();
 router.route("/").post(addOrderItems).get(protect, getOrders);
 router.route('/mine').get(protect, getMyOrders);
 router.route('/:id').get(protect, getOrderById);
-
-// router.route('/').post(addOrderItems).get(getOrders);
-
-// router.post("/", async (req, res) => {
-//     const newOrder = new Orderr(req.body);
-//     try {
-//         const savedOrder = await newOrder.save();
-//         res.status(200).json(savedOrder);
-//     } catch (err) {
-//         res.status(500).json(err);
-//     }
-// });
+// router.route('/:id/pay').put(protect, updateOrderToPaid);
 
 
 
