@@ -207,8 +207,11 @@ export default function Header(props) {
                         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                       >
                         <MenuItem onClick={handleClose} >
-                          <Avatar />
-                          <Link to='/profile' className='menu-item-nav'>Profile</Link>
+
+                          <Link to='/profile' className='menu-item-nav'>
+                            <Avatar />
+                            Profile
+                          </Link>
                         </MenuItem>
                         <MenuItem onClick={logoutHandler}>
                           <ListItemIcon>
