@@ -160,6 +160,70 @@ export default function Header(props) {
                       </div>
                     </Link>
                   </div>
+                  {userInfo && userInfo.isAdmin && (
+                    <div className='userInfo'>
+
+                      <Button
+                        size="large"
+                        aria-label="account of current user"
+                        aria-controls="menu-appbar"
+                        aria-haspopup="true"
+                        onClick={handleMenu}
+                        className='auth-user'>
+                        {userInfo.name} User
+                        <FaUserPlus />
+                      </Button>
+                      <Menu
+                        id="menu-appbar"
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                        PaperProps={{
+                          elevation: 0,
+                          sx: {
+                            overflow: 'visible',
+                            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                            mt: 1.5,
+                            '& .MuiAvatar-root': {
+                              width: 32,
+                              height: 32,
+                              ml: -0.5,
+                              mr: 1,
+                            },
+                            '&:before': {
+                              content: '""',
+                              display: 'block',
+                              position: 'absolute',
+                              top: 0,
+                              right: 14,
+                              width: 10,
+                              height: 10,
+                              bgcolor: 'background.paper',
+                              transform: 'translateY(-50%) rotate(45deg)',
+                              zIndex: 0,
+                            },
+                          },
+                        }}
+                        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                      >
+                        <MenuItem onClick={handleClose} >
+
+                          <Link to='/profile' className='menu-item-nav'>
+                            <Avatar />
+                            Profile
+                          </Link>
+                        </MenuItem>
+                        <MenuItem onClick={logoutHandler}>
+                          <ListItemIcon>
+                            <Logout fontSize="small" />
+                          </ListItemIcon>
+                          Logout
+                        </MenuItem>
+                      </Menu>
+                    </div>
+                  )}
+
                   {userInfo ? (
                     <div className='userInfo'>
                       <Button
@@ -219,12 +283,6 @@ export default function Header(props) {
                           </ListItemIcon>
                           Logout
                         </MenuItem>
-                        {/* <li style={{ padding: ' 0 15px' }} >
-                          <Link to="/profile">Profile</Link>
-                        </li>
-                        <li style={{ padding: ' 0 15px' }} >
-                          <Link onClick={logoutHandler}>Logout</Link>
-                        </li> */}
                       </Menu>
                     </div>
                   ) : (

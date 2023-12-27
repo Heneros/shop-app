@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Grid, Typography, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Container } from '@mui/material';
+import { Grid, Typography, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Container, CircularProgress } from '@mui/material';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 
+
 import { useProfileMutation, userApiSlice } from '../redux/slices/usersApiSlice';
 import { useGetMyOrdersQuery } from '../redux/slices/orderApiSlice';
-import { setCredentials } from '../redux/slices/authSlice';
+import { setCredentials } from '../redux/slices/auth';
+import { Link } from 'react-router-dom';
 
 export default function Profile() {
     const [name, setName] = useState('');
@@ -44,12 +46,101 @@ export default function Profile() {
     }
     return (
         <Container>
-            <Grid container spacing={3}>
+            <Grid container style={{ marginTop: '5%' }}>
                 <Grid item xs={12} md={3}>
                     <Typography variant="h4">User Profile</Typography>
+                    <form onSubmit={submitHandler} style={{ marginTop: '20%' }}>
+                        <TextField
+                            fullWidth
+                            label="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                        <TextField
+                            fullWidth
+                            label="Email Address"
+                            variant="outlined"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            margin="normal"
+                        />
+                        <TextField
+                            fullWidth
+                            type="password"
+                            label="Password"
+                            variant="outlined"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            margin="normal"
+                        />
+                        <TextField
+                            fullWidth
+                            type="password"
+                            label="Confirm Password"
+                            variant="outlined"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            margin="normal"
+                        />
+                        <Button type="submit">
+                            Update
+                        </Button>
+                        {loadingUpdateProfile && <CircularProgress />}
+                    </form>
                 </Grid>
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12} md={9}>
                     <Typography variant="h4">My orders</Typography>
+                    {isLoading ? (
+                        <CircularProgress />
+                    ) : error ? (
+                        <Typography variant="body1" color="error">
+                            {error?.data.message || error.error}
+                        </Typography>
+                    ) : (
+                        <TableContainer component={Paper}>
+                            <Table sx={{ minWidth: 700 }}>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>ID</TableCell>
+                                        <TableCell>Date</TableCell>
+                                        <TableCell>Total</TableCell>
+                                        <TableCell>Paid</TableCell>
+                                        <TableCell>Delivered</TableCell>
+                                        <TableCell></TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {orders.map((order) => (
+                                        <TableRow key={order._id}>
+                                            <TableCell>{order._id}</TableCell>
+                                            <TableCell>{order.createdAt.substring(0, 10)}</TableCell>
+                                            <TableCell>${order.totalPrice}</TableCell>
+                                            <TableCell>
+                                                {order.isPaid ? (
+                                                    order.paidAt.substring(0, 10)
+                                                ) : (
+                                                    <Typography variant="body1" color="error"><strong>Not Paid</strong></Typography>
+                                                )}
+                                            </TableCell>
+                                            <TableCell>
+                                                {order.isDelivered ? (
+                                                    order.deliveredAt.substring(0, 10)
+                                                ) : (
+                                                    <Typography variant="body1" color="error"><strong>Not Delivered</strong></Typography>
+                                                )}
+                                            </TableCell>
+                                            <TableCell>
+                                                <Link to={`/order/${order._id}`}>
+                                                    <Button variant='outlined'>Details</Button>
+                                                </Link>
+                                            </TableCell>
+
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    )}
                 </Grid>
             </Grid>
         </Container>
