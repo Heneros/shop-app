@@ -16,6 +16,7 @@ import Register from './pages/Register';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PrivateRoute from './components/PrivateRoute';
+import AdminRoute from './components/AdminRoute';
 
 import './index.css';
 import SingleProduct from './pages/SingleProduct';
@@ -24,6 +25,12 @@ import PlaceOrder from './pages/PlaceOrder';
 import Payment from './pages/Payment';
 import Order from './pages/Order';
 import Profile from './pages/Profile';
+
+import OrderList from './pages/admin/OrderList'
+import ProductEdit from './pages/admin/ProductEdit'
+import ProductList from './pages/admin/ProductList'
+import UserEdit from './pages/admin/UserEdit'
+import UserList from './pages/admin/UserList'
 
 const router = createBrowserRouter([
   {
@@ -53,8 +60,7 @@ const router = createBrowserRouter([
       {
         path: 'register',
         element: <Register />
-      },
-      {
+      }, {
         element: <PrivateRoute />,
         children: [
           {
@@ -76,7 +82,34 @@ const router = createBrowserRouter([
           },
 
         ]
+      }, {
+        element: <AdminRoute />,
+        children: [
+          {
+            path: '/admin/orderlist',
+            element: <OrderList />
+          },
+          {
+            path: '/admin/productlist',
+            element: <ProductList />
+          },
+          {
+            path: '/admin/productlist/:pageNumber',
+            element: <ProductList />
+          },
+          {
+            path: '/admin/product/:id/edit',
+            element: <ProductEdit />
+          }, {
+            path: '/admin/userlist',
+            element: <UserList />
+          }, {
+            path: '/admin/user/:id/edit',
+            element: <UserEdit />
+          },
+        ]
       }
+
     ]
   }
 ])

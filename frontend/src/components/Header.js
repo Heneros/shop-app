@@ -34,6 +34,9 @@ export default function Header(props) {
   const { window } = props;
   const [anchorEl, setAnchorEl] = useState(null);
 
+  const [anchorElSecond, setAnchorElSecond] = useState(null);
+
+
   const { userInfo } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart)
 
@@ -59,10 +62,16 @@ export default function Header(props) {
   const handleClose = () => {
     setAnchorEl(null);
   }
+  const handleCloseSecond = () => {
+    setAnchorElSecond(null);
+  }
+
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget)
   }
-
+  const handleMenuSecond = (event) => {
+    setAnchorElSecond(event.currentTarget)
+  }
 
   const drawer = (
     <Wrapper>
@@ -160,69 +169,7 @@ export default function Header(props) {
                       </div>
                     </Link>
                   </div>
-                  {userInfo && userInfo.isAdmin && (
-                    <div className='userInfo'>
 
-                      <Button
-                        size="large"
-                        aria-label="account of current user"
-                        aria-controls="menu-appbar"
-                        aria-haspopup="true"
-                        onClick={handleMenu}
-                        className='auth-user'>
-                        {userInfo.name} User
-                        <FaUserPlus />
-                      </Button>
-                      <Menu
-                        id="menu-appbar"
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                        PaperProps={{
-                          elevation: 0,
-                          sx: {
-                            overflow: 'visible',
-                            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                            mt: 1.5,
-                            '& .MuiAvatar-root': {
-                              width: 32,
-                              height: 32,
-                              ml: -0.5,
-                              mr: 1,
-                            },
-                            '&:before': {
-                              content: '""',
-                              display: 'block',
-                              position: 'absolute',
-                              top: 0,
-                              right: 14,
-                              width: 10,
-                              height: 10,
-                              bgcolor: 'background.paper',
-                              transform: 'translateY(-50%) rotate(45deg)',
-                              zIndex: 0,
-                            },
-                          },
-                        }}
-                        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                      >
-                        <MenuItem onClick={handleClose} >
-
-                          <Link to='/profile' className='menu-item-nav'>
-                            <Avatar />
-                            Profile
-                          </Link>
-                        </MenuItem>
-                        <MenuItem onClick={logoutHandler}>
-                          <ListItemIcon>
-                            <Logout fontSize="small" />
-                          </ListItemIcon>
-                          Logout
-                        </MenuItem>
-                      </Menu>
-                    </div>
-                  )}
 
                   {userInfo ? (
                     <div className='userInfo'>
@@ -292,6 +239,67 @@ export default function Header(props) {
                         <FaUserPlus />
                       </Link>
                     </li>
+                  )}
+
+                  {userInfo && userInfo.isAdmin && (
+                    <div className='userInfo'>
+                      <Button
+                        size="large"
+                        aria-label="account of current user"
+                        aria-controls="menu-appbaradmin"
+                        aria-haspopup="true"
+                        onClick={handleMenuSecond}
+                        className='auth-user'
+                      >
+                        {userInfo.name} User
+                        <FaUserPlus />
+                      </Button>
+                      <Menu
+                        id="menu-appbaradmin"
+                        anchorEl={anchorElSecond}
+                        open={Boolean(anchorElSecond)}
+                        onClose={handleCloseSecond}
+                        PaperProps={{
+                          elevation: 0,
+                          sx: {
+                            overflow: 'visible',
+                            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                            mt: 1.5,
+
+                            '&:before': {
+                              content: '""',
+                              display: 'block',
+                              position: 'absolute',
+                              top: 0,
+                              right: 14,
+                              width: 10,
+                              height: 10,
+                              bgcolor: 'background.paper',
+                              transform: 'translateY(-50%) rotate(45deg)',
+                              zIndex: 0,
+                            },
+                          },
+                        }}
+                        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                      >
+                        <MenuItem>
+                          <Link to='/admin/productlist' className='menu-item-nav'>
+                            Products
+                          </Link>
+                        </MenuItem>
+                        <MenuItem >
+                          <Link to='/admin/userlist' className='menu-item-nav'>
+                            Users
+                          </Link>
+                        </MenuItem>
+                        <MenuItem >
+                          <Link to='/admin/orderlist' className='menu-item-nav'>
+                            Orders
+                          </Link>
+                        </MenuItem>
+                      </Menu>
+                    </div>
                   )}
                 </List>
               </Box>
