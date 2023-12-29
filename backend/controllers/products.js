@@ -4,8 +4,19 @@ const asyncWrapper = require("../middleware/async");;
 
 
 const createProduct = asyncWrapper(async (req, res) => {
-    const product = await Product.create(req.body);
-    res.status(201).json({ product });
+    const product = new Product({
+        name: 'Sample name',
+        price: 0,
+        user: req.user._id,
+        shipping: true,
+        rating: 5,
+        shipping: true,
+        imageUrl: '/images/sample.jpeg',
+        categories: ['Sample Brand'],
+        qty: 0
+    });
+    const createdProduct = await product.save();
+    res.status(201).json(createdProduct);
 });
 
 
@@ -13,7 +24,7 @@ const getLastFilters = async (req, res) => {
     try {
         const products = await Product.find().exec();
         const filters = products.map((obj) => obj.categories).flat().slice(0, 15) //получение из объекта products все категории.
-        res.status(201).json( filters );
+        res.status(201).json(filters);
     } catch (error) {
         console.log(error);
         res.status(500).json({
@@ -123,6 +134,37 @@ const updateProduct = asyncWrapper(async (req, res) => {
         res.status(404).json({ msg: ` product not found.  Id ${productId} ` });;
     }
     res.status(200).json({ msg: `Id product been updated ${productId} ` });;
+});
+
+const createProductReview = asyncWrapper(async (req, res) => {
+    const { rating, comment } = req.body;
+    const product = await Product.findById(req.params.id);
+    if (product) {
+        const alreadyReviewed = product.reviews.find((r) => r.user.toString() === req.user._id.toString());
+        if (alreadyReviewed) {
+            res.status(400);
+            throw new Error('Product already reviewed');
+        }
+        const review = {
+            name: req.user.name,
+            rating: Number(rating),
+            comment,
+            user: req.user._id
+        };
+        product.reviews.push(review);
+        product.numReviews = product.reviews.length;
+
+        product.rating =
+            product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+            product.reviews.length;
+
+        await product.save();
+        res.status(201).json({ message: 'Review added' });
+    } else {
+        res.status(404);
+        throw new Error('Product not found');
+    }
 })
+
 
 module.exports = { getAllProducts, createProduct, getProduct, deleteProduct, updateProduct, getLastFilters };
