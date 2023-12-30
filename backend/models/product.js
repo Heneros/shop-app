@@ -13,7 +13,8 @@ const ProductSchema = new mongoose.Schema({
     },
     price: {
         type: Number,
-        required: [true, 'product price must be provided']
+        required: [true, 'product price must be provided'],
+        default: 0,
     },
     rating: {
         type: Number,

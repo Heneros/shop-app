@@ -124,16 +124,27 @@ const deleteProduct = asyncWrapper(async (req, res) => {
 
 
 const updateProduct = asyncWrapper(async (req, res) => {
-    const { id: productId } = req.params;
+    const { name, price, shipping, imageUrl, categories, qty } = req.body;
 
-    const product = await Product.findOneAndUpdate({ _id: productId }, req.body, {
-        new: true,
-        runValidators: true,
-    })
-    if (!product) {
-        res.status(404).json({ msg: ` product not found.  Id ${productId} ` });;
+    const product = await Product.findById(req.params.id);
+
+
+    if (product) {
+        product.name = name;
+        product.price = price;
+        product.shipping = shipping;
+        product.imageUrl = imageUrl;
+        product.categories = categories;
+        product.qty = qty;
+        // product.user = req.user._id; 
+
+        const updatedProduct = await product.save();
+        res.json(updatedProduct);
+
+    } else {
+        res.status(404);
+        throw new Error('Resource not found');
     }
-    res.status(200).json({ msg: `Id product been updated ${productId} ` });;
 });
 
 const createProductReview = asyncWrapper(async (req, res) => {
