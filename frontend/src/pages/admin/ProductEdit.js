@@ -4,9 +4,10 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import { toast } from 'react-toastify';
 import Loader from '../../components/Loader';
-import { Alert, Box, Button, Container, FormControl, FormGroup, FormLabel, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Container, FormControl, FormGroup, FormLabel, Grid, Input, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { Message } from '@mui/icons-material';
 import PageHero from '../../components/PageHero';
+import { useUploadProductImageMutation } from '../../redux/slices/usersApiSlice';
 
 export default function ProductEdit() {
   const { id: productId } = useParams();
@@ -21,6 +22,7 @@ export default function ProductEdit() {
   const { data: product, isLoading, refetch, error } = useGetProductDetailsQuery(productId);
 
   const [updateProduct, { isLoading: loadingUpdate }] = useUpdateProductMutation();
+  const [uploadProductImage, { isLoading: loadingUpload }] = useUploadProductImageMutation();
 
   const navigate = useNavigate();
 
@@ -35,7 +37,7 @@ export default function ProductEdit() {
       setQty(product?.product?.qty);
     }
   }, [product?.product]);
-  console.log(name);
+  // console.log(name);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -55,6 +57,20 @@ export default function ProductEdit() {
     } catch (err) {
       console.log(err.error);
       toast.error(err?.data?.message || err.error);
+    }
+  }
+
+  const uploadFileHandler = async (e) => {
+    const formData = new FormData();
+    formData.append('image', e.target.files[0]);
+    try {
+      
+      const res = await uploadProductImage(formData).unwrap();
+      toast.success(res.message);
+      setImageUrl(res.image);
+      console.log(res)
+    } catch (err) {
+      console.log(err)
     }
   }
 
@@ -87,12 +103,15 @@ export default function ProductEdit() {
                   onChange={(e) => setPrice(e.target.value)}
                 />
               </Grid>
-              <Grid item xs={12} sm={6} sx={{ display: "flex", flexDirection: "column" }}>
-                <FormLabel>Image</FormLabel>
-                <TextField
-                  type="file"
-                  onChange={(e) => setImageUrl(e.target.value)}
-                />
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <FormLabel>Image</FormLabel>
+
+                  <FormControl>
+                    <TextField type="text" placeholder='Enter image url' value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+                    <TextField type="file" placeholder='Choose file' id="upload-image" onChange={uploadFileHandler} />
+                  </FormControl>
+                </FormControl>
               </Grid>
               <Grid item xs={12}>
                 <Select

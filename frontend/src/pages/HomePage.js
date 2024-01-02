@@ -5,9 +5,12 @@ import ProductList from '../components/ProductList';
 import { styled } from 'styled-components';
 import PageHero from '../components/PageHero';
 import { Container } from '@mui/material';
+import { useParams } from 'react-router-dom';
+import { useGetProductsQuery } from '../redux/slices/productApiSlice';
 
 const HomePage = () => {
-
+  const { pageNumber, keyword } = useParams();
+  const { data, isLoading, error } = useGetProductsQuery({ keyword, pageNumber });
   return (
     <main >
 

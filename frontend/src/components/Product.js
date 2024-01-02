@@ -14,7 +14,7 @@ export default function Product({ _id, name, imageUrl, price, rating, company })
   const { data, error } = useGetProductDetailsQuery(_id);
   const product = data?.product;
 
-
+// console.log(imageUrl)
 
   const addToCartHandler = () => {
     dispatch(addToCart({ ...product, qty }));

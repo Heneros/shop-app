@@ -56,8 +56,16 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 // credentials: 'include',
             }),
             invalidatesTags: ['User'],
+        }),
+        uploadProductImage: builder.mutation({
+            query: (data) => ({
+                url: `/api/upload`,
+                method: 'POST',
+                body: data,
+                // credentials: 'include',
+            })
         })
     })
 });
 
-export const { useLoginMutation, useRegistrationMutation, useLogoutMutation, useProfileMutation, useDeleteUserMutation, useGetUserDetailsMutation, useUpdateUserMutation } = userApiSlice;
+export const { useLoginMutation, useRegistrationMutation, useLogoutMutation, useProfileMutation, useDeleteUserMutation, useGetUserDetailsMutation, useUpdateUserMutation, useUploadProductImageMutation } = userApiSlice;

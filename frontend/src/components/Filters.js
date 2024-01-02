@@ -10,12 +10,16 @@ export default function Filters() {
 
   const dispatch = useDispatch();
   const { selectedCategory, selectedCompany, selectedShipping } = useSelector((state) => state.products);
-  const products = useSelector(selectAllProducts);
+  const { products } = useSelector(selectAllProducts);
+
+
+
+  // console.log(products);
   // const selectedShipping = useSelector((state) => state.products.selectedShipping);
 
-  useEffect(() => {
-    dispatch(fetchFilters());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(fetchFilters());
+  // }, []);
 
   const handleCategoryClick = (categories) => {
     dispatch(updateCategoryFilter(categories));
@@ -47,7 +51,6 @@ export default function Filters() {
   const companiesUniq = [...new Set(companies)];
 
   // const shipping = Array.isArray(products) ? products.map((product) => product.shipping) : [];
-
   // console.log(shipping);
 
   return (

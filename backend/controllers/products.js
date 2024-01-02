@@ -10,7 +10,6 @@ const createProduct = asyncWrapper(async (req, res) => {
         user: req.user._id,
         shipping: true,
         rating: 5,
-        shipping: true,
         imageUrl: '/images/sample.jpeg',
         categories: ['Sample Brand'],
         qty: 0
@@ -35,70 +34,84 @@ const getLastFilters = async (req, res) => {
 
 
 const getAllProducts = asyncWrapper(async (req, res) => {
-    const { name, price, company, sort, rating, numFilters, fields } = req.query;
-    const queryObject = {};
+    const pageSize = process.env.PAGINATION_LIMIT;
+    const page = Number(req.query.pageNumber) || 1;
+    const keyword = req.query.keyword ? {
+        name: {
+            $regex: req.query.keyword,
+            $options: 'i',
+        },
+    } : {};
+    const count = await Product.countDocuments({ ...keyword });
+    const products = await Product.find({ ...keyword })
+        .limit(pageSize)
+        .skip(pageSize * (page - 1));
+    res.json({ products, page, pages: Math.ceil(count / pageSize) });
+    
+    // const { name, price, company, sort, rating, numFilters, fields } = req.query;
+    // const queryObject = {};
 
-    if (company) {
-        queryObject.company = company;
-    }
-    if (name) {
-        queryObject.name = { $regex: name, $options: 1 };
-    }
-    if (numFilters) {
-        const operatorMap = {
-            '>': '$gt',
-            '>=': '$gte',
-            '=': '$eg',
-            '<': '$lt',
-            '<=': '$lte',
-        }
-        const regEx = /\b(<|>|>=|=|<|<=)\b/g;
-        let filters = numFilters.replace(
-            regEx,
-            (match) => `-${operatorMap[match]}-`
-        )
-        ///Например, если numFilters равно "price>50,rating>=4.5", то метод .replace выполнит следующие замены:
-        //             > заменяется на -$gt -
-        // >= заменяется на - $gte -
-        // = заменяется на - $eq -
-        //         В результате получим строку "price-$gt-50,rating-$gte-4.5".Это позволяет преобразовать операторы сравнения в формат, который будет использован для дальнейшего разделения и обработки фильтров.
+    // if (company) {
+    //     queryObject.company = company;
+    // }
+    // if (name) {
+    //     queryObject.name = { $regex: name, $options: 1 };
+    // }
+    // if (numFilters) {
+    //     const operatorMap = {
+    //         '>': '$gt',
+    //         '>=': '$gte',
+    //         '=': '$eg',
+    //         '<': '$lt',
+    //         '<=': '$lte',
+    //     }
+    //     const regEx = /\b(<|>|>=|=|<|<=)\b/g;
+    //     let filters = numFilters.replace(
+    //         regEx,
+    //         (match) => `-${operatorMap[match]}-`
+    //     )
+    //     ///Например, если numFilters равно "price>50,rating>=4.5", то метод .replace выполнит следующие замены:
+    //     //             > заменяется на -$gt -
+    //     // >= заменяется на - $gte -
+    //     // = заменяется на - $eq -
+    //     //         В результате получим строку "price-$gt-50,rating-$gte-4.5".Это позволяет преобразовать операторы сравнения в формат, который будет использован для дальнейшего разделения и обработки фильтров.
 
-        const options = ['price', 'rating'];
+    //     const options = ['price', 'rating'];
 
-        filters = filters.split(',').forEach((item) => {
-            const [field, operator, value] = item.split('-');
-            if (options.includes(field)) {/// проверяет options (['price', 'rating']) имя поля field
-                queryObject[field] = { [operator]: Number(value) } /// это переменная, содержащая название поля (например, "price" или "rating"), к которому мы хотим применить фильтр. { [operator]: Number(value) }: Здесь operator - это переменная, содержащая оператор сравнения, например, "$gt" (больше), "$lt" (меньше), "$eq" (равно) и т.д. value - это переменная, содержащая значение, с которым мы хотим сравнивать поле field.
-            }
-        })
-    }
+    //     filters = filters.split(',').forEach((item) => {
+    //         const [field, operator, value] = item.split('-');
+    //         if (options.includes(field)) {/// проверяет options (['price', 'rating']) имя поля field
+    //             queryObject[field] = { [operator]: Number(value) } /// это переменная, содержащая название поля (например, "price" или "rating"), к которому мы хотим применить фильтр. { [operator]: Number(value) }: Здесь operator - это переменная, содержащая оператор сравнения, например, "$gt" (больше), "$lt" (меньше), "$eq" (равно) и т.д. value - это переменная, содержащая значение, с которым мы хотим сравнивать поле field.
+    //         }
+    //     })
+    // }
 
-    // const products = await Product.find(queryObject);
-    let result = Product.find(queryObject);
-    if (sort) {
-        const sortList = sort.split(',').join(' ');
-        result = result.sort(sortList);
-    } else {
-        result = result.sort('createdAt');
-    }
-    if (fields) {
-        const fieldList = sort.split(',').join(' ');
-        result = result.select(fieldList);
-    }
+    // // const products = await Product.find(queryObject);
+    // let result = Product.find(queryObject);
+    // if (sort) {
+    //     const sortList = sort.split(',').join(' ');
+    //     result = result.sort(sortList);
+    // } else {
+    //     result = result.sort('createdAt');
+    // }
+    // if (fields) {
+    //     const fieldList = sort.split(',').join(' ');
+    //     result = result.select(fieldList);
+    // }
 
-    const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 25;
-    const skip = (page - 1) * limit;
-    result = result.skip(skip).limit(limit);
+    // const page = Number(req.query.page) || 1;
+    // const limit = Number(req.query.limit) || 25;
+    // const skip = (page - 1) * limit;
+    // result = result.skip(skip).limit(limit);
 
 
-    const products = await result;
-    // console.log(req.query);
-    res.status(200).json(products)
-    // res.status(200).json({ products, countProducts: products.length })
+    // const products = await result;
+    // // console.log(req.query);
+    // res.status(200).json(products)
+    // // res.status(200).json({ products, countProducts: products.length })
 
-    // const products = await Product.find({});
-    // res.status(200).json({ products });
+    // // const products = await Product.find({});
+    // // res.status(200).json({ products });
 
 });
 

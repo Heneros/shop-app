@@ -36,79 +36,86 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    children: [
-      {
-        index: true,
-        // path: '/',
-        element: <HomePage />
-      }, {
-        path: 'products/:id',
-        element: <SingleProduct />
-      }, {
-        path: 'contact-us',
-        element: <ContactUs />
-      }, {
-        path: 'about',
-        element: <About />
-      }, {
-        path: 'cart',
-        element: <Cart />
-      }, {
-        path: 'login',
-        element: <Login />
-      },
-      {
-        path: 'register',
-        element: <Register />
-      }, {
-        element: <PrivateRoute />,
-        children: [
-          {
-            path: 'shipping',
-            element: <Shipping />
-          },
-          {
-            path: 'placeorder',
-            element: <PlaceOrder />
-          }, {
-            path: 'payment',
-            element: <Payment />
-          }, {
-            path: 'order/:id',
-            element: <Order />
-          }, {
-            path: 'profile',
-            element: <Profile />
-          },
+    children: [{
+      index: true,
+      path: '/',
+      element: <HomePage />
+    }, {
+      path: '/page/:pageNumber',
+      element: <HomePage />
+    }, {
+      path: '/page/:keyword',
+      element: <HomePage />
+    }, {
+      path: '/page/:keyword/page/:pageNumber',
+      element: <HomePage />
+    }, {
+      path: 'products/:id',
+      element: <SingleProduct />
+    }, {
+      path: 'contact-us',
+      element: <ContactUs />
+    }, {
+      path: 'about',
+      element: <About />
+    }, {
+      path: 'cart',
+      element: <Cart />
+    }, {
+      path: 'login',
+      element: <Login />
+    }, {
+      path: 'register',
+      element: <Register />
+    }, {
+      element: <PrivateRoute />,
+      children: [
+        {
+          path: 'shipping',
+          element: <Shipping />
+        },
+        {
+          path: 'placeorder',
+          element: <PlaceOrder />
+        }, {
+          path: 'payment',
+          element: <Payment />
+        }, {
+          path: 'order/:id',
+          element: <Order />
+        }, {
+          path: 'profile',
+          element: <Profile />
+        },
 
-        ]
-      }, {
-        element: <AdminRoute />,
-        children: [
-          {
-            path: '/admin/orderlist',
-            element: <OrderList />
-          },
-          {
-            path: '/admin/productlist',
-            element: <ProductList />
-          },
-          {
-            path: '/admin/productlist/:pageNumber',
-            element: <ProductList />
-          },
-          {
-            path: '/admin/product/:id/edit',
-            element: <ProductEdit />
-          }, {
-            path: '/admin/userlist',
-            element: <UserList />
-          }, {
-            path: '/admin/user/:id/edit',
-            element: <UserEdit />
-          },
-        ]
-      }
+      ]
+    }, {
+      element: <AdminRoute />,
+      children: [
+        {
+          path: '/admin/orderlist',
+          element: <OrderList />
+        },
+        {
+          path: '/admin/productlist',
+          element: <ProductList />
+        },
+        {
+          path: '/admin/productlist/:pageNumber',
+          element: <ProductList />
+        },
+        {
+          path: '/admin/product/:id/edit',
+          element: <ProductEdit />
+        }, {
+          path: '/admin/userlist',
+          element: <UserList />
+        }, {
+          path: '/admin/user/:id/edit',
+          element: <UserEdit />
+        },
+      ]
+    }
 
     ]
   }

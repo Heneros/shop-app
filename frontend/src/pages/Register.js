@@ -6,6 +6,7 @@ import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useRegistrationMutation } from '../redux/slices/usersApiSlice';
 import styled from 'styled-components';
+import { toast } from 'react-toastify';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -29,14 +30,20 @@ export default function Register() {
 
 
   const onSubmit = async (e) => {
-    e.preventDefault()
-    try {
-      const res = await registration({ name, password, email }).unwrap();
-      dispatch(setCredentials({ ...res }));
-      navigate("/");
-      console.log(res)
-    } catch (error) {
-      console.log(error)
+    e.preventDefault();
+
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords don't match");
+    } else {
+      try {
+        const res = await registration({ name, password, email }).unwrap();
+        dispatch(setCredentials({ ...res }));
+        navigate("/");
+        console.log(res)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 
@@ -81,6 +88,17 @@ export default function Register() {
                   placeholder="Please enter password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <TextField
+                  label="Password"
+                  type="password"
+                  fullWidth
+                  focused
+                  placeholder="Please confirm password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={12}>
