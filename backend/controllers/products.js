@@ -46,8 +46,8 @@ const getAllProducts = asyncWrapper(async (req, res) => {
     const products = await Product.find({ ...keyword })
         .limit(pageSize)
         .skip(pageSize * (page - 1));
+
     res.json({ products, page, pages: Math.ceil(count / pageSize) });
-    
     // const { name, price, company, sort, rating, numFilters, fields } = req.query;
     // const queryObject = {};
 

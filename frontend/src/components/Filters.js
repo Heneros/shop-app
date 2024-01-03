@@ -9,17 +9,19 @@ import { fetchFilters, fetchProducts, selectAllProducts, updateCategoryFilter, u
 export default function Filters() {
 
   const dispatch = useDispatch();
-  const { selectedCategory, selectedCompany, selectedShipping } = useSelector((state) => state.products);
-  const { products } = useSelector(selectAllProducts);
+  const { products, selectedCategory, selectedCompany, selectedShipping } = useSelector((state) => state.products);
+  // const { products } = useSelector(selectAllProducts);
 
-
-
-  // console.log(products);
   // const selectedShipping = useSelector((state) => state.products.selectedShipping);
 
-  // useEffect(() => {
-  //   dispatch(fetchFilters());
-  // }, []);
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, []);
+
+  const productsList = products.products;
+
+  // console.log(productsList);
+
 
   const handleCategoryClick = (categories) => {
     dispatch(updateCategoryFilter(categories));
@@ -41,17 +43,17 @@ export default function Filters() {
 
 
 
-  const categoriesNew = Array.isArray(products) ? products.map(product => product.categories) : [];
+  const categoriesNew = Array.isArray(productsList) ? productsList.map(product => product.categories) : [];
   const allCategories = categoriesNew.flat();
   const categoryUniq = [...new Set(allCategories)];
 
 
 
-  const companies = Array.isArray(products) ? products.map((product) => product.company) : [];
+  const companies = Array.isArray(productsList) ? productsList.map((product) => product.company) : [];
   const companiesUniq = [...new Set(companies)];
 
   // const shipping = Array.isArray(products) ? products.map((product) => product.shipping) : [];
-  // console.log(shipping);
+  console.log(productsList);
 
   return (
     <Wrapper>

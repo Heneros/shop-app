@@ -7,20 +7,28 @@ import Product from '../components/Product';
 import { fetchProducts } from '../redux/slices/products';
 import Paginate from './Paginate';
 import { useParams } from 'react-router-dom';
+import { useGetProductsQuery } from '../redux/slices/productApiSlice';
 
 
 export default function ProductList() {
-  const { keyword } = useParams();
+  const { pageNumber, keyword } = useParams();
+  const { data, isLoading, error } = useGetProductsQuery({ keyword, pageNumber });
+
+
   const dispatch = useDispatch();
   const { products, selectedCategory, selectedCompany, selectedShipping } = useSelector((state) => state.products);
-  // console.log(products);
+  // console.log(productPaginate);
 
   useEffect(() => {
     dispatch(fetchProducts());
   }, []);
 
+  // const { productPaginate: productItems } = productPaginate;
+
+
+
   const { products: productListItems } = products;
-  // console.log(productListItems);
+
 
   const filteredProducts = Array.isArray(productListItems)
     ? productListItems.filter((product) => {
@@ -30,22 +38,34 @@ export default function ProductList() {
 
       return categoryMatch && companyMatch && shippingMatch;
     }) : [];
-  console.log(products.pages);
+  // console.log(products.pages);
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
+  const productsItems = data.products;
+
+  // console.log(productsItems);
   return (
-    <Wrapper>
-      <div className='products-container'>
-        {Array.isArray(filteredProducts) ? (
-          filteredProducts.map((product) => (
-            <Product key={product._id} {...product} />
-          ))
-        ) : (
-          <p>No products found.</p>
-        )}
-        <Paginate pages={products.pages} page={products.page} keyword={keyword ? keyword : ''} />
-      </div>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <div className='products-container'>
+          {Array.isArray(filteredProducts) ? (
+            filteredProducts.map((product) => (
+              <Product key={product._id} {...product} />
+            ))
+          ) : (
+            <p>No products found.</p>
+          )}
+
+        </div>
+      </Wrapper>
+      <Paginate pages={data.pages} page={data.page} keyword={keyword ? keyword : ''} />
+    </>
   )
 }
 
