@@ -53,7 +53,7 @@ export default function Filters() {
   const companiesUniq = [...new Set(companies)];
 
   // const shipping = Array.isArray(products) ? products.map((product) => product.shipping) : [];
-  console.log(productsList);
+  // console.log(productsList);
 
   return (
     <Wrapper>

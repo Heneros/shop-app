@@ -16,36 +16,13 @@ const HomePage = () => {
   const { pageNumber, keyword } = useParams();
 
   const { data, isLoading, error } = useGetProductsQuery({ keyword, pageNumber });
-  // console.log(data.products);
+  console.log(data);
   const products = data && data.products ? data.products : [];
 
   // console.log(products);
 
   const dispatch = useDispatch();
   const { selectedCategory, selectedCompany, selectedShipping } = useSelector((state) => state.products);
-
-
-
-  // useEffect(() => {
-  //   dispatch(fetchProducts());
-  // }, []);
-
-  // const { products: productList } = data;
-
-
-
-  //const { productListItems } = data;
-  // console.log(productListItems);
-  // const filteredProducts = products.filter((product) => { });
-  // const filteredProducts = Array.isArray(productListItems)
-  //   ? productListItems.filter((product) => {
-  //     const categoryMatch = selectedCategory === null || product.categories.includes(selectedCategory)
-  //     const companyMatch = selectedCompany === null || product.company.includes(selectedCompany)
-  //     const shippingMatch = selectedShipping === null || product.shipping === selectedShipping;
-
-  //     return categoryMatch && companyMatch && shippingMatch;
-  //   }) : [];
-  // console.log(products.pages);
 
   const filteredProducts = products.filter((product) => {
     const categoryMatch = selectedCategory === null || product.categories.includes(selectedCategory)
@@ -56,7 +33,7 @@ const HomePage = () => {
   });
 
 
-  console.log(filteredProducts);
+  // console.log(filteredProducts);
 
 
   if (isLoading) {
@@ -65,6 +42,7 @@ const HomePage = () => {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
+  // console.log(data);
   return (
     <main >
       <PageHero />
@@ -80,20 +58,9 @@ const HomePage = () => {
                 <p>No products available</p>
               )}
             </div>
-            {/* <div className='products-container'>
-              {Array.isArray(filteredProducts) ? (
-                filteredProducts.map((product) => (
-                  <Product key={product._id} {...product} />
-                ))
-              ) : (
-                <p>No products found.</p>
-              )}
-            </div> */}
-            {/* <ProductList /> */}
-
           </div>
         </Wrapper>
-        {/* <Paginate pages={data.pages} page={data.page} keyword={keyword ? keyword : ''} /> */}
+        <Paginate pages={data.pages} page={data.page} keyword={keyword ? keyword : ''} />
       </Container>
     </main>
   );
@@ -129,7 +96,6 @@ const Wrapper = styled.section`
       grid-template-columns: 200px 1fr;
     }
   }
-
 `;
 
 export default HomePage;

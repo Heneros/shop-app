@@ -2,19 +2,25 @@ import React from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Grid, Container, Box, TableCell, Button, Typography, TableRow, TableBody, TableContainer, TableHead, Table, IconButton } from '@mui/material';
 
+
 import { useCreateProductMutation, useDeleteProductMutation, useGetProductsQuery } from '../../redux/slices/productApiSlice';
 import PageHero from '../../components/PageHero';
 import Loader from '../../components/Loader';
+import Paginate from '../../components/Paginate.js';
+
 import { Message } from '@mui/icons-material';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
 
 export default function ProductList() {
-  const { id: pageNumber } = useParams();
+  const { pageNumber } = useParams();
 
   const { data, isLoading, error, refetch } = useGetProductsQuery({ pageNumber });
+
+  const products = data && data.products ? data.products : [];
   console.log(data);
+
 
   const [createProduct, { isLoading: loadingCreate }] = useCreateProductMutation();
   const [deleteProduct, { isLoading: loadingDelete }] = useDeleteProductMutation();
@@ -76,7 +82,7 @@ export default function ProductList() {
                 </TableHead>
                 <TableBody>
 
-                  {Array.isArray(data) ? data.map((product) => (
+                  {products.map((product) => (
                     <TableRow key={product._id}>
                       <TableCell>
                         {product._id}
@@ -108,13 +114,10 @@ export default function ProductList() {
                       </TableCell>
 
                     </TableRow>
-                  )) : (
-                    <span>
-                      No products
-                    </span>
-                  )}
+                  ))}
                 </TableBody>
               </Table>
+              <Paginate pages={data.pages} page={data.page}  isAdmin={true} />
             </TableContainer>
           </Grid>
 
