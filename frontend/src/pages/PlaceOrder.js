@@ -13,17 +13,8 @@ export default function PlaceOrder() {
     const navigate = useNavigate();
     const cart = useSelector((state) => state.cart);
     const dispatch = useDispatch();
-
-    const orderItems = cart.cartItems.map(item => ({
-        ...item,
-        product: item._id,
-        _id: undefined
-    }));
-
-    const totalItems = cart.cartItems.reduce((total, item) => total + item.qty, 0)
-    const { userInfo } = useSelector((state) => state.auth);
     const [createOrder, { isLoading, error }] = useCreateOrderMutation();
-
+  
     useEffect(() => {
         if (!cart.shippingAddress.address) {
             navigate('/shipping')
@@ -32,13 +23,25 @@ export default function PlaceOrder() {
         }
     }, [cart.paymentMethod, cart.shippingAddress, navigate])
 
+    // const orderItems = cart.cartItems.map(item => ({
+    //     ...item,
+    //     product: item._id,
+    //     _id: undefined
+    // }));
+    // console.log(orderItems);
+    const totalItems = cart.cartItems.reduce((total, item) => total + item.qty, 0)
+    const { userInfo } = useSelector((state) => state.auth);
+
+
+
 
     const placeOrderHandler = async () => {
         try {
 
             const res = await createOrder({
                 user: userInfo._id,
-                orderItems: orderItems,
+                // orderItems: orderItems,
+                orderItems: cart.cartItems,
                 shippingAddress: cart.shippingAddress,
                 paymentMethod: cart.paymentMethod,
                 itemsPrice: cart.itemsPrice,

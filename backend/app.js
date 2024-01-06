@@ -54,6 +54,10 @@ app.use('/api/users', routesUser);
 app.use('/api/orders', routesOrder);
 app.use('/api/upload', routeUpload);
 
+app.get('/api/config/paypal', (req, res) =>
+    res.send({ clientId: process.env.PAYPAL_CLIENT_ID })
+)
+
 
 
 // const __dirname = path.resolve();
