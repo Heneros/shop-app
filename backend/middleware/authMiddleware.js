@@ -42,22 +42,25 @@ const protect = asyncHandler(async (req, res, next) => {
             req.user = await User.findById(decoded.userId).select('-password');
 
             const order = await Order.findById(req.params.id);
-      
+            // console.log(order.user);
+            // console.log(decoded.userId);
+            // console.log(req.user);
+            // console.log(req.user.isAdmin);
             // console.log(decoded.userId);
             // console.log('Decoded'.decoded.userId);
-            // if (order.user = decoded.userId) {
-
-            req.user = await User.findById(decoded.userId).select('-password');
-            next();
-            // if (order && order.user.toString() === decoded.userId) {
-
-
-            // } else {
-            //     res.status(403);
-            //     throw new Error('Forbidden');
-            // }
+            if (!order) {
+                next();
+                // if (order && order.user.toString() === decoded.userId) {
+            } else if (order.user == decoded.userId) {
+                next();
+            } else if (req.user.isAdmin) {
+                next();
+            } else {
+                res.status(403);
+                throw new Error('Forbidden');
+            }
         } catch (error) {
-            console.error(error);
+            console.log(error);
             res.status(401);
             throw new Error('Not authorized, token failed');
         }
