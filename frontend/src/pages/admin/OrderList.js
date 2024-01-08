@@ -1,10 +1,12 @@
 import React from 'react'
 import { useGetOrdersQuery } from '../../redux/slices/orderApiSlice'
-import { Alert, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Alert, Button, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 
 import Loader from '../../components/Loader';
 
 import PageHero from '../../components/PageHero';
+import { FaTimes } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 
 export default function OrderList() {
@@ -48,7 +50,35 @@ export default function OrderList() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  
+                  {orders.map((order) => (
+                    <TableRow key={order._id}>
+                      <TableCell>{order._id}</TableCell>
+                      <TableCell>{order.user && order.user.name}</TableCell>
+                      <TableCell>{order.createdAt.substring(0, 10)}</TableCell>
+                      <TableCell>{order.totalPrice}</TableCell>
+                      <TableCell>
+                        {order.isPaid ? (
+                          order.paidAt.substring(0, 10)
+                        ) : (
+                          <FaTimes style={{ color: 'red' }} />
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {order.isDelivered ? (
+                          order.deliveredAt.substring(0, 10)
+                        ) : (
+                          <FaTimes style={{ color: 'red' }} />
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        <Link to={`/order/${order._id}`} >
+                          <Button variant="outlined" size="small">
+                            Details
+                          </Button>
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </TableContainer>

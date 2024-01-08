@@ -33,6 +33,7 @@ import ProductEdit from './pages/admin/ProductEdit'
 import ProductList from './pages/admin/ProductList'
 import UserEdit from './pages/admin/UserEdit'
 import UserList from './pages/admin/UserList'
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 const router = createBrowserRouter([
   {
@@ -127,7 +128,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <PayPalScriptProvider deferLoading={true} >
+        <RouterProvider router={router} />
+      </PayPalScriptProvider>
       <ToastContainer />
     </Provider>
   </React.StrictMode>
