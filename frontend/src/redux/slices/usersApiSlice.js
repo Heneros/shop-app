@@ -63,9 +63,16 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: data,
                 // credentials: 'include',
-            })
+            }),
+        }),
+        getUsers: builder.query({
+            query: () => ({
+                url: USERS_URL,
+            }),
+            providesTags: ['User'],
+            keepUnusedDataFor: 5,
         })
     })
 });
 
-export const { useLoginMutation, useRegistrationMutation, useLogoutMutation, useProfileMutation, useDeleteUserMutation, useGetUserDetailsMutation, useUpdateUserMutation, useUploadProductImageMutation } = userApiSlice;
+export const { useLoginMutation, useRegistrationMutation, useLogoutMutation, useProfileMutation, useDeleteUserMutation, useGetUserDetailsMutation, useUpdateUserMutation, useUploadProductImageMutation, useGetUsersQuery } = userApiSlice;
