@@ -4,6 +4,7 @@ const User = require('../models/userModel');
 const generateToken = require('../utils/generateToken');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const session = require('express-session');
 
 const getAllUsers = asyncWrapper(async (req, res) => {
     const users = await User.find({});
@@ -35,7 +36,8 @@ const logoutUser = asyncHandler(async (req, res) => {
     res.cookie('jwt', '', {
         httpOnly: true,
         expires: new Date(0)
-    })
+    });
+
     res.status(200).json({ message: 'Logout success' })
 });
 
@@ -115,7 +117,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
         user.name = req.body.name || user.name;
         user.email = req.body.email || user.email;
 
-        if(req.body.password){
+        if (req.body.password) {
             user.password = req.body.password;
         }
 
@@ -126,7 +128,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
             email: updatedUser.email,
             isAdmin: updatedUser.isAdmin,
         });
-    }else{
+    } else {
         res.status(404);
         throw new Error('User not found')
     }

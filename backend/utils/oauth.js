@@ -13,18 +13,31 @@ passport.use(new GoogleStrategy({
         if (user) {
             return done(null, user);
         } else {
+            const newUser = new User({
+                name: profile.displayName,
+                email: profile.email,
+                // password?
+                isAdmin: false
+            });
 
+            const savedUser = await newUser.save();
+            return done(null, savedUser);
         }
-    } catch (err) {
-
+    } catch (error) {
+        return done(error, null);
     }
     // return done(null, profile)
 }));
 
 passport.serializeUser(function (user, done) {
-    done(null, user);
+    done(null, user.id);
 });
 
-passport.deserializeUser(function (user, done) {
-    done(null, user);
+passport.deserializeUser(async function (id, done) {
+    try {
+        const user = await User.findById(id);
+        done(null, user);
+    } catch (error) {
+        done(error, null);
+    }
 });
