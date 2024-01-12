@@ -13,7 +13,7 @@ export default function Login() {
     const [email, setEmail] = useState('rustam@gmail.com');
     const [password, setPassword] = useState('123456');
 
-    const isAuth = useSelector(selectIsAuth);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -35,7 +35,7 @@ export default function Login() {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-            
+
             const res = await login({ email, password }).unwrap();
             // const data = await dispatch(fetchAuthMe());
             // console.log(res);
@@ -46,6 +46,10 @@ export default function Login() {
         }
     }
 
+
+    useEffect(() => {
+
+    }, [])
 
     return (
         <>
@@ -82,6 +86,7 @@ export default function Login() {
                                 </Grid>
                             </Grid>
                         </Box>
+                        <div id="loginBtn">Login</div>
                         <Typography variant="h5" sx={{ my: 2 }}>
                             New Customer? <Link
                                 className='link'
