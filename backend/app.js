@@ -1,12 +1,15 @@
 require('dotenv').config();
 
 const express = require("express");
+const session = require("express-session");
+const passport = require('passport');
 const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
-const session = require('express-session');
-const passport = require('passport');
+
+
+
 
 const connectDB = require('./db/db');
 const productRouter = require('./routes/routesProduct');
@@ -14,19 +17,16 @@ const routesUser = require('./routes/routesUser');
 const routesOrder = require('./routes/routesOrder');
 const routeUpload = require('./routes/routeUpload');
 
-const oauth = require('./utils/oauth.js');
+
+require('./utils/oauth.js');
 
 const app = express();
-app.use(cookieParser());
+
 
 app.use(cors({
     origin: 'http://localhost:7200',
     credentials: true
 }));
-// app.use(cors({
-//     origin: 'http://localhost:7200',
-//     credentials: true
-// }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -35,6 +35,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(session({ secret: '123Secret123', resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cookieParser());
+
+
 // app.use((req, res, next) => {
 
 
@@ -53,10 +56,37 @@ app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'prof
 
 app.get('/auth/google/callback',
     passport.authenticate('google', {
-        successRedirect: '/protected',
+        successRedirect: 'http://localhost:7200/profile',
         failureRedirect: '/auth/google/failure'
-    })
+    }),
+    async (req, res) => {
+        // Получите данные пользователя из ответа сервера
+        const profile = req.user.userinfo;
+    
+        // Создайте новый объект localStorage
+        const localStorageData = {
+          name: profile.displayName,
+          email: profile.email,
+          googleId: profile.id,
+        };
+    
+        // Сохраните данные в localStorage
+        const token = await createToken(req.user._id);
+        localStorage.setItem('userInfo', JSON.stringify({
+          ...localStorageData,
+          token,
+        }));
+    
+        // Перенаправьте пользователя на страницу профиля
+        res.redirect('/profile');
+      }
 );
+
+// app.get('/protected', (req, res) => {
+//     res.send("Success");
+// });
+
+
 app.get('/auth/google/failure', (req, res) => {
     res.send('Failed to authenticate..');
 });

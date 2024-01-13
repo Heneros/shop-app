@@ -5,10 +5,11 @@ import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 
-import { useLoginMutation } from '../redux/slices/usersApiSlice';
+import { useAuthGoogleQuery, useLoginMutation } from '../redux/slices/usersApiSlice';
 import { setCredentials } from '../redux/slices/auth';
 import { fetchAuthMe, selectIsAuth } from '../redux/slices/auth';
 import styled from 'styled-components';
+import axios from 'axios';
 export default function Login() {
     const [email, setEmail] = useState('rustam@gmail.com');
     const [password, setPassword] = useState('123456');
@@ -18,7 +19,48 @@ export default function Login() {
     const navigate = useNavigate();
 
     const [login] = useLoginMutation();
+
+
+    const { authGoogle } = useAuthGoogleQuery();
+
     const { userInfo } = useSelector((state) => state.auth);
+
+
+    console.log(authGoogle);
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        window.open('http://localhost:3005/auth/google', '_self');
+        // try {
+    
+        //     // const response = await axios.get('http://localhost:3005/auth/google', {
+        //     //     timeout: 5000, 
+        //     //     retry: 3,
+        //     // });
+        //     // console.log(response);
+
+        //     // const data = await response.json();
+        //     const response = await axios.get('http://localhost:3005/auth/google', {
+        //         timeout: 10000
+        //     });
+        //     console.log(response.data);
+        // } catch (err) {
+        //     console.log(err)
+        // }
+
+
+        //  window.open('http://localhost:3005/auth/google', '_self');
+        // try {
+        //     const response = await authGoogle('http://localhost:3005/auth/google');
+        //     const data = await response.json();
+        //     console.log(data);
+        // } catch (err) {
+        //     console.log(err);
+        // }
+        // window.open('http://localhost:3005/auth/google', '_self');
+
+
+    }
 
 
     const { search } = useLocation();
@@ -47,9 +89,7 @@ export default function Login() {
     }
 
 
-    useEffect(() => {
 
-    }, [])
 
     return (
         <>
@@ -86,7 +126,7 @@ export default function Login() {
                                 </Grid>
                             </Grid>
                         </Box>
-                        <div id="loginBtn">Login</div>
+                        <div onClick={handleLogin} id="loginBtn">Login</div>
                         <Typography variant="h5" sx={{ my: 2 }}>
                             New Customer? <Link
                                 className='link'

@@ -1,32 +1,57 @@
 const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth2').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const bcrypt = require("bcryptjs");
+const generatePassword = require('generate-password');
+
+
 const User = require('../models/userModel');
+const generateToken = require('./generateToken');
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3005/auth/google/callback",
+    callbackURL: "/auth/google/callback",
     passReqToCallback: true
 }, async function (request, accessToken, refreshToken, profile, done) {
+    console.log(profile);
     try {
-        const user = User.findOne({ googleId: profile.id });
+        const user = await User.findOne({ googleId: profile.id });
         if (user) {
             return done(null, user);
         } else {
+            const email = profile.emails[0].value || "";
+
+            ///generate password for new user
+            const passwordConfig = {
+                length: 12,
+                numbers: true,
+                symbols: true,
+                uppercase: true,
+                excludeSimilarCharacters: true,
+            };
+            const generatePasswordString = generatePassword.generate(passwordConfig);
+
             const newUser = new User({
                 name: profile.displayName,
-                email: profile.email,
-                // password?
+                email: email,
+                googleId: profile.id,
+                password: 'test123', //chang latter
                 isAdmin: false
             });
+            if (newUser) {
+                generateToken(request.res, newUser._id); 
 
-            const savedUser = await newUser.save();
-            return done(null, savedUser);
+                const savedUser = await newUser.save();
+
+                // console.log(savedUser)
+
+                return done(null, savedUser);
+            }
+
         }
     } catch (error) {
         return done(error, null);
     }
-    // return done(null, profile)
 }));
 
 passport.serializeUser(function (user, done) {

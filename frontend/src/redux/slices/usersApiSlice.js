@@ -71,8 +71,16 @@ export const userApiSlice = apiSlice.injectEndpoints({
             }),
             providesTags: ['User'],
             keepUnusedDataFor: 5,
+        }),
+        authGoogle: builder.query({
+            query: () => ({
+                url: `/auth/google`,
+                // method: 'GET',
+            }),
+            providesTags: ['User'],
+            keepUnusedDataFor: 5
         })
     })
 });
 
-export const { useLoginMutation, useRegistrationMutation, useLogoutMutation, useProfileMutation, useDeleteUserMutation, useGetUserDetailsQuery, useUpdateUserMutation, useUploadProductImageMutation, useGetUsersQuery } = userApiSlice;
+export const { useLoginMutation, useRegistrationMutation, useLogoutMutation, useProfileMutation, useDeleteUserMutation, useGetUserDetailsQuery, useUpdateUserMutation, useUploadProductImageMutation, useGetUsersQuery, useAuthGoogleQuery } = userApiSlice;

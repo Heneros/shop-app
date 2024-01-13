@@ -20,6 +20,11 @@ const userSchema = mongoose.Schema({
         type: Boolean,
         required: true,
         default: false
+    },
+    googleId: {
+        type: String,
+        unique: true,
+        sparse: true
     }
 }, {
     timestamps: true,
