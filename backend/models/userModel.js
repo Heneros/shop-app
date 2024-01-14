@@ -21,11 +21,15 @@ const userSchema = mongoose.Schema({
         required: true,
         default: false
     },
-    googleId: {
-        type: String,
-        unique: true,
-        sparse: true
+    isVerified: {
+        type: Boolean,
+        default: false
     }
+    // googleId: {
+    //     type: String,
+    //     unique: true,
+    //     sparse: true
+    // }
 }, {
     timestamps: true,
 }

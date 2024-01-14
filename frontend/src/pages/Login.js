@@ -30,9 +30,9 @@ export default function Login() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        window.open('http://localhost:3005/auth/google', '_self');
+        //  window.open('http://localhost:3005/auth/google', '_self');
         // try {
-    
+
         //     // const response = await axios.get('http://localhost:3005/auth/google', {
         //     //     timeout: 5000, 
         //     //     retry: 3,
@@ -47,19 +47,6 @@ export default function Login() {
         // } catch (err) {
         //     console.log(err)
         // }
-
-
-        //  window.open('http://localhost:3005/auth/google', '_self');
-        // try {
-        //     const response = await authGoogle('http://localhost:3005/auth/google');
-        //     const data = await response.json();
-        //     console.log(data);
-        // } catch (err) {
-        //     console.log(err);
-        // }
-        // window.open('http://localhost:3005/auth/google', '_self');
-
-
     }
 
 

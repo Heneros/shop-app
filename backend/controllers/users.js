@@ -5,6 +5,8 @@ const generateToken = require('../utils/generateToken');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const session = require('express-session');
+const nodemailer = require('nodemailer');
+
 
 const getAllUsers = asyncWrapper(async (req, res) => {
     const users = await User.find({});
@@ -17,7 +19,55 @@ const authUser = asyncHandler(async (req, res) => {
 
     const user = await User.findOne({ email });
 
+
+
     if (user && (await user.matchPassword(password))) {
+
+        let transporter = null;
+        if (process.env.NODE_ENV === 'production') {
+            transporter = nodemailer.createTransport({
+                host: process.env.SMTP_HOST,
+                port: 587,
+                secure: false,
+                auth: {
+                    user: process.env.SMTP_NAME,
+                    pass: process.env.SMTP_PASS,
+                },
+                debug: true,
+            });
+        } else {
+            transporter = nodemailer.createTransport({
+                // host: process.env.SMTP_HOST,
+                host: "localhost",
+                port: 1025,
+                secure: false,
+                auth: {
+                    user: process.env.SMTP_NAME,
+                    pass: process.env.SMTP_PASS,
+                },
+                tls: {
+                    rejectUnauthorized: false
+                },
+                debug: true,
+            });
+        }
+
+
+        const mailOptions = {
+            from: process.env.SMTP_NAME,
+            to: email,
+            subject: 'Authorize success',
+            text: 'Hello, you been authorize in site'
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+
         res.json({
             _id: user._id,
             name: user.name,
@@ -29,6 +79,8 @@ const authUser = asyncHandler(async (req, res) => {
         res.status(401);
         throw new Error("Invalid Credentials");
     }
+
+
 
 });
 

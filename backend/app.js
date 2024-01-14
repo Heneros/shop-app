@@ -59,27 +59,6 @@ app.get('/auth/google/callback',
         successRedirect: 'http://localhost:7200/profile',
         failureRedirect: '/auth/google/failure'
     }),
-    async (req, res) => {
-        // Получите данные пользователя из ответа сервера
-        const profile = req.user.userinfo;
-    
-        // Создайте новый объект localStorage
-        const localStorageData = {
-          name: profile.displayName,
-          email: profile.email,
-          googleId: profile.id,
-        };
-    
-        // Сохраните данные в localStorage
-        const token = await createToken(req.user._id);
-        localStorage.setItem('userInfo', JSON.stringify({
-          ...localStorageData,
-          token,
-        }));
-    
-        // Перенаправьте пользователя на страницу профиля
-        res.redirect('/profile');
-      }
 );
 
 // app.get('/protected', (req, res) => {
@@ -90,9 +69,6 @@ app.get('/auth/google/callback',
 app.get('/auth/google/failure', (req, res) => {
     res.send('Failed to authenticate..');
 });
-
-// const __dirname = path.resolve();
-// app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 if (process.env.NODE_ENV === 'production') {
     const __dirname = path.resolve();
