@@ -2,11 +2,13 @@ const asyncWrapper = require('../middleware/async');
 const asyncHandler = require('../middleware/asyncHandler');
 const User = require('../models/userModel');
 const generateToken = require('../utils/generateToken');
+
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const session = require('express-session');
 const nodemailer = require('nodemailer');
-
+const Token = require('../models/tokenModel');
+const crypto = require("crypto");
 
 const getAllUsers = asyncWrapper(async (req, res) => {
     const users = await User.find({});
@@ -22,7 +24,7 @@ const authUser = asyncHandler(async (req, res) => {
 
 
     if (user && (await user.matchPassword(password))) {
-
+        generateToken(res, user._id);
         let transporter = null;
         if (process.env.NODE_ENV === 'production') {
             transporter = nodemailer.createTransport({
@@ -57,7 +59,7 @@ const authUser = asyncHandler(async (req, res) => {
             from: process.env.SMTP_NAME,
             to: email,
             subject: 'Authorize success',
-            text: 'Hello, you been authorize in site'
+            text: `Hello, you been authorize in site <a href='mailto:${email}'> {email}</a>`
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
@@ -94,6 +96,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const registerUser = asyncHandler(async (req, res) => {
+
     const { name, email, password } = req.body;
 
     const userExists = await User.findOne({ email });
@@ -111,6 +114,74 @@ const registerUser = asyncHandler(async (req, res) => {
 
     if (user) {
         generateToken(res, user._id);
+
+
+        // //send email
+        let transporter = null;
+        if (process.env.NODE_ENV === 'production') {
+            transporter = nodemailer.createTransport({
+                host: process.env.SMTP_HOST,
+                port: 587,
+                secure: false,
+                auth: {
+                    user: process.env.SMTP_NAME,
+                    pass: process.env.SMTP_PASS,
+                },
+                debug: true,
+            });
+        } else {
+            transporter = nodemailer.createTransport({
+                // host: process.env.SMTP_HOST,
+                host: "localhost",
+                port: 1025,
+                secure: false,
+                auth: {
+                    user: process.env.SMTP_NAME,
+                    pass: process.env.SMTP_PASS,
+                },
+                tls: {
+                    rejectUnauthorized: false
+                },
+                debug: true,
+            });
+        }
+
+        // function generateToken(length) {
+        //     return crypto.randomBytes(length).toString('hex');
+        // }
+        function generateToken(length) {
+            const tokenLength = typeof length === 'number' ? length : 16;
+
+            return crypto.randomBytes(tokenLength).toString('hex');
+        }
+
+        // Usage
+        const generateTokenString = generateToken(20);
+
+        // const generateTokenString = generateToken(30);
+
+        const token = new Token({ _userId: user._id, token: generateTokenString });
+        await token.save();
+
+        const urlBase = process.env.APP_BASE_URL;
+
+        const mailOptions = {
+            from: process.env.SMTP_NAME,
+            to: email,
+            subject: 'Sign Up success',
+            text: `Hello, ${user.name}! Thank you for signing up. Please click the following link to verify your email: ${urlBase}/verify-email/${token.token}`
+        };
+
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+
+
 
         res.status(201).json({
             _id: user._id,

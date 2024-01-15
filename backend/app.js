@@ -16,6 +16,8 @@ const productRouter = require('./routes/routesProduct');
 const routesUser = require('./routes/routesUser');
 const routesOrder = require('./routes/routesOrder');
 const routeUpload = require('./routes/routeUpload');
+const Token = require('./models/tokenModel.js');
+const User = require('./models/userModel.js');
 
 
 require('./utils/oauth.js');
@@ -69,6 +71,44 @@ app.get('/auth/google/callback',
 app.get('/auth/google/failure', (req, res) => {
     res.send('Failed to authenticate..');
 });
+
+app.get('/verify-email/:token', async (req, res) => {
+    // res.send("<h1>Hello World</h1>")
+    try {
+        const token = req.params.token;
+        const tokenDoc = await Token.findOne({ token });
+
+        if (!tokenDoc) {
+            return res.status(400).send("Invalid or expired token")
+        }
+        const user = await User.findById(tokenDoc._userId);
+        if (!user) {
+            return res.status(400).send("User not found")
+        }
+
+        if (user.isVerified) {
+            return res.status(400).send("User already verified.")
+        }
+
+        user.isVerified = true;
+        await user.save();
+
+
+        // await Token.deleteOne({ _id: tokenDoc._id });
+        setTimeout(() => {
+            // res.send('Email verification successful. You can now log in.');
+            res.redirect('http://localhost:7200');
+        }, 1500)
+        // res.redirect('http://localhost:7200/');
+
+
+        // console.log(token)
+    } catch (error) {
+        console.log(error)
+    }
+});
+
+
 
 if (process.env.NODE_ENV === 'production') {
     const __dirname = path.resolve();

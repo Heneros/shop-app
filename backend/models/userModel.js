@@ -24,21 +24,20 @@ const userSchema = mongoose.Schema({
     isVerified: {
         type: Boolean,
         default: false
-    }
-    // googleId: {
-    //     type: String,
-    //     unique: true,
-    //     sparse: true
-    // }
+    },
 }, {
     timestamps: true,
 }
 );
 
 
+
+
+
 userSchema.methods.matchPassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password)
 }
+
 
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
@@ -51,5 +50,5 @@ userSchema.pre('save', async function (next) {
 
 const User = mongoose.model('User', userSchema);
 
-module.exports = User;
 
+module.exports = User;
