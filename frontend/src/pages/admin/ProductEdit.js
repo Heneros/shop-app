@@ -53,7 +53,7 @@ export default function ProductEdit() {
       }).unwrap();
       toast.success("Product updated");
       refetch();
-      //  navigate('/admin/productlist');
+       navigate('/admin/productlist');
     } catch (err) {
       console.log(err.error);
       toast.error(err?.data?.message || err.error);

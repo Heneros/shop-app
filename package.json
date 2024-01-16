@@ -5,9 +5,10 @@
   "main": "app.js",
   "scripts": {
     "start": "node backend/app.js",
-    "server": "nodemon backend/app.js",
+    "maildev": "maildev",
+    "server": "nodemon backend/app.js && maildev",
     "client": "set PORT=7200 && npm start --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run maildev\""
   },
   "keywords": [],
   "author": "",

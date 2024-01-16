@@ -98,7 +98,7 @@ app.get('/verify-email/:token', async (req, res) => {
         setTimeout(() => {
             // res.send('Email verification successful. You can now log in.');
             res.redirect('http://localhost:7200');
-        }, 1500)
+        }, 2500)
         // res.redirect('http://localhost:7200/');
 
 

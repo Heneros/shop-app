@@ -13,6 +13,7 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [errors, setErrors] = useState({});
 
   // const isAuth = useSelector(selectIsAuth);
   const { userInfo } = useSelector((state) => state.auth);
@@ -32,23 +33,24 @@ export default function Register() {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-
+    const formErrors = {};
+    if(Object.keys(formErrors).length === 0){
     if (password !== confirmPassword) {
       toast.error("Passwords don't match");
     } else {
       try {
         const res = await registration({ name, password, email }).unwrap();
-        dispatch(setCredentials({ ...res }));
-        navigate("/");
+        // dispatch(setCredentials({ ...res }));
+        navigate("/confirm-email");
         console.log(res)
       } catch (error) {
         console.log(error)
       }
     }
+    }
   }
 
   return (
-
     <Wrapper>
       <Box sx={{ my: 30 }}>
         <Container component="main" maxWidth="xs" >

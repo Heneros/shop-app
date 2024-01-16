@@ -34,6 +34,7 @@ import ProductList from './pages/admin/ProductList'
 import UserEdit from './pages/admin/UserEdit'
 import UserList from './pages/admin/UserList'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
+import ConfirmEmail from './pages/ConfirmEmail';
 
 const router = createBrowserRouter([
   {
@@ -70,7 +71,10 @@ const router = createBrowserRouter([
     }, {
       path: 'register',
       element: <Register />
-    }, {
+      }, {
+      path: 'confirm-email',
+        element: <ConfirmEmail/>
+      },{
       element: <PrivateRoute />,
       children: [
         {

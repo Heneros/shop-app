@@ -64,7 +64,6 @@ export default function Login() {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
-
             const res = await login({ email, password }).unwrap();
             // const data = await dispatch(fetchAuthMe());
             // console.log(res);
