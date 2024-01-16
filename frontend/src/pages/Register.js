@@ -13,17 +13,16 @@ export default function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [errors, setErrors] = useState({});
+  const [error, setError] = useState('');
 
   // const isAuth = useSelector(selectIsAuth);
   const { userInfo } = useSelector((state) => state.auth);
 
-
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [registration, { isLoading }] = useRegistrationMutation();
 
+  // console.log(error);
 
   const { search } = useLocation();
   const sp = new URLSearchParams(search);
@@ -33,21 +32,22 @@ export default function Register() {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    const formErrors = {};
-    if(Object.keys(formErrors).length === 0){
+ 
     if (password !== confirmPassword) {
       toast.error("Passwords don't match");
     } else {
       try {
         const res = await registration({ name, password, email }).unwrap();
-        // dispatch(setCredentials({ ...res }));
+        // dispatch(setCredentials({ ...res })); ///remove latter
+        // setError('');
         navigate("/confirm-email");
         console.log(res)
-      } catch (error) {
-        console.log(error)
+      } catch (err) { 
+        const { data: errorMessage } = err;
+        setError(errorMessage.message)
+        console.log(err)
       }
-    }
-    }
+    } 
   }
 
   return (
@@ -58,6 +58,7 @@ export default function Register() {
             Create account
           </Typography>
           <FormControl component="form" onSubmit={onSubmit} sx={{ mt: 3 }}>
+            {error &&  <p className='error-message'>{error}</p>}
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12}>
                 <TextField

@@ -17,10 +17,9 @@ const getAllUsers = asyncWrapper(async (req, res) => {
 
 
 const authUser = asyncHandler(async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password , isVerified} = req.body;
 
     const user = await User.findOne({ email });
-
 
 
     if (user && (await user.matchPassword(password) )) {
@@ -81,13 +80,15 @@ const authUser = asyncHandler(async (req, res) => {
         });
       } else {
           res.status(401).json({message: "User is not verified"});
-          throw new Error("User is not verified")
+        //   throw new Error("User is not verified")
     }
     } else {
         // res.status(401);
         res.status(401).json({message: "Invalid Credentials"});
-        throw new Error("Invalid Credentials");
-    }
+        // throw new Error("Invalid Credentials");
+        }
+            
+    
 
 
 
@@ -106,11 +107,15 @@ const registerUser = asyncHandler(async (req, res) => {
 
     const { name, email, password } = req.body;
 
+    if (!name && !email && !password) {
+        res.status(400).json({ message: 'Empty fields' })
+        return //
+    }
+        
     const userExists = await User.findOne({ email });
 
     if (userExists) {
-        res.status(400);
-        throw new Error('User already exists');
+        res.status(400).json({message:'User already exists' });
     }
 
     const user = await User.create({
@@ -152,10 +157,6 @@ const registerUser = asyncHandler(async (req, res) => {
                 debug: true,
             });
         }
-
-        // function generateToken(length) {
-        //     return crypto.randomBytes(length).toString('hex');
-        // }
         function generateToken(length) {
             const tokenLength = typeof length === 'number' ? length : 16;
 
@@ -198,9 +199,9 @@ const registerUser = asyncHandler(async (req, res) => {
             isVerified: user.isVerified
         });
     } else {
-        res.status(400);
-        throw new Error('Invalid user data');
-    }
+        res.status(400).json({message:'Invalid user data' });
+        }
+    
 });
 
 

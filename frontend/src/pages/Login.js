@@ -10,10 +10,12 @@ import { setCredentials } from '../redux/slices/auth';
 import { fetchAuthMe, selectIsAuth } from '../redux/slices/auth';
 import styled from 'styled-components';
 import axios from 'axios';
+
+
 export default function Login() {
     const [email, setEmail] = useState('rustam@gmail.com');
     const [password, setPassword] = useState('123456');
-
+    const [error, setError] = useState('');
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -21,32 +23,16 @@ export default function Login() {
     const [login] = useLoginMutation();
 
 
-    const { authGoogle } = useAuthGoogleQuery();
+    // const { authGoogle } = useAuthGoogleQuery();
 
     const { userInfo } = useSelector((state) => state.auth);
 
 
-    console.log(authGoogle);
+    // console.log(authGoogle);
 
     const handleLogin = async (e) => {
         e.preventDefault();
         //  window.open('http://localhost:3005/auth/google', '_self');
-        // try {
-
-        //     // const response = await axios.get('http://localhost:3005/auth/google', {
-        //     //     timeout: 5000, 
-        //     //     retry: 3,
-        //     // });
-        //     // console.log(response);
-
-        //     // const data = await response.json();
-        //     const response = await axios.get('http://localhost:3005/auth/google', {
-        //         timeout: 10000
-        //     });
-        //     console.log(response.data);
-        // } catch (err) {
-        //     console.log(err)
-        // }
     }
 
 
@@ -64,13 +50,22 @@ export default function Login() {
     const onSubmit = async (e) => {
         e.preventDefault();
         try {
+         
             const res = await login({ email, password }).unwrap();
-            // const data = await dispatch(fetchAuthMe());
-            // console.log(res);
+            setError('');  
             dispatch(setCredentials({ ...res }));
             navigate(redirect);
+          
+            //     setError(true);
+            //     console.log( res.error);
+            // } else {
+            //     setError(false); 
+            // }
+            // // console.log(res);
         } catch (err) {
-            console.log(err);
+            const { data: errorMessage } = err;
+            setError(errorMessage.message);  
+            console.log(errorMessage);
         }
     }
 
@@ -86,6 +81,7 @@ export default function Login() {
                             Login Page
                         </Typography>
                         <Box component="form" onSubmit={onSubmit} sx={{ mt: 3 }}>
+                            {error && <p className="error-message">{error}</p>}
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={12}>
                                     <TextField
