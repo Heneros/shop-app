@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const generatePassword = require('generate-password');
 
 
+
 const User = require('../models/userModel');
 const generateToken = require('./generateToken');
 

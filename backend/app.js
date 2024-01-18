@@ -54,23 +54,19 @@ app.get('/api/config/paypal', (req, res) =>
     res.send({ clientId: process.env.PAYPAL_CLIENT_ID })
 )
 
-app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
 
+app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
 app.get('/auth/google/callback',
     passport.authenticate('google', {
         successRedirect: 'http://localhost:7200/profile',
         failureRedirect: '/auth/google/failure'
     }),
 );
-
-// app.get('/protected', (req, res) => {
-//     res.send("Success");
-// });
-
-
 app.get('/auth/google/failure', (req, res) => {
     res.send('Failed to authenticate..');
 });
+
+
 
 app.get('/verify-email/:token', async (req, res) => {
     // res.send("<h1>Hello World</h1>")
@@ -92,17 +88,9 @@ app.get('/verify-email/:token', async (req, res) => {
 
         user.isVerified = true;
         await user.save();
-
-
-        // await Token.deleteOne({ _id: tokenDoc._id });
         setTimeout(() => {
-            // res.send('Email verification successful. You can now log in.');
             res.redirect('http://localhost:7200');
         }, 2500)
-        // res.redirect('http://localhost:7200/');
-
-
-        // console.log(token)
     } catch (error) {
         console.log(error)
     }

@@ -10,6 +10,8 @@ const nodemailer = require('nodemailer');
 const Token = require('../models/tokenModel');
 const crypto = require("crypto");
 
+const {sendEmailAuth , sendEmailRegister} = require('../utils/email');
+
 const getAllUsers = asyncWrapper(async (req, res) => {
     const users = await User.find({});
     res.json(users);
@@ -17,59 +19,14 @@ const getAllUsers = asyncWrapper(async (req, res) => {
 
 
 const authUser = asyncHandler(async (req, res) => {
-    const { email, password , isVerified} = req.body;
-
+    const { email, password } = req.body;
     const user = await User.findOne({ email });
-
 
     if (user && (await user.matchPassword(password) )) {
       if(user.isVerified === true){
-        generateToken(res, user._id);
-        let transporter = null;
-        if (process.env.NODE_ENV === 'production') {
-            transporter = nodemailer.createTransport({
-                host: process.env.SMTP_HOST,
-                port: 587,
-                secure: false,
-                auth: {
-                    user: process.env.SMTP_NAME,
-                    pass: process.env.SMTP_PASS,
-                },
-                debug: true,
-            });
-        } else {
-            transporter = nodemailer.createTransport({
-                // host: process.env.SMTP_HOST,
-                host: "localhost",
-                port: 1025,
-                secure: false,
-                auth: {
-                    user: process.env.SMTP_NAME,
-                    pass: process.env.SMTP_PASS,
-                },
-                tls: {
-                    rejectUnauthorized: false
-                },
-                debug: true,
-            });
-        }
-
-
-        const mailOptions = {
-            from: process.env.SMTP_NAME,
-            to: email,
-            subject: 'Authorize success',
-            text: `Hello, you been authorize in site <a href='mailto:${email}'> {email}</a>`
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.error(error);
-            } else {
-                console.log('Email sent: ' + info.response);
-            }
-        });
-
+          generateToken(res, user._id);
+          
+        sendEmailAuth(req, res); 
         res.json({
             _id: user._id,
             name: user.name,
@@ -83,15 +40,10 @@ const authUser = asyncHandler(async (req, res) => {
         //   throw new Error("User is not verified")
     }
     } else {
-        // res.status(401);
         res.status(401).json({message: "Invalid Credentials"});
         // throw new Error("Invalid Credentials");
         }
             
-    
-
-
-
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
@@ -109,11 +61,9 @@ const registerUser = asyncHandler(async (req, res) => {
 
     if (!name && !email && !password) {
         res.status(400).json({ message: 'Empty fields' })
-        return //
+        return 
     }
-        
     const userExists = await User.findOne({ email });
-
     if (userExists) {
         res.status(400).json({message:'User already exists' });
     }
@@ -125,72 +75,12 @@ const registerUser = asyncHandler(async (req, res) => {
     });
 
     if (user) {
+
         generateToken(res, user._id);
 
+        sendEmailRegister(res, user);
 
-        // //send email
-        let transporter = null;
-        if (process.env.NODE_ENV === 'production') {
-            transporter = nodemailer.createTransport({
-                host: process.env.SMTP_HOST,
-                port: 587,
-                secure: false,
-                auth: {
-                    user: process.env.SMTP_NAME,
-                    pass: process.env.SMTP_PASS,
-                },
-                debug: true,
-            });
-        } else {
-            transporter = nodemailer.createTransport({
-                // host: process.env.SMTP_HOST,
-                host: "localhost",
-                port: 1025,
-                secure: false,
-                auth: {
-                    user: process.env.SMTP_NAME,
-                    pass: process.env.SMTP_PASS,
-                },
-                tls: {
-                    rejectUnauthorized: false
-                },
-                debug: true,
-            });
-        }
-        function generateToken(length) {
-            const tokenLength = typeof length === 'number' ? length : 16;
-
-            return crypto.randomBytes(tokenLength).toString('hex');
-        }
-
-        // Usage
-        const generateTokenString = generateToken(20);
-
-        // const generateTokenString = generateToken(30);
-
-        const token = new Token({ _userId: user._id, token: generateTokenString });
-        await token.save();
-
-        const urlBase = process.env.APP_BASE_URL;
-
-        const mailOptions = {
-            from: process.env.SMTP_NAME,
-            to: email,
-            subject: 'Sign Up success',
-            text: `Hello, ${user.name}! Thank you for signing up. Please click the following link to verify your email: ${urlBase}/verify-email/${token.token}`
-        };
-
-
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.error(error);
-            } else {
-                console.log('Email sent: ' + info.response);
-            }
-        });
-
-
-
+         //send email
         res.status(201).json({
             _id: user._id,
             name: user.name,
@@ -207,7 +97,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const deleteUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
-    console.log(req.params.id);
+    // console.log(req.params.id);
     if (user) {
         if (user.isAdmin) {
             res.status(400);
