@@ -1,11 +1,22 @@
-import { Box, Container, FormControl, FormControlLabel, FormLabel, Grid, Paper, Radio, RadioGroup, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom'
-import { styled } from 'styled-components';
+import {
+  Box,
+  Container,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  Paper,
+  Radio,
+  RadioGroup,
+  Typography,
+} from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { styled } from "styled-components";
 
-import { savePaymentMethod } from '../redux/slices/cartSlice';
-import PageHero from '../components/PageHero';
+import { savePaymentMethod } from "../redux/slices/cartSlice";
+import PageHero from "../components/PageHero";
 
 export default function Payment() {
   const navigate = useNavigate();
@@ -15,17 +26,18 @@ export default function Payment() {
 
   useEffect(() => {
     if (!shippingAddress.address) {
-      navigate('/shipping');
+      navigate("/shipping");
     }
-  }, [navigate, shippingAddress])
-  const [paymentMethod, setPaymentMethod] = useState('Paypal');
+  }, [navigate, shippingAddress]);
+
+  const [paymentMethod, setPaymentMethod] = useState("");
   const dispatch = useDispatch();
 
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(savePaymentMethod(paymentMethod));
-    navigate('/placeorder');
-  }
+    navigate("/placeorder");
+  };
 
   return (
     <>
@@ -37,18 +49,39 @@ export default function Payment() {
               Payment Method
             </Typography>
             <form onSubmit={submitHandler}>
-              <FormControl component="fieldset" style={{ marginTop: 16 }}>
+              {/* <FormControl component="fieldset" style={{ marginTop: 16 }}>
                 <FormLabel component="legend">Select Method</FormLabel>
-                <RadioGroup name="paymentMethod" defaultValue="PayPal" onChange={(e) => setPaymentMethod(e.target.value)}>
-                  <FormControlLabel value="PayPal" control={<Radio />} label="PayPal or Credit Card" />
+              
+                <RadioGroup name="paymentMethod"  onChange={(e) => setPaymentMethod(e.target.value)}>
+                  <FormControlLabel value="PayPal" control={<Radio />} label="PayPal" />
                 </RadioGroup>
-              </FormControl>
+
+                <RadioGroup name="paymentMethodStripe" onChange={(e) => setPaymentMethod(e.target.value)}>
+                <FormControlLabel value="Stripe" control={<Radio />} label="Stripe" />
+                </RadioGroup>
+
+              </FormControl> */}
+              <RadioGroup
+                aria-labelledby="demo-radio-buttons-group-label"
+                defaultValue="Paypal"
+                name="radio-buttons-group"
+              >
+                <FormControlLabel
+                  value="Paypal"
+                  control={<Radio />}
+                  label="Paypal"
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                />
+                <FormControlLabel
+                  value="Stripe"
+                  control={<Radio />}
+                  label="Stripe"
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                />
+              </RadioGroup>
               <Grid item xs={12} sm={12}>
                 <Wrapper>
-                  <button
-                    type='submit'
-                    className="link-btn"
-                  >
+                  <button type="submit" className="link-btn">
                     Save Information
                   </button>
                 </Wrapper>
@@ -58,10 +91,10 @@ export default function Payment() {
         </Container>
       </Box>
     </>
-  )
+  );
 }
 const Wrapper = styled.div`
-    .link-btn {
+  .link-btn {
     background: transparent;
     border-color: transparent;
     text-transform: capitalize;
@@ -75,5 +108,4 @@ const Wrapper = styled.div`
     min-width: 25%;
     min-height: 50px;
   }
-  
-`
+`;
