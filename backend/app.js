@@ -6,7 +6,9 @@ const passport = require("passport");
 const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+
 const stripe = require("./utils/stripe");
+
 // const stripe = require("stripe")(process.env.STRIPE_SECRET);
 const { v4: uuidv4 } = require("uuid");
 
@@ -46,6 +48,8 @@ app.use("/api/products", productRouter);
 app.use("/api/users", routesUser);
 app.use("/api/orders", routesOrder);
 app.use("/api/upload", routeUpload);
+
+
 app.use("/api/stripe", stripe);
 
 app.get("/api/config/paypal", (req, res) =>

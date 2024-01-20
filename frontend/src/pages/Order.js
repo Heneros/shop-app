@@ -122,7 +122,7 @@ export default function Order() {
   };
 
   const itemsOrder = order?.orderItems;
-  // console.log(itemsOrder);
+  console.log(itemsOrder);
 
   return isLoading ? (
     <Loader />
