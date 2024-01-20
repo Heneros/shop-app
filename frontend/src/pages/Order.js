@@ -121,8 +121,10 @@ export default function Order() {
     }
   };
 
-  const itemsOrder = order?.orderItems;
-  console.log(itemsOrder);
+  const cartItems = order?.orderItems;
+  const userInformationId = userInfo._id;
+
+  console.log(cartItems);
 
   return isLoading ? (
     <Loader />
@@ -132,6 +134,9 @@ export default function Order() {
     <>
       <PageHero title="Details" />
       <Container>
+        <StripeButton userId={userInformationId} cartItems={cartItems}>
+          Make a payment stripe
+        </StripeButton>
         <Typography
           sx={{
             my: 5,
@@ -148,6 +153,7 @@ export default function Order() {
         >
           Order #{order._id}
         </Typography>
+
         <Box
           sx={{
             my: 3,
@@ -334,10 +340,6 @@ export default function Order() {
                       </Typography>
                     )}
                   </ListItem>
-
-                  <StripeButton itemsOrder={itemsOrder}>
-                    Make a payment stripe
-                  </StripeButton>
 
                   {!order.isPaid && (
                     <ListItem>
