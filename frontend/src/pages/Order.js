@@ -50,7 +50,7 @@ export default function Order() {
     error: errorPayPal,
   } = useGetPaypalClientIdQuery();
 
-  const dispatch = useDispatch();
+  
   const { userInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
