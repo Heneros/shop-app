@@ -12,7 +12,6 @@ const stripe = require("./utils/stripe");
 // const stripe = require("stripe")(process.env.STRIPE_SECRET);
 const { v4: uuidv4 } = require("uuid");
 
-
 const connectDB = require("./db/db");
 const productRouter = require("./routes/routesProduct");
 const routesUser = require("./routes/routesUser");
@@ -20,6 +19,8 @@ const routesOrder = require("./routes/routesOrder");
 const routeUpload = require("./routes/routeUpload");
 const Token = require("./models/tokenModel.js");
 const User = require("./models/userModel.js");
+const bodyParser = require("body-parser");
+const Order = require("./models/orderModel.js");
 
 require("./utils/oauth.js");
 
@@ -32,7 +33,72 @@ app.use(
   })
 );
 
+const port = process.env.PORT || 4000;
+
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGO_URI);
+    app.listen(port, console.log(`Working on port ${port}`));
+  } catch (error) {
+    console.log(error);
+  }
+};
+start();
+
+app.use(
+  "/api/stripe/webhook",
+  bodyParser.raw({ type: "application/json" }),
+  (req, res) => {
+    const payload = req.body;
+    const sig = req.headers["stripe-signature"];
+    const endpointSecret = process.env.STRIPE_WEB_HOOK;
+
+    let event;
+    const stripe = require("stripe")(process.env.STRIPE_SECRET);
+
+    try {
+      event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+    } catch (error) {
+      console.log("Error", error.message);
+      res.status(400).json({ success: false });
+      return;
+    }
+
+    switch (event.type) {
+      case "checkout.session.completed":
+        const paymentIntent = event.data.object;
+        // console.log("payment_intent.succeeded");
+
+        const orderId = paymentIntent.metadata.orderId;
+
+        const order = Order.findById(orderId);
+        console.log("orderid", order);
+
+        if (order) {
+          order.isPaid = true;
+          order.paidAt = new Date();
+          order.save();
+        }
+        break;
+      case "payment_intent.payment_failed":
+        const paymentFailedIntent = event.data.object;
+        console.log("payment_intent.failed", paymentFailedIntent);
+        break;
+      // Handle other event types as needed
+      default:
+        console.log(`Unhandled event type ${event.type}`);
+    }
+
+    console.log("Event", event);
+    res.status(200).end();
+    // console.log("payload", endpointSecret);
+  }
+);
+
 app.use(express.json());
+
+app.use("/api/stripe", stripe);
+
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
@@ -48,9 +114,6 @@ app.use("/api/products", productRouter);
 app.use("/api/users", routesUser);
 app.use("/api/orders", routesOrder);
 app.use("/api/upload", routeUpload);
-
-
-app.use("/api/stripe", stripe);
 
 app.get("/api/config/paypal", (req, res) =>
   res.send({ clientId: process.env.PAYPAL_CLIENT_ID })
@@ -141,15 +204,3 @@ if (process.env.NODE_ENV === "production") {
     res.send("API is running....");
   });
 }
-
-const port = process.env.PORT || 4000;
-
-const start = async () => {
-  try {
-    await connectDB(process.env.MONGO_URI);
-    app.listen(port, console.log(`Working on port ${port}`));
-  } catch (error) {
-    console.log(error);
-  }
-};
-start();
