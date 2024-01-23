@@ -21,6 +21,7 @@ const Token = require("./models/tokenModel.js");
 const User = require("./models/userModel.js");
 
 const Order = require("./models/orderModel.js");
+const { createOrderStripe } = require("./controllers/ordersController.js");
 
 require("./utils/oauth.js");
 
@@ -45,12 +46,6 @@ const start = async () => {
 };
 start();
 
-const createOrder = async (customer, data) => {
-  const items = JSON.parse(customer.metadata.cart);
-
-  console.log(items);
-};
-
 app.use(
   "/api/stripe/webhook",
   bodyParser.raw({ type: "application/json" }),
@@ -72,36 +67,27 @@ app.use(
 
     switch (event.type) {
       case "checkout.session.completed":
-        // const orderId = paymentIntent.metadata.orderId;
-        createOrder();
-        const paymentIntent = event.data;
-        const clientReferenceId = paymentIntent;
-        console.log("data", paymentIntent);
+        let data = event.data.object;
+        let customer_detail = event.data.object.customer_details;
 
-        const orderId = paymentIntent.metadata.id;
+        const {
+          id,
+          amount_total,
+          currency,
+          customer: stripeCustomerId,
+          customer_details: { email, name, address },
+          line_items: items,
+          payment_intent,
+        } = data;
 
-        const order = await Order.findOne({ _id: orderId });
+        
+        // createOrderStripe(data);
 
-        if (order) {
-          order.isPaid = true;
-          order.paidAt = new Date();
-          order.paymentResult = {
-            id: paymentIntent.id,
-            status: paymentIntent.status,
-            update_time: paymentIntent.created,
-            email_address: null,
-          };
-          const updatedOrder = await order.save();
-          res.json(updatedOrder);
-        } else {
-          console.log("order not found");
-        }
         break;
       case "payment_intent.payment_failed":
         const paymentFailedIntent = event.data.object;
         console.log("payment_intent.failed");
         break;
-      // Handle other event types as needed
       default:
         console.log(`Unhandled event type ${event.type}`);
     }

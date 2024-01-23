@@ -24,6 +24,7 @@ import {
 import { formatPrice } from "../utils/helpers";
 import PageHero from "../components/PageHero";
 import Loader from "../components/Loader";
+import StripeButton from "../components/StripeButton";
 
 export default function PlaceOrder() {
   const navigate = useNavigate();
@@ -42,15 +43,6 @@ export default function PlaceOrder() {
     0
   );
   const { userInfo } = useSelector((state) => state.auth);
-
-  const [getStripePay] = useGetStripePayMutation();
-  const stripeOrderHandler = async (e) => {
-      try {
-        
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const placeOrderHandler = async () => {
     try {
@@ -75,6 +67,12 @@ export default function PlaceOrder() {
     }
   };
 
+  const cartItems = cart.cartItems;
+
+  const userInformationId = userInfo._id;
+  const userInformationEmail = userInfo.email;
+
+ 
   return isLoading ? (
     <Loader />
   ) : error ? (
@@ -253,16 +251,13 @@ export default function PlaceOrder() {
 
                   <ListItem>
                     {cart.paymentMethod === "Stripe" ? (
-                      <Button
-                        type="button"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        disabled={cart.cartItems.length === 0}
-                        onClick={stripeOrderHandler}
+                      <StripeButton
+                        userId={userInformationId}
+                        userEmail={userInformationEmail}
+                        cartItems={cartItems}
                       >
-                        Pay with Stripe
-                      </Button>
+                        Make a payment stripe
+                      </StripeButton>
                     ) : (
                       <Button
                         type="button"

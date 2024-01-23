@@ -12,6 +12,7 @@ export default function StripeButton({ cartItems }) {
       const response = await getStripePay({
         cartItems,
         userId: userInfo._id,
+        userEmail: userInfo.email
       });
 
       if (response.data.url) {
@@ -26,6 +27,7 @@ export default function StripeButton({ cartItems }) {
       <Button
         variant="contained"
         color="primary"
+        fullWidth
         onClick={() => handleCheckout()}
       >
         Pay Stripe

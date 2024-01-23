@@ -54,11 +54,11 @@ export const orderApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getStripePay: builder.mutation({
-      query: ({ cartItems, userId }) => ({
+      query: ({ cartItems, userId, userEmail }) => ({
         url: `${STRIPE_URL}/create-checkout-session`,
         method: "POST",
         credentials: "include",
-        body: { cartItems, userId },
+        body: { cartItems, userId, userEmail },
       }),
       invalidatesTags: ["Order"],
     }),
