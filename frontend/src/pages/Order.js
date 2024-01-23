@@ -124,7 +124,7 @@ export default function Order() {
   const cartItems = order?.orderItems;
   const userInformationId = userInfo._id;
 
-  console.log(cartItems);
+  console.log(orderId);
 
   return isLoading ? (
     <Loader />
@@ -134,7 +134,7 @@ export default function Order() {
     <>
       <PageHero title="Details" />
       <Container>
-        <StripeButton userId={userInformationId} cartItems={cartItems}>
+        <StripeButton  userId={userInformationId} cartItems={cartItems}>
           Make a payment stripe
         </StripeButton>
         <Typography

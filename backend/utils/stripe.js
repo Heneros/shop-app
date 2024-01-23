@@ -8,7 +8,6 @@ const router = express.Router();
 router.post("/create-checkout-session", async (req, res) => {
   try {
     const userId = req.body.userId;
-
     const cartItems = req.body.cartItems;
 
     // console.log(cartItems);
@@ -47,7 +46,7 @@ router.post("/create-checkout-session", async (req, res) => {
       success_url: `${process.env.CLIENT_ORIGIN}/checkout-success`,
       cancel_url: `${process.env.CLIENT_ORIGIN}/placeorder`,
     });
-
+    console.log(cartItems);
     res.send({ url: session.url });
   } catch (error) {
     console.log(error);
@@ -56,4 +55,5 @@ router.post("/create-checkout-session", async (req, res) => {
 });
 
 
-module.exports = router;
+
+module.exports = { router };

@@ -6,7 +6,7 @@ const passport = require("passport");
 const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-
+const bodyParser = require("body-parser");
 const stripe = require("./utils/stripe");
 
 // const stripe = require("stripe")(process.env.STRIPE_SECRET);
@@ -19,7 +19,7 @@ const routesOrder = require("./routes/routesOrder");
 const routeUpload = require("./routes/routeUpload");
 const Token = require("./models/tokenModel.js");
 const User = require("./models/userModel.js");
-const bodyParser = require("body-parser");
+
 const Order = require("./models/orderModel.js");
 
 require("./utils/oauth.js");
@@ -45,10 +45,16 @@ const start = async () => {
 };
 start();
 
+const createOrder = async (customer, data) => {
+  const items = JSON.parse(customer.metadata.cart);
+
+  console.log(items);
+};
+
 app.use(
   "/api/stripe/webhook",
   bodyParser.raw({ type: "application/json" }),
-  (req, res) => {
+  async (req, res) => {
     const payload = req.body;
     const sig = req.headers["stripe-signature"];
     const endpointSecret = process.env.STRIPE_WEB_HOOK;
@@ -57,7 +63,7 @@ app.use(
     const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
     try {
-      event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+      event = stripe.webhooks.constructEvent(payload, sig, endpointSecret);
     } catch (error) {
       console.log("Error", error.message);
       res.status(400).json({ success: false });
@@ -66,30 +72,41 @@ app.use(
 
     switch (event.type) {
       case "checkout.session.completed":
-        const paymentIntent = event.data.object;
-        // console.log("payment_intent.succeeded");
+        // const orderId = paymentIntent.metadata.orderId;
+        createOrder();
+        const paymentIntent = event.data;
+        const clientReferenceId = paymentIntent;
+        console.log("data", paymentIntent);
 
-        const orderId = paymentIntent.metadata.orderId;
+        const orderId = paymentIntent.metadata.id;
 
-        const order = Order.findById(orderId);
-        console.log("orderid", order);
+        const order = await Order.findOne({ _id: orderId });
 
         if (order) {
           order.isPaid = true;
           order.paidAt = new Date();
-          order.save();
+          order.paymentResult = {
+            id: paymentIntent.id,
+            status: paymentIntent.status,
+            update_time: paymentIntent.created,
+            email_address: null,
+          };
+          const updatedOrder = await order.save();
+          res.json(updatedOrder);
+        } else {
+          console.log("order not found");
         }
         break;
       case "payment_intent.payment_failed":
         const paymentFailedIntent = event.data.object;
-        console.log("payment_intent.failed", paymentFailedIntent);
+        console.log("payment_intent.failed");
         break;
       // Handle other event types as needed
       default:
         console.log(`Unhandled event type ${event.type}`);
     }
 
-    console.log("Event", event);
+    console.log("Event");
     res.status(200).end();
     // console.log("payload", endpointSecret);
   }
