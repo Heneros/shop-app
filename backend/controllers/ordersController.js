@@ -10,18 +10,16 @@ const {
 // import { verifyPayPalPayment, checkIfNewTransaction } from '../utils/paypal.js';
 
 const createOrderStripe = asyncHandler(async (customer, data) => {
-
-    // const {
-    //     id,
-    //     amount_total,
-    //     currency,
-    //     customer: stripeCustomerId,
-    //     customer_details: { email, name, address },
-    //     line_items: items,
-    //     payment_intent,
-    // } = data;
-    // console.log(line_items);
-
+  // const {
+  //     id,
+  //     amount_total,
+  //     currency,
+  //     customer: stripeCustomerId,
+  //     customer_details: { email, name, address },
+  //     line_items: items,
+  //     payment_intent,
+  // } = data;
+  // console.log(line_items);
 });
 
 const addOrderItems = asyncHandler(async (req, res) => {

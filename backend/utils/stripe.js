@@ -9,37 +9,21 @@ const router = express.Router();
 router.post("/create-checkout-session", async (req, res) => {
   try {
     const userId = req.body.userId;
-    const userEmail = req.body.userEmail;
     const cartItems = req.body.cartItems;
 
     if (!Array.isArray(cartItems)) {
       return res.status(400).send("Invalid cartItems format");
     }
-    const user = await User.findOne({ email: userEmail });
 
     let customer;
-    if (user) {
-      try {
-        customer = await stripe.customers.retrieve(user._id.toString());
-      } catch (error) {
-        ///if user not exist current create new
-        customer = await stripe.customers.create({
-          metadata: {
-            userId: userId,
-            cart: JSON.stringify(req.body.cartItems),
-          },
-        });
-      }
-    } else {
-      customer = await stripe.customers.create({
-        metadata: {
-          userId: userId,
-          cart: JSON.stringify(req.body.cartItems),
-        },
-      });
-    }
 
-    //
+    customer = await stripe.customers.create({
+      metadata: {
+        userId: userId,
+        cart: JSON.stringify(req.body.cartItems),
+      },
+    });
+
     const line_items = req.body.cartItems.map((item) => {
       return {
         price_data: {

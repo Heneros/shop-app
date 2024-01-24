@@ -8,7 +8,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const stripe = require("./utils/stripe");
-
+const jwt = require("jsonwebtoken");
 // const stripe = require("stripe")(process.env.STRIPE_SECRET);
 const { v4: uuidv4 } = require("uuid");
 
@@ -22,6 +22,8 @@ const User = require("./models/userModel.js");
 
 const Order = require("./models/orderModel.js");
 const { createOrderStripe } = require("./controllers/ordersController.js");
+const authenticateToken = require("./utils/currentUser.js");
+// const authenticateToken = require("./utils/currentUser.js");
 
 require("./utils/oauth.js");
 
@@ -48,14 +50,30 @@ start();
 
 app.use(
   "/api/stripe/webhook",
+
   bodyParser.raw({ type: "application/json" }),
   async (req, res) => {
     const payload = req.body;
     const sig = req.headers["stripe-signature"];
+
     const endpointSecret = process.env.STRIPE_WEB_HOOK;
+   
+    // authenticateToken();
+
+    const userId = req.user;
+    console.log("userId", userId);
 
     let event;
+
     const stripe = require("stripe")(process.env.STRIPE_SECRET);
+
+    const currentUser = req.user;
+    if (currentUser) {
+      console.log("Current user", currentUser);
+    } else {
+      console.log("User not authenticated", currentUser);
+      return;
+    }
 
     try {
       event = stripe.webhooks.constructEvent(payload, sig, endpointSecret);
@@ -70,19 +88,6 @@ app.use(
         let data = event.data.object;
         let customer_detail = event.data.object.customer_details;
 
-        const {
-          id,
-          amount_total,
-          currency,
-          customer: stripeCustomerId,
-          customer_details: { email, name, address },
-          line_items: items,
-          payment_intent,
-        } = data;
-
-        
-        // createOrderStripe(data);
-
         break;
       case "payment_intent.payment_failed":
         const paymentFailedIntent = event.data.object;
@@ -92,15 +97,11 @@ app.use(
         console.log(`Unhandled event type ${event.type}`);
     }
 
-    console.log("Event");
     res.status(200).end();
-    // console.log("payload", endpointSecret);
   }
 );
 
 app.use(express.json());
-
-app.use("/api/stripe", stripe);
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -117,6 +118,7 @@ app.use("/api/products", productRouter);
 app.use("/api/users", routesUser);
 app.use("/api/orders", routesOrder);
 app.use("/api/upload", routeUpload);
+app.use("/api/stripe", stripe);
 
 app.get("/api/config/paypal", (req, res) =>
   res.send({ clientId: process.env.PAYPAL_CLIENT_ID })
@@ -136,35 +138,6 @@ app.get(
 app.get("/auth/google/failure", (req, res) => {
   res.send("Failed to authenticate..");
 });
-
-// app.post("/api/stripe/pay", (req, res, next) => {
-//   console.log(req.body.token);
-//   const { token, amount } = req.body;
-//   const idempotencyKey = uuidv4();
-
-//   return stripe.customers
-//     .create({
-//       email: token.email,
-//       source: token,
-//     })
-//     .then((customer) => {
-//       stripe.charges.create(
-//         {
-//           amount: amount * 100,
-//           currency: "usd",
-//           customer: customer.id,
-//           receipt_email: token.email,
-//         },
-//         { idempotencyKey }
-//       );
-//     })
-//     .then((result) => {
-//       res.status(200).json(result);
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// });
 
 app.get("/verify-email/:token", async (req, res) => {
   try {
