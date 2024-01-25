@@ -19,7 +19,7 @@ export default function ProductList() {
   const { data, isLoading, error, refetch } = useGetProductsQuery({ pageNumber });
 
   const products = data && data.products ? data.products : [];
-  console.log(data);
+  // console.log(data);
 
 
   const [createProduct, { isLoading: loadingCreate }] = useCreateProductMutation();

@@ -10,7 +10,6 @@ const bodyParser = require("body-parser");
 const stripe = require("./utils/stripe");
 const jwt = require("jsonwebtoken");
 // const stripe = require("stripe")(process.env.STRIPE_SECRET);
-const { v4: uuidv4 } = require("uuid");
 
 const connectDB = require("./db/db");
 const productRouter = require("./routes/routesProduct");
@@ -18,12 +17,9 @@ const routesUser = require("./routes/routesUser");
 const routesOrder = require("./routes/routesOrder");
 const routeUpload = require("./routes/routeUpload");
 const Token = require("./models/tokenModel.js");
-const User = require("./models/userModel.js");
 
-const Order = require("./models/orderModel.js");
-const { createOrderStripe } = require("./controllers/ordersController.js");
-const authenticateToken = require("./utils/currentUser.js");
-// const authenticateToken = require("./utils/currentUser.js");
+const stripeWebhook = require("./utils/stripe-webhook.js");
+const { verifyEmail } = require("./utils/email.js");
 
 require("./utils/oauth.js");
 
@@ -36,69 +32,10 @@ app.use(
   })
 );
 
-const port = process.env.PORT || 4000;
-
-const start = async () => {
-  try {
-    await connectDB(process.env.MONGO_URI);
-    app.listen(port, console.log(`Working on port ${port}`));
-  } catch (error) {
-    console.log(error);
-  }
-};
-start();
-
 app.use(
   "/api/stripe/webhook",
-
   bodyParser.raw({ type: "application/json" }),
-  async (req, res) => {
-    const payload = req.body;
-    const sig = req.headers["stripe-signature"];
-
-    const endpointSecret = process.env.STRIPE_WEB_HOOK;
-   
-    // authenticateToken();
-
-    const userId = req.user;
-    console.log("userId", userId);
-
-    let event;
-
-    const stripe = require("stripe")(process.env.STRIPE_SECRET);
-
-    const currentUser = req.user;
-    if (currentUser) {
-      console.log("Current user", currentUser);
-    } else {
-      console.log("User not authenticated", currentUser);
-      return;
-    }
-
-    try {
-      event = stripe.webhooks.constructEvent(payload, sig, endpointSecret);
-    } catch (error) {
-      console.log("Error", error.message);
-      res.status(400).json({ success: false });
-      return;
-    }
-
-    switch (event.type) {
-      case "checkout.session.completed":
-        let data = event.data.object;
-        let customer_detail = event.data.object.customer_details;
-
-        break;
-      case "payment_intent.payment_failed":
-        const paymentFailedIntent = event.data.object;
-        console.log("payment_intent.failed");
-        break;
-      default:
-        console.log(`Unhandled event type ${event.type}`);
-    }
-
-    res.status(200).end();
-  }
+  stripeWebhook
 );
 
 app.use(express.json());
@@ -139,31 +76,7 @@ app.get("/auth/google/failure", (req, res) => {
   res.send("Failed to authenticate..");
 });
 
-app.get("/verify-email/:token", async (req, res) => {
-  try {
-    const token = req.params.token;
-    const tokenDoc = await Token.findOne({ token });
-
-    if (!tokenDoc) {
-      return res.status(400).send("Invalid or expired token");
-    }
-    const user = await User.findById(tokenDoc._userId);
-    if (!user) {
-      return res.status(400).send("User not found");
-    }
-
-    if (user.isVerified) {
-      return res.status(400).send("User already verified.");
-    }
-    user.isVerified = true;
-    await user.save();
-    setTimeout(() => {
-      res.redirect("http://localhost:7200");
-    }, 2500);
-  } catch (error) {
-    console.log(error);
-  }
-});
+app.get("/verify-email/:token", verifyEmail);
 
 if (process.env.NODE_ENV === "production") {
   const __dirname = path.resolve();
@@ -180,3 +93,15 @@ if (process.env.NODE_ENV === "production") {
     res.send("API is running....");
   });
 }
+
+const port = process.env.PORT || 4000;
+
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGO_URI);
+    app.listen(port, console.log(`Working on port ${port}`));
+  } catch (error) {
+    console.log(error);
+  }
+};
+start();

@@ -1,11 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  useCreateOrderMutation,
-  useGetStripePayMutation,
-} from "../redux/slices/orderApiSlice";
-import { toast } from "react-toastify";
+import { useCreateOrderMutation } from "../redux/slices/orderApiSlice";
 import { clearCartItems } from "../redux/slices/cartSlice";
 import {
   Box,
@@ -14,8 +10,6 @@ import {
   CardContent,
   Container,
   Typography,
-  ListGroupItem,
-  ListGroup,
   ListItem,
   Grid,
   List,
@@ -72,7 +66,6 @@ export default function PlaceOrder() {
   const userInformationId = userInfo._id;
   const userInformationEmail = userInfo.email;
 
- 
   return isLoading ? (
     <Loader />
   ) : error ? (
@@ -248,7 +241,6 @@ export default function PlaceOrder() {
                       </Typography>
                     )}
                   </ListItem>
-
                   <ListItem>
                     {cart.paymentMethod === "Stripe" ? (
                       <StripeButton

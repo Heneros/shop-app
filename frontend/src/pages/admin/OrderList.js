@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 export default function OrderList() {
 
   const { data: orders, isLoading, error } = useGetOrdersQuery()
-  console.log(orders);
+  // console.log(orders);
 
   return (
     <>

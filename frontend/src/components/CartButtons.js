@@ -44,7 +44,7 @@ export default function CartButtons() {
     try {
       await logoutApiCall().unwrap();
       dispatch(logout());
-      console.log(logout());
+      // console.log(logout());
     } catch (error) {
       console.log(error);
     }

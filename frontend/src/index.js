@@ -2,18 +2,20 @@ import React from "react";
 
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+
 import store from "./redux/store";
 import ReactDOM from "react-dom/client";
 
 import Layout from "./pages/Layout";
 import HomePage from "./pages/HomePage";
-import ContactUs from "./pages/ContactUs";
 
 import About from "./pages/About";
 import Cart from "./pages/Cart";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import { ToastContainer } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminRoute from "./components/AdminRoute";
@@ -31,7 +33,7 @@ import ProductEdit from "./pages/admin/ProductEdit";
 import ProductList from "./pages/admin/ProductList";
 import UserEdit from "./pages/admin/UserEdit";
 import UserList from "./pages/admin/UserList";
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+
 import ConfirmEmail from "./pages/ConfirmEmail";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
 
@@ -61,10 +63,7 @@ const router = createBrowserRouter([
         path: "products/:id",
         element: <SingleProduct />,
       },
-      {
-        path: "contact-us",
-        element: <ContactUs />,
-      },
+
       {
         path: "about",
         element: <About />,

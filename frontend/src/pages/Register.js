@@ -38,10 +38,9 @@ export default function Register() {
     } else {
       try {
         const res = await registration({ name, password, email }).unwrap();
-        // dispatch(setCredentials({ ...res })); ///remove latter
         // setError('');
         navigate("/confirm-email");
-        console.log(res)
+        // console.log(res)
       } catch (err) { 
         const { data: errorMessage } = err;
         setError(errorMessage.message)

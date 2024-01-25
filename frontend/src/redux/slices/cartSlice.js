@@ -12,6 +12,7 @@ const cartSlice = createSlice({
             const item = action.payload;
 
             // state.cartItems = [...state.cartItems, item];
+            
             ///only unique products in cart
             const existItem = state.cartItems.find((x) => x._id === item._id);
 
@@ -51,7 +52,6 @@ const cartSlice = createSlice({
             state.cartItems = [];
             localStorage.setItem('cart', JSON.stringify(state));
         },
-
         resetCart: (state) => (state = initialState),
     }
 })

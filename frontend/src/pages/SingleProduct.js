@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import React, {  useState } from 'react'
+import { useDispatch} from 'react-redux';
 import { Link, useParams } from 'react-router-dom'
 import { styled } from 'styled-components';
 import { FaPlus, FaMinus } from 'react-icons/fa'
@@ -9,8 +9,7 @@ import { formatPrice } from '../utils/helpers';
 import { useGetProductDetailsQuery } from '../redux/slices/productApiSlice';
 import { addToCart } from '../redux/slices/cartSlice';
 
-import { fetchProducts } from '../redux/slices/products';
-import axios from '../axios';
+
 import PageHero from '../components/PageHero';
 import Stars from '../components/Stars';
 import { toast } from 'react-toastify';

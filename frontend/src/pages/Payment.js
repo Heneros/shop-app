@@ -1,9 +1,7 @@
 import {
   Box,
   Container,
-  FormControl,
   FormControlLabel,
-  FormLabel,
   Grid,
   Paper,
   Radio,
@@ -30,7 +28,7 @@ export default function Payment() {
     }
   }, [navigate, shippingAddress]);
 
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("Paypal");
   const dispatch = useDispatch();
 
   const submitHandler = (e) => {
@@ -51,15 +49,9 @@ export default function Payment() {
             <form onSubmit={submitHandler}>
               {/* <FormControl component="fieldset" style={{ marginTop: 16 }}>
                 <FormLabel component="legend">Select Method</FormLabel>
-              
                 <RadioGroup name="paymentMethod"  onChange={(e) => setPaymentMethod(e.target.value)}>
                   <FormControlLabel value="PayPal" control={<Radio />} label="PayPal" />
                 </RadioGroup>
-
-                <RadioGroup name="paymentMethodStripe" onChange={(e) => setPaymentMethod(e.target.value)}>
-                <FormControlLabel value="Stripe" control={<Radio />} label="Stripe" />
-                </RadioGroup>
-
               </FormControl> */}
               <RadioGroup
                 aria-labelledby="demo-radio-buttons-group-label"
@@ -72,12 +64,12 @@ export default function Payment() {
                   label="Paypal"
                   onChange={(e) => setPaymentMethod(e.target.value)}
                 />
-                <FormControlLabel
+                {/* <FormControlLabel
                   value="Stripe"
                   control={<Radio />}
                   label="Stripe"
                   onChange={(e) => setPaymentMethod(e.target.value)}
-                />
+                /> */}
               </RadioGroup>
               <Grid item xs={12} sm={12}>
                 <Wrapper>

@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
-import axios from "axios";
 
 import Loader from "../components/Loader";
 import PageHero from "../components/PageHero";
@@ -28,9 +27,7 @@ import {
   useGetPaypalClientIdQuery,
   usePayOrderMutation,
 } from "../redux/slices/orderApiSlice";
-import Stripe from "stripe";
-import { loadStripe } from "@stripe/stripe-js";
-import StripeButton from "../components/StripeButton";
+
 export default function Order() {
   const { id: orderId } = useParams();
   const {
@@ -121,10 +118,6 @@ export default function Order() {
     }
   };
 
-  const cartItems = order?.orderItems;
-  const userInformationId = userInfo._id;
-
-  console.log(orderId);
 
   return isLoading ? (
     <Loader />
@@ -134,9 +127,7 @@ export default function Order() {
     <>
       <PageHero title="Details" />
       <Container>
-        <StripeButton  userId={userInformationId} cartItems={cartItems}>
-          Make a payment stripe
-        </StripeButton>
+
         <Typography
           sx={{
             my: 5,
@@ -348,14 +339,14 @@ export default function Order() {
                         <Loader />
                       ) : (
                         <div>
-                          <Button
+                          {/* <Button
                             size="large"
                             onClick={onApproveTest}
                             fullWidth
                             variant="outlined"
                           >
                             Test Pay order
-                          </Button>
+                          </Button> */}
                           <>
                             {/* <Stripe
                               stripeKey=""
