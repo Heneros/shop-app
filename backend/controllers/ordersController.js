@@ -9,8 +9,6 @@ const {
 } = require("../utils/paypal.js");
 // import { verifyPayPalPayment, checkIfNewTransaction } from '../utils/paypal.js';
 
-
-
 const addOrderItems = asyncHandler(async (req, res) => {
   // const newOrder = new Order(req.body);
 

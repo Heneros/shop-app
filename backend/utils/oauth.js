@@ -1,6 +1,6 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const bcrypt = require("bcryptjs");
+
 const generatePassword = require('generate-password');
 
 
@@ -14,7 +14,7 @@ passport.use(new GoogleStrategy({
     callbackURL: "/auth/google/callback",
     passReqToCallback: true
 }, async function (request, accessToken, refreshToken, profile, done) {
-    console.log(profile);
+    // console.log(profile);
     try {
         const user = await User.findOne({ googleId: profile.id });
         if (user) {
@@ -41,11 +41,8 @@ passport.use(new GoogleStrategy({
             });
             if (newUser) {
                 generateToken(request.res, newUser._id); 
-
                 const savedUser = await newUser.save();
-
                 // console.log(savedUser)
-
                 return done(null, savedUser);
             }
 

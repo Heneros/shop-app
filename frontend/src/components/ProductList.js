@@ -47,7 +47,6 @@ export default function ProductList() {
     return <div>Error: {error.message}</div>;
   }
 
-  const productsItems = data.products;
 
   // console.log(productsItems);
   return (

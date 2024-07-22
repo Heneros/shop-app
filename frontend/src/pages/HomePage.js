@@ -16,12 +16,9 @@ const HomePage = () => {
   const { pageNumber, keyword } = useParams();
 
   const { data, isLoading, error } = useGetProductsQuery({ keyword, pageNumber });
-  console.log(data);
   const products = data && data.products ? data.products : [];
 
-  // console.log(products);
 
-  const dispatch = useDispatch();
   const { selectedCategory, selectedCompany, selectedShipping } = useSelector((state) => state.products);
 
   const filteredProducts = products.filter((product) => {

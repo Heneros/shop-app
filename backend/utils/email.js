@@ -56,7 +56,7 @@ const sendEmailRegister = asyncHandler(async (req, user) => {
     transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: 587,
-      secure: false,
+      secure: true,
       auth: {
         user: process.env.SMTP_NAME,
         pass: process.env.SMTP_PASS,
@@ -129,7 +129,7 @@ const verifyEmail = asyncHandler(async (req, res, user) => {
     user.isVerified = true;
     await user.save();
     setTimeout(() => {
-      res.redirect("http://localhost:7200");
+      res.redirect("https://nodejs-shop-app.onrender.com/login");
     }, 2500);
   } catch (error) {
     console.log(error);

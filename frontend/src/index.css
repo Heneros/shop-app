@@ -256,6 +256,12 @@ p {
     font-size: 1rem;
     line-height: 1.5;
     letter-spacing: 0.00938em;
+}
+body .css-1x7skt0{
+    background-color: #fff;
+}
+
+ul li .menu-item-nav {
     display: flex;
-    align-items: center;
+    flex-direction: row;
 }

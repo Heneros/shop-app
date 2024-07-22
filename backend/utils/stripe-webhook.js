@@ -7,7 +7,7 @@ const stripeWebhook = async (req, res) => {
   // authenticateToken();
 
   const userId = req.user;
-  console.log("userId", userId);
+  // console.log("userId", userId);
 
   let event;
 

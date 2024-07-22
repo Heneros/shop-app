@@ -1,4 +1,5 @@
 import React from "react";
+import "@babel/polyfill";
 
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
