@@ -10,6 +10,7 @@ const nodemailer = require("nodemailer");
 const Token = require("../models/tokenModel");
 const crypto = require("crypto");
 
+
 const { sendEmailAuth, sendEmailRegister } = require("../utils/email");
 
 const getAllUsers = asyncWrapper(async (req, res) => {
@@ -22,7 +23,7 @@ const authUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
-    if (user.isVerified === true) {
+    // if (user.isVerified === true) {
       generateToken(res, user._id);
       // const token = generateToken(res, user._id);
       // console.log("Generated token from function call:", token);
@@ -33,12 +34,12 @@ const authUser = asyncHandler(async (req, res) => {
         email: user.email,
         isAdmin: user.isAdmin,
         token: generateToken(res, user._id),
-        isVerified: user.isVerified,
+        // isVerified: user.isVerified,
       });
-    } else {
-      res.status(401).json({ message: "User is not verified" });
-      //   throw new Error("User is not verified")
-    }
+    // } else {
+    //   res.status(401).json({ message: "User is not verified" });
+    //   //   throw new Error("User is not verified")
+    // }
   } else {
     res.status(401).json({ message: "Invalid Credentials" });
     // throw new Error("Invalid Credentials");
@@ -74,7 +75,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (user) {
     generateToken(res, user._id);
-    sendEmailRegister(res, user);
+    // sendEmailRegister(res, user);
 
     //send email
     res.status(201).json({
@@ -82,7 +83,7 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
-      isVerified: user.isVerified,
+      // isVerified: user.isVerified,
     });
   } else {
     res.status(400).json({ message: "Invalid user data" });

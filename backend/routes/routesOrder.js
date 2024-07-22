@@ -3,7 +3,7 @@ const express = require("express");
 
 const { addOrderItems, getMyOrders, getOrders, getOrderById, updateOrderToPaid, updateOrderToDelivered } = require("../controllers/ordersController");
 const { protect, admin, auth } = require("../middleware/authMiddleware");
-const { verifyToken } = require("../utils/verifyToken");
+// const { verifyToken } = require("../utils/verifyToken");
 // const Orderr = require("../models/Order");
 const router = express.Router();
 

@@ -1,5 +1,5 @@
 import React from "react";
-import "@babel/polyfill";
+// import "@babel/polyfill";
 
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -8,10 +8,11 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 import store from "./redux/store";
 import ReactDOM from "react-dom/client";
+import { HelmetProvider } from "react-helmet-async";
 
 import Layout from "./pages/Layout";
 import HomePage from "./pages/HomePage";
-
+    
 import About from "./pages/About";
 import Cart from "./pages/Cart";
 import Login from "./pages/Login";
@@ -81,10 +82,10 @@ const router = createBrowserRouter([
         path: "register",
         element: <Register />,
       },
-      {
-        path: "confirm-email",
-        element: <ConfirmEmail />,
-      },
+      // {
+      //   path: "confirm-email",
+      //   element: <ConfirmEmail />,
+      // },
       {
         element: <PrivateRoute />,
         children: [
@@ -150,11 +151,13 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
+    <HelmetProvider>
     <Provider store={store}>
       <PayPalScriptProvider deferLoading={true}>
         <RouterProvider router={router} />
       </PayPalScriptProvider>
       <ToastContainer />
     </Provider>
+       </HelmetProvider>
   </React.StrictMode>
 );

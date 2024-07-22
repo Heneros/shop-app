@@ -28,8 +28,7 @@ import { ShoppingCart, Person, ArrowDropDown, AccountCircle, Logout } from '@mui
 import { useLogoutMutation } from '../redux/slices/usersApiSlice';
 import { logout } from '../redux/slices/auth';
 import { FaShoppingCart, FaUserPlus } from 'react-icons/fa';
-
-
+import Meta from "./Meta";
 export default function Header(props) {
   const { window } = props;
   const [anchorEl, setAnchorEl] = useState(null);
@@ -74,6 +73,8 @@ export default function Header(props) {
   }
 
   const drawer = (
+    <>
+   
     <Wrapper>
       <Box onClick={handleDrawerOpen} sx={{ display: "flex", textAlign: 'center', flexDirection: "column", justifyContent: 'center', m: 2 }} component="header">
         <Typography variant="h5" sx={{ textAlign: "center", }} >
@@ -127,10 +128,13 @@ export default function Header(props) {
         )}
       </Box>
     </Wrapper>
+    </>
   );
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
+    <>
+     <Meta/>
     <Wrapper>
       <Box sx={{ display: 'flex' }}>
         <AppBar component="nav" position='static'>
@@ -218,7 +222,6 @@ export default function Header(props) {
                         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                       >
                         <MenuItem onClick={handleClose} >
-
                           <Link to='/profile' className='menu-item-nav'>
                             <Avatar />
                             Profile
@@ -316,6 +319,7 @@ export default function Header(props) {
         </nav>
       </Box >
     </Wrapper>
+        </>
   );
 }
 const flexContainer = {

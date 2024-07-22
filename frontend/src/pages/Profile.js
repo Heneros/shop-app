@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { Grid, Typography, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Container, CircularProgress } from '@mui/material';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { Link } from 'react-router-dom';
 
 import { useProfileMutation, userApiSlice } from '../redux/slices/usersApiSlice';
 import { useGetMyOrdersQuery } from '../redux/slices/orderApiSlice';
 import { setCredentials } from '../redux/slices/auth';
-import { Link } from 'react-router-dom';
 import PageHero from '../components/PageHero';
 
 export default function Profile() {
@@ -34,7 +33,7 @@ export default function Profile() {
     const submitHandler = async (e) => {
         e.preventDefault();
         if (password !== confirmPassword) {
-            toast.error('Password do not match');
+            toast.error('Passwords do not match');
         } else {
             try {
                 const res = await updateProfile({ _id: userInfo._id, name, email, password }).unwrap();

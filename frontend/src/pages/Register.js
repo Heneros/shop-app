@@ -39,7 +39,7 @@ export default function Register() {
       try {
         const res = await registration({ name, password, email }).unwrap();
         // setError('');
-        navigate("/confirm-email");
+        navigate("/profile");
         // console.log(res)
       } catch (err) { 
         const { data: errorMessage } = err;

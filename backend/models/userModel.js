@@ -21,10 +21,10 @@ const userSchema = mongoose.Schema({
         required: true,
         default: false
     },
-    isVerified: {
-        type: Boolean,
-        default: false
-    },
+    // isVerified: {
+    //     type: Boolean,
+    //     default: false
+    // },
 }, {
     timestamps: true,
 }

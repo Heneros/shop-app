@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const asyncHandler = require('./asyncHandler.js');
 const User = require('../models/userModel.js');
-const Order = require('../models/orderModel.js');
+const Order = require('../models/Order.js');
 
 
 
@@ -13,7 +13,7 @@ const auth = asyncHandler(async (req, res, next) => {
     token = req.cookies.jwt;
     if (!token) {
         res.status(401);
-        throw new Error("Not authorized, No token 123");
+        throw new Error("Not authorized, No token ");
     }
 
     try {

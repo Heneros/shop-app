@@ -23,7 +23,7 @@ export const orderApiSlice = apiSlice.injectEndpoints({
         url: `${ORDERS_URL}/mine`,
         credentials: "include",
       }),
-      keepUnusedDataFor: 60,
+      keepUnusedDataFor: 5,
     }),
     getOrders: builder.query({
       query: () => ({

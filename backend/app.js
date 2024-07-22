@@ -7,7 +7,7 @@ const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
-const stripe = require("./utils/stripe");
+// const stripe = require("./utils/stripe");
 
 const connectDB = require("./db/db");
 const productRouter = require("./routes/routesProduct");
@@ -21,7 +21,7 @@ const { verifyEmail } = require("./utils/email.js");
 // require("./utils/oauth.js");
 
 const app = express();
-
+ 
 // app.enable("trust proxy");
 // app.set("trust proxy", 1);
 
@@ -67,7 +67,7 @@ app.use("/api/products", productRouter);
 app.use("/api/users", routesUser);
 app.use("/api/orders", routesOrder);
 app.use("/api/upload", routeUpload);
-app.use("/api/stripe", stripe);
+// app.use("/api/stripe", stripe);
 
 app.get("/api/config/paypal", (req, res) =>
   res.send({ clientId: process.env.PAYPAL_CLIENT_ID })
@@ -88,7 +88,7 @@ app.get("/api/config/paypal", (req, res) =>
 //   res.send("Failed to authenticate..");
 // });
 
-app.get("/verify-email/:token", verifyEmail);
+// app.get("/verify-email/:token", verifyEmail);
 
 if (process.env.NODE_ENV === "production") {
   const __dirname = path.resolve();

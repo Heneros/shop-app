@@ -1,5 +1,5 @@
 const asyncHandler = require("../middleware/asyncHandler");
-const Order = require("../models/orderModel");
+const Order = require("../models/Order");
 const Product = require("../models/product");
 // const Order = require("../models/Order");
 const { calcPrice } = require("../utils/calcPrice.js");
