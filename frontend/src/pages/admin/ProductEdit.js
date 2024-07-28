@@ -60,7 +60,7 @@ export default function ProductEdit() {
       setCategories(product?.product?.categories);
       setQty(product?.product?.qty);
     }
-  }, [product?.product]);
+  }, [product]);
   // console.log(name);
 
   const submitHandler = async (e) => {
@@ -75,9 +75,9 @@ export default function ProductEdit() {
         categories,
         qty,
       }).unwrap();
-      toast.success("Product updated");
+      // toast.success("Product updated");
       refetch();
-      navigate("/admin/productlist");
+      // navigate("/admin/productlist");
     } catch (err) {
       console.log(err.error);
       toast.error(err?.data?.message || err.error);
@@ -86,14 +86,19 @@ export default function ProductEdit() {
 
   const uploadFileHandler = async (e) => {
     const formData = new FormData();
-    formData.append("image", e.target.files[0]);
+    formData.append("logo", e.target.files[0]);
+    // console.log(formData)
     try {
       const res = await uploadProductImage(formData).unwrap();
-      toast.success(res.message);
-      setImageUrl(res.image);
-      // console.log(res);
+      if (res.url) {
+        setImageUrl(res.url);
+        toast.success("File uploaded successfully");
+      } else {
+        toast.error('Unexpected response format')
+      }
     } catch (err) {
       console.log(err);
+      toast.error(err)
     }
   };
 
@@ -137,6 +142,7 @@ export default function ProductEdit() {
                   <FormControl>
                     <TextField
                       type="text"
+                      name="logo"
                       placeholder="Enter image url"
                       value={imageUrl}
                       onChange={(e) => setImageUrl(e.target.value)}
@@ -144,13 +150,15 @@ export default function ProductEdit() {
                     <TextField
                       type="file"
                       placeholder="Choose file"
-                      id="upload-image"
+
                       onChange={uploadFileHandler}
                     />
                   </FormControl>
+                  {loadingUpload && <Loader />}
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
+                <FormLabel>Free Shipping</FormLabel>
                 <Select
                   value={shipping}
                   onChange={(e) => setShipping(e.target.value)}

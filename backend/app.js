@@ -21,7 +21,7 @@ const { verifyEmail } = require("./utils/email.js");
 // require("./utils/oauth.js");
 
 const app = express();
- 
+
 // app.enable("trust proxy");
 // app.set("trust proxy", 1);
 
@@ -30,7 +30,7 @@ app.use(
     origin: "http://localhost:7300",
     // origin: true,
     credentials: true,
-    methods: ["GET", "PUT", "POST", "DELETE"],
+    methods: ["GET", "PUT", "POST", "DELETE", 'PATCH'],
     allowedHeaders: [
       "Access-Control-Allow-Origin",
       "Content-Type",

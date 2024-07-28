@@ -1,13 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom';
+import { Typography } from '@mui/material';
 
 
 export default function Footer() {
   return (
-    <Container>   <h5>
+    <Container>   <Typography variant="h5">
       &copy; {new Date().getFullYear()}
-      <span> Shop react </span>
-    </h5>
+      <span> Ecommerce MERN  APP </span>
+      Code   <Link className='author' target='_blank' to={`https://github.com/heneros`}>Rustam</Link>
+    </Typography>
       <h5>All rights reserved</h5></Container>
   )
 }
@@ -29,6 +32,11 @@ const Container = styled.footer`
     font-weight: 400;
     text-transform: none;
     line-height: 1.25;
+    font-size: 19px;
+  }
+  .author{
+    color: var(--clr-primary-5);
+    font-weight: 500;
   }
   @media (min-width: 776px) {
     flex-direction: row;

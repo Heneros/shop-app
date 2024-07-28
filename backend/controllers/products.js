@@ -22,7 +22,7 @@ const createProduct = asyncWrapper(async (req, res) => {
 const getLastFilters = async (req, res) => {
     try {
         const products = await Product.find().exec();
-        const filters = products.map((obj) => obj.categories).flat().slice(0, 15) //получение из объекта products все категории.
+        const filters = products.map((obj) => obj.categories).flat().slice(0, 15)
         res.status(201).json(filters);
     } catch (error) {
         console.log(error);
@@ -149,7 +149,7 @@ const updateProduct = asyncWrapper(async (req, res) => {
         product.imageUrl = imageUrl;
         product.categories = categories;
         product.qty = qty;
-        // product.user = req.user._id; 
+        product.user = req.user._id;
 
         const updatedProduct = await product.save();
         res.json(updatedProduct);
