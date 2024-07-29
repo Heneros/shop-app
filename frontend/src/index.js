@@ -12,7 +12,7 @@ import { HelmetProvider } from "react-helmet-async";
 
 import Layout from "./pages/Layout";
 import HomePage from "./pages/HomePage";
-    
+
 import About from "./pages/About";
 import Cart from "./pages/Cart";
 import Login from "./pages/Login";
@@ -36,7 +36,7 @@ import ProductList from "./pages/admin/ProductList";
 import UserEdit from "./pages/admin/UserEdit";
 import UserList from "./pages/admin/UserList";
 
-import ConfirmEmail from "./pages/ConfirmEmail";
+// import ConfirmEmail from "./pages/ConfirmEmail";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
 
 const router = createBrowserRouter([
@@ -152,12 +152,12 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <HelmetProvider>
-    <Provider store={store}>
-      <PayPalScriptProvider deferLoading={true}>
-        <RouterProvider router={router} />
-      </PayPalScriptProvider>
-      <ToastContainer />
-    </Provider>
-       </HelmetProvider>
+      <Provider store={store}>
+        <PayPalScriptProvider deferLoading={true}>
+          <RouterProvider router={router} />
+        </PayPalScriptProvider>
+        <ToastContainer />
+      </Provider>
+    </HelmetProvider>
   </React.StrictMode>
 );

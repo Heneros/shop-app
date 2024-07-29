@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
 import {
   Typography,
   Card,
@@ -8,7 +8,6 @@ import {
   List,
   ListItem,
   ListItemText,
-  Divider,
   CardContent,
   Grid,
   Box,
@@ -47,7 +46,7 @@ export default function Order() {
     error: errorPayPal,
   } = useGetPaypalClientIdQuery();
 
-  
+
   const { userInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
@@ -83,11 +82,6 @@ export default function Order() {
     });
   }
 
-  async function onApproveTest() {
-    await payOrder({ orderId, details: { payer: {} } });
-    refetch();
-    toast.success("Payment successful");
-  }
   function onError(err) {
     toast.error(err.message);
   }
@@ -127,7 +121,6 @@ export default function Order() {
     <>
       <PageHero title="Details" />
       <Container>
-
         <Typography
           sx={{
             my: 5,
@@ -161,12 +154,15 @@ export default function Order() {
               <ListItem sx={{ mt: 2 }}>
                 <Typography variant="h5">Address:</Typography>
               </ListItem>
-              <ListItemText>
-                <strong>Address:</strong>
-                {order.shippingAddress.address}, {order.shippingAddress.city}{" "}
-                {order.shippingAddress.postalCode},{" "}
-                {order.shippingAddress.country}
-              </ListItemText>
+              <ListItem>
+
+                <ListItemText>
+                  <strong>Address:</strong>
+                  {order.shippingAddress.address}, {order.shippingAddress.city}{" "}
+                  {order.shippingAddress.postalCode},{" "}
+                  {order.shippingAddress.country}
+                </ListItemText>
+              </ListItem>
               <ListItem>
                 <ListItemText>
                   {order.isDelivered ? (

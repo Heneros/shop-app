@@ -1,13 +1,12 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 
 import PageHero from '../components/PageHero';
-import { addToCart, clearCartItems, removeFromCart } from '../redux/slices/cartSlice';
+import { clearCartItems } from '../redux/slices/cartSlice';
 import CartItem from '../components/CartItem';
 import CartTotal from '../components/CartTotal';
-import { Button } from '@mui/material';
 
 
 export default function Cart() {
@@ -40,7 +39,7 @@ export default function Cart() {
       <Wrapper className='section section-center'>
         <div className="cart-columns">
           <div className='content'>
-            <h5></h5>
+            <h5>  </h5>
             <h5>Name</h5>
             <h5>quantity</h5>
             <h5>subtotal</h5>

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux';
 
-
 import Product from '../components/Product';
 import { fetchProducts } from '../redux/slices/products';
 import Paginate from './Paginate';
@@ -21,7 +20,7 @@ export default function ProductList() {
 
   useEffect(() => {
     dispatch(fetchProducts());
-  }, []);
+  },);
 
   // const { productPaginate: productItems } = productPaginate;
 
@@ -60,7 +59,6 @@ export default function ProductList() {
           ) : (
             <p>No products found.</p>
           )}
-
         </div>
       </Wrapper>
       <Paginate pages={data.pages} page={data.page} keyword={keyword ? keyword : ''} />

@@ -8,16 +8,12 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 import {
-  Alert,
   Box,
   Button,
   Container,
   FormControl,
-  FormGroup,
   FormLabel,
   Grid,
-  Input,
-  InputLabel,
   MenuItem,
   Select,
   TextField,
@@ -75,9 +71,9 @@ export default function ProductEdit() {
         categories,
         qty,
       }).unwrap();
-      // toast.success("Product updated");
+      toast.success("Product updated");
       refetch();
-      // navigate("/admin/productlist");
+      navigate("/admin/productlist");
     } catch (err) {
       console.log(err.error);
       toast.error(err?.data?.message || err.error);

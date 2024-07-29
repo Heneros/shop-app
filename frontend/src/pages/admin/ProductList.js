@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { Grid, Container, Box, TableCell, Button, Typography, TableRow, TableBody, TableContainer, TableHead, Table, IconButton } from '@mui/material';
+import { Grid, Container, TableCell, Button, Typography, TableRow, TableBody, TableContainer, TableHead, Table, IconButton } from '@mui/material';
 
 
 import { useCreateProductMutation, useDeleteProductMutation, useGetProductsQuery } from '../../redux/slices/productApiSlice';
@@ -22,8 +22,8 @@ export default function ProductList() {
   // console.log(data);
 
 
-  const [createProduct, { isLoading: loadingCreate }] = useCreateProductMutation();
-  const [deleteProduct, { isLoading: loadingDelete }] = useDeleteProductMutation();
+  const [createProduct,] = useCreateProductMutation();
+  const [deleteProduct,] = useDeleteProductMutation();
 
   const createProductHandler = async () => {
     if (window.confirm("Are you sure you want to create new product?")) {
@@ -117,7 +117,7 @@ export default function ProductList() {
                   ))}
                 </TableBody>
               </Table>
-              <Paginate pages={data.pages} page={data.page}  isAdmin={true} />
+              <Paginate pages={data.pages} page={data.page} isAdmin={true} />
             </TableContainer>
           </Grid>
 

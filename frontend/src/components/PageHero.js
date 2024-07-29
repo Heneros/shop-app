@@ -1,19 +1,23 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import { Container } from '@mui/material'
+import { Link, useLocation } from 'react-router-dom'
 
 
 export default function PageHero({ title, product }) {
-  const isHome = title === "";
+  // const isHome = title === "";
+  const location = useLocation();
+  const pathname = location.pathname;
+  const isHome = pathname === '/';
+
+  // console.log(pathname)
   return (
     <Wrapper>
       <div className='section-center'>
         <h3>
-          <Link to="/">Products</Link>
-          {isHome ? null : " / "}
-          {title}
-          {product}
+          <Link to="/">Ecommerce React</Link>
+          {!isHome && ' / '}
+          {title && <span> {title} </span>}
+          {product && <span> {product} </span>}
         </h3>
       </div>
     </Wrapper>

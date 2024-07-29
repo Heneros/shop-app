@@ -1,54 +1,45 @@
-import React, { useState } from 'react'
-import { FaShoppingCart, FaUser, FaUserMinus, FaUserPlus } from 'react-icons/fa'
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react'
+import { FaShoppingCart } from 'react-icons/fa'
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components'
-import { useLogoutMutation } from '../redux/slices/usersApiSlice';
-import { logout } from '../redux/slices/auth';
-import {
-  Button,
-  Menu,
-  MenuItem,
-  Typography,
-  Link as MuiLink,
-} from '@mui/material';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 
 
 
 export default function CartButtons() {
-  const { userInfo } = useSelector((state) => state.auth);
+  // const { userInfo } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
 
-  const dispatch = useDispatch();
-  const [anchorEl, setAnchorEl] = useState(null);
+  // const dispatch = useDispatch();
+  // const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleMenu = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
 
-  const handleLogout = () => {
-    dispatch(logout());
-    setAnchorEl(null);
-  };
+  // const handleLogout = () => {
+  //   dispatch(logout());
+  //   setAnchorEl(null);
+  // };
 
 
-  const [logoutApiCall] = useLogoutMutation();
+  // const [logoutApiCall] = useLogoutMutation();
 
-  const logoutHandler = async () => {
+  // const logoutHandler = async () => {
 
-    try {
-      await logoutApiCall().unwrap();
-      dispatch(logout());
-      // console.log(logout());
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  //   try {
+  //     await logoutApiCall().unwrap();
+  //     dispatch(logout());
+  //     // console.log(logout());
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   return (
     <Wrapper className='cart-btn-wrapper'>

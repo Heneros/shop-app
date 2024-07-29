@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Outlet } from 'react-router-dom';
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { useDispatch } from 'react-redux';
-import { fetchAuthMe } from '../redux/slices/auth';
 import Loader from '../components/Loader';
+import styled from 'styled-components'
 
 
 export default function Layout() {
@@ -15,12 +14,17 @@ export default function Layout() {
 
             <Header />
             <div className="container">
-                <Loader />
-                <Outlet />
-
-
+                <Main>
+                    <Loader />
+                    <Outlet />
+                </Main>
             </div>
             <Footer />
         </>
     )
 }
+
+
+const Main = styled.main`
+ min-height: 100vh;
+`;

@@ -6,17 +6,19 @@ import { Typography } from '@mui/material';
 
 export default function Footer() {
   return (
-    <Container>   <Typography variant="h5">
-      &copy; {new Date().getFullYear()}
-      <span> Ecommerce MERN  APP </span>
-      Code   <Link className='author' target='_blank' to={`https://github.com/heneros`}>Rustam</Link>
-    </Typography>
-      <h5>All rights reserved</h5></Container>
+    <Container>
+      <Typography variant="h5">
+        &copy; {new Date().getFullYear()}
+        <span> Ecommerce MERN  APP </span>
+        Code   <Link className='author' target='_blank' to={`https://github.com/heneros`}>Rustam</Link>
+      </Typography>
+      <h5>All rights reserved</h5>
+    </Container>
   )
 }
 
 const Container = styled.footer`
-  height: 5rem;
+  height: 10vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

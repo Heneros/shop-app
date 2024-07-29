@@ -2,8 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { styled } from 'styled-components';
 
-import { getUniqueValues } from '../utils/helpers';
-import { fetchFilters, fetchProducts, selectAllProducts, updateCategoryFilter, updateCompanyFilter, updateShippingFilter } from '../redux/slices/products';
+import { fetchProducts, updateCategoryFilter, updateCompanyFilter, updateShippingFilter } from '../redux/slices/products';
 
 
 export default function Filters() {

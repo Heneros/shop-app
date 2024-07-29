@@ -8,17 +8,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import {
-  useAuthGoogleQuery,
+
   useLoginMutation,
 } from "../redux/slices/usersApiSlice";
 import { setCredentials } from "../redux/slices/auth";
-import { fetchAuthMe, selectIsAuth } from "../redux/slices/auth";
 import styled from "styled-components";
-import axios from "axios";
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -89,7 +87,8 @@ export default function Login() {
                     type="submit"
                     size="large"
                     fullWidth
-                    variant="outlined"
+                    color="success"
+                    variant="contained"
                   >
                     Log In
                   </Button>
@@ -102,7 +101,7 @@ export default function Login() {
                 className="link"
                 to={redirect ? `/register?redirect=${redirect}` : "/register"}
               >
-                Register
+                Registration
               </Link>
             </Typography>
           </Container>

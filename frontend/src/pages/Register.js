@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Container, FormControl, Grid, TextField, Typography } from '@mui/material';
-import { fetchRegister, selectIsAuth, setCredentials } from '../redux/slices/auth';
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRegistrationMutation } from '../redux/slices/usersApiSlice';
 import styled from 'styled-components';
 import { toast } from 'react-toastify';
@@ -15,12 +12,9 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-  // const isAuth = useSelector(selectIsAuth);
-  const { userInfo } = useSelector((state) => state.auth);
-
   const navigate = useNavigate();
 
-  const [registration, { isLoading }] = useRegistrationMutation();
+  const [registration] = useRegistrationMutation();
 
   // console.log(error);
 
@@ -32,21 +26,21 @@ export default function Register() {
   const onSubmit = async (e) => {
     e.preventDefault();
 
- 
+
     if (password !== confirmPassword) {
       toast.error("Passwords don't match");
     } else {
       try {
-        const res = await registration({ name, password, email }).unwrap();
+        await registration({ name, password, email }).unwrap();
         // setError('');
         navigate("/profile");
         // console.log(res)
-      } catch (err) { 
+      } catch (err) {
         const { data: errorMessage } = err;
         setError(errorMessage.message)
         console.log(err)
       }
-    } 
+    }
   }
 
   return (
@@ -57,7 +51,7 @@ export default function Register() {
             Create account
           </Typography>
           <FormControl component="form" onSubmit={onSubmit} sx={{ mt: 3 }}>
-            {error &&  <p className='error-message'>{error}</p>}
+            {error && <p className='error-message'>{error}</p>}
             <Grid container spacing={2}>
               <Grid item xs={12} sm={12}>
                 <TextField
@@ -110,7 +104,7 @@ export default function Register() {
           </FormControl>
 
           <Typography variant="h5" sx={{ my: 2 }}>
-            Have account? <Link
+            Have an account? <Link
               className='link'
               to={redirect ? `/login?redirect=${redirect}` : '/login'}>
               Login

@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Filters from '../components/Filters';
-import ProductList from '../components/ProductList';
 
 import { styled } from 'styled-components';
 import PageHero from '../components/PageHero';
@@ -8,8 +7,7 @@ import { Container } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useGetProductsQuery } from '../redux/slices/productApiSlice';
 import Paginate from '../components/Paginate';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchProducts } from '../redux/slices/products';
+import { useSelector } from 'react-redux';
 import Product from '../components/Product';
 
 const HomePage = () => {

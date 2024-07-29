@@ -25,7 +25,7 @@ export default function UserEdit() {
       await updateUser({ userId, name, email, isAdmin });
       toast.success("user updated successfully!");
       refetch();
-      // navigate('/admin/userlist');
+      navigate('/admin/userlist');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }

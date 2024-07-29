@@ -1,8 +1,6 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
-const generatePassword = require('generate-password');
-
 
 
 const User = require('../models/userModel');
@@ -30,7 +28,7 @@ passport.use(new GoogleStrategy({
                 uppercase: true,
                 excludeSimilarCharacters: true,
             };
-            const generatePasswordString = generatePassword.generate(passwordConfig);
+           // const generatePasswordString = generatePassword.generate(passwordConfig);
 
             const newUser = new User({
                 name: profile.displayName,

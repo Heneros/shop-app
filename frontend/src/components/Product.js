@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import { styled } from 'styled-components'
-import { Link, useParams } from 'react-router-dom';
-import { FaSearch } from 'react-icons/fa'
-
+import { Link } from 'react-router-dom';
 import { formatPrice } from '../utils//helpers';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useGetProductDetailsQuery } from '../redux/slices/productApiSlice';
 import { addToCart } from '../redux/slices/cartSlice';
 import { toast } from 'react-toastify';
@@ -14,7 +12,7 @@ export default function Product({ _id, name, imageUrl, price, rating, company })
   const { data, error } = useGetProductDetailsQuery(_id);
   const product = data?.product;
 
-// console.log(imageUrl)
+  // console.log(imageUrl)
 
   const addToCartHandler = () => {
     dispatch(addToCart({ ...product, qty }));

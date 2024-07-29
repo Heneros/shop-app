@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { useProfileMutation, userApiSlice } from '../redux/slices/usersApiSlice';
+import { useProfileMutation } from '../redux/slices/usersApiSlice';
 import { useGetMyOrdersQuery } from '../redux/slices/orderApiSlice';
 import { setCredentials } from '../redux/slices/auth';
 import PageHero from '../components/PageHero';
@@ -28,7 +28,7 @@ export default function Profile() {
             setName(userInfo.name);
             setEmail(userInfo.email);
         }
-    }, [userInfo, userApiSlice.name, userApiSlice.email]);
+    }, [userInfo]);
 
     const submitHandler = async (e) => {
         e.preventDefault();

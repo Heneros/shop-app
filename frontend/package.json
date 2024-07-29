@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3005",
+  "proxy": "http://localhost:7300",
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@emotion/react": "^11.11.1",

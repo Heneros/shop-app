@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 
 export default function VerifiedRoute() {
   
-    const { userInfo } = useSelector((state) => state.auth);
+    // const { userInfo } = useSelector((state) => state.auth);
 
 //  return userInfo.
 }

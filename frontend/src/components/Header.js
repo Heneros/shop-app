@@ -1,21 +1,17 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
 import { Link } from 'react-router-dom'
-import { links } from '../utils/constants';
-import CartButtons from './CartButtons';
+
 import { useDispatch, useSelector } from 'react-redux';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
-  Toolbar,
   Typography,
   Button,
   Container,
-  Badge,
   Menu,
   MenuItem,
   IconButton,
-  ListItemText,
   Avatar,
   Box,
   List,
@@ -24,7 +20,7 @@ import {
   Divider,
   ListItemIcon,
 } from '@mui/material';
-import { ShoppingCart, Person, ArrowDropDown, AccountCircle, Logout } from '@mui/icons-material';
+import { Logout } from '@mui/icons-material';
 import { useLogoutMutation } from '../redux/slices/usersApiSlice';
 import { logout } from '../redux/slices/auth';
 import { FaShoppingCart, FaUserPlus } from 'react-icons/fa';
@@ -74,252 +70,252 @@ export default function Header(props) {
 
   const drawer = (
     <>
-   
-    <Wrapper>
-      <Box onClick={handleDrawerOpen} sx={{ display: "flex", textAlign: 'center', flexDirection: "column", justifyContent: 'center', m: 2 }} component="header">
-        <Typography variant="h5" sx={{ textAlign: "center", }} >
-          <Link to="/" className='logo'>
-            React Shop
-          </Link>
-        </Typography>
-        <Divider />
-        {userInfo ? (
-          <List sx={{ display: 'flex', flexDirection: "column", justifyContent: 'center', alignItems: 'center', m: '0 auto' }}>
-            <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
-              <Link className='item-mob' style={ItemMobile}>Hello, {userInfo.name}</Link>
-            </ListItem>
-            <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
-              <Link className='cart-btn' style={ItemMobile} to='/cart'>Cart
-                <div className="cart-container">
-                  <FaShoppingCart />
-                  {cartItems.length > 0 && (
-                    <span className='cart-value'>
-                      {cartItems.reduce((a, c) => a + c.qty, 0)}
-                    </span>
-                  )}
-                </div>
-              </Link>
-            </ListItem>
-            <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
-              <Link className='item-mob' style={ItemMobile} to='/profile'>Profile</Link>
-            </ListItem>
-            <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
-              <Link className='item-mob' style={ItemMobile} onClick={logoutHandler}>Logout</Link>
-            </ListItem>
-          </List>
-        ) : (
-          <List>
-            <ListItem sx={{ textAlign: 'center' }}>
-              <Link to="/login" style={ItemMobile} >Login</Link>
-            </ListItem>
-            <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
-              <Link className='cart-btn' style={ItemMobile} to='/cart'>Cart
-                <div className="cart-container">
-                  <FaShoppingCart />
-                  {cartItems.length > 0 && (
-                    <span className='cart-value'>
-                      {cartItems.reduce((a, c) => a + c.qty, 0)}
-                    </span>
-                  )}
-                </div>
-              </Link>
-            </ListItem>
-          </List>
-        )}
-      </Box>
-    </Wrapper>
+
+      <Wrapper>
+        <Box onClick={handleDrawerOpen} sx={{ display: "flex", textAlign: 'center', flexDirection: "column", justifyContent: 'center', m: 2 }} component="header">
+          <Typography variant="h5" sx={{ textAlign: "center", }} >
+            <Link to="/" className='logo'>
+              React Shop
+            </Link>
+          </Typography>
+          <Divider />
+          {userInfo ? (
+            <List sx={{ display: 'flex', flexDirection: "column", justifyContent: 'center', alignItems: 'center', m: '0 auto' }}>
+              <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
+                <Link className='item-mob' style={ItemMobile}>Hello, {userInfo.name}</Link>
+              </ListItem>
+              <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
+                <Link className='cart-btn' style={ItemMobile} to='/cart'>Cart
+                  <div className="cart-container">
+                    <FaShoppingCart />
+                    {cartItems.length > 0 && (
+                      <span className='cart-value'>
+                        {cartItems.reduce((a, c) => a + c.qty, 0)}
+                      </span>
+                    )}
+                  </div>
+                </Link>
+              </ListItem>
+              <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
+                <Link className='item-mob' style={ItemMobile} to='/profile'>Profile</Link>
+              </ListItem>
+              <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
+                <Link className='item-mob' style={ItemMobile} onClick={logoutHandler}>Logout</Link>
+              </ListItem>
+            </List>
+          ) : (
+            <List>
+              <ListItem sx={{ textAlign: 'center' }}>
+                <Link to="/login" style={ItemMobile} >Login</Link>
+              </ListItem>
+              <ListItem sx={{ textAlign: 'center', width: 'auto' }}>
+                <Link className='cart-btn' style={ItemMobile} to='/cart'>Cart
+                  <div className="cart-container">
+                    <FaShoppingCart />
+                    {cartItems.length > 0 && (
+                      <span className='cart-value'>
+                        {cartItems.reduce((a, c) => a + c.qty, 0)}
+                      </span>
+                    )}
+                  </div>
+                </Link>
+              </ListItem>
+            </List>
+          )}
+        </Box>
+      </Wrapper>
     </>
   );
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <>
-     <Meta/>
-    <Wrapper>
-      <Box sx={{ display: 'flex' }}>
-        <AppBar component="nav" position='static'>
-          <Container maxWidth="lg" >
-            <Box style={NavContainer}>
-              <IconButton
-                color="#000"
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleDrawerOpen}
-                sx={{ mr: 2, display: { sm: 'none' } }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography
-                variant="h6"
-                component="div"
-                sx={{ marginRight: '5px' }}
-              >
-                <Link to="/" className='logo'>
-                  React Shop
-                </Link>
-              </Typography>
-              <Box sx={{ display: { xs: 'none', sm: 'flex' } }} >
-                <List style={flexContainer}>
-                  <div style={{ padding: ' 0 15px' }} >
-                    <Link to="/cart" className='cart-btn'>
-                      Cart
-                      <div className="cart-container">
-                        <FaShoppingCart />
-                        {cartItems.length > 0 && (
-                          <span className='cart-value'>
-                            {cartItems.reduce((a, c) => a + c.qty, 0)}
-                          </span>
-                        )}
-                      </div>
-                    </Link>
-                  </div>
-
-
-                  {userInfo ? (
-                    <div className='userInfo'>
-                      <Button
-                        size="large"
-                        aria-label="account of current user"
-                        aria-controls="menu-appbar"
-                        aria-haspopup="true"
-                        onClick={handleMenu}
-                        className='auth-user'>
-                        {userInfo.name}
-                        <FaUserPlus />
-                      </Button>
-                      <Menu
-                        id="menu-appbar"
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                        PaperProps={{
-                          elevation: 0,
-                          sx: {
-                            overflow: 'visible',
-                            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                            mt: 1.5,
-                            '& .MuiAvatar-root': {
-                              width: 32,
-                              height: 32,
-                              ml: -0.5,
-                              mr: 1,
-                            },
-                            '&:before': {
-                              content: '""',
-                              display: 'block',
-                              position: 'absolute',
-                              top: 0,
-                              right: 14,
-                              width: 10,
-                              height: 10,
-                              bgcolor: 'background.paper',
-                              transform: 'translateY(-50%) rotate(45deg)',
-                              zIndex: 0,
-                            },
-                          },
-                        }}
-                        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                      >
-                        <MenuItem onClick={handleClose} >
-                          <Link to='/profile' className='menu-item-nav'>
-                            <Avatar />
-                            Profile
-                          </Link>
-                        </MenuItem>
-                        <MenuItem onClick={logoutHandler}>
-                          <ListItemIcon>
-                            <Logout fontSize="small" />
-                          </ListItemIcon>
-                          Logout
-                        </MenuItem>
-                      </Menu>
-                    </div>
-                  ) : (
-                    <li style={{ padding: ' 0 15px' }} >
-                      <Link to="/login" className='auth-btn'>
-                        Login
-                        <FaUserPlus />
+      <Meta />
+      <Wrapper>
+        <Box sx={{ display: 'flex' }}>
+          <AppBar component="nav" position='static'>
+            <Container maxWidth="lg" >
+              <Box style={NavContainer}>
+                <IconButton
+                  color="#000"
+                  aria-label="open drawer"
+                  edge="start"
+                  onClick={handleDrawerOpen}
+                  sx={{ mr: 2, display: { sm: 'none' } }}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Typography
+                  variant="h6"
+                  component="div"
+                  sx={{ marginRight: '5px' }}
+                >
+                  <Link to="/" className='logo'>
+                    React Shop
+                  </Link>
+                </Typography>
+                <Box sx={{ display: { xs: 'none', sm: 'flex' } }} >
+                  <List style={flexContainer}>
+                    <div style={{ padding: ' 0 15px' }} >
+                      <Link to="/cart" className='cart-btn'>
+                        Cart
+                        <div className="cart-container">
+                          <FaShoppingCart />
+                          {cartItems.length > 0 && (
+                            <span className='cart-value'>
+                              {cartItems.reduce((a, c) => a + c.qty, 0)}
+                            </span>
+                          )}
+                        </div>
                       </Link>
-                    </li>
-                  )}
-
-                  {userInfo && userInfo.isAdmin && (
-                    <div className='userInfo'>
-                      <Button
-                        size="large"
-                        aria-label="account of current user"
-                        aria-controls="menu-appbaradmin"
-                        aria-haspopup="true"
-                        onClick={handleMenuSecond}
-                        className='auth-user'
-                      >
-                        {userInfo.name} User
-                        <FaUserPlus />
-                      </Button>
-                      <Menu
-                        id="menu-appbaradmin"
-                        anchorEl={anchorElSecond}
-                        open={Boolean(anchorElSecond)}
-                        onClose={handleCloseSecond}
-                        PaperProps={{
-                          elevation: 0,
-                          sx: {
-                            overflow: 'visible',
-                            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                            mt: 1.5,
-
-                            '&:before': {
-                              content: '""',
-                              display: 'block',
-                              position: 'absolute',
-                              top: 0,
-                              right: 14,
-                              width: 10,
-                              height: 10,
-                              bgcolor: 'background.paper',
-                              transform: 'translateY(-50%) rotate(45deg)',
-                              zIndex: 0,
-                            },
-                          },
-                        }}
-                        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                      >
-                        <MenuItem>
-                          <Link to='/admin/productlist' className='menu-item-nav'>
-                            Products
-                          </Link>
-                        </MenuItem>
-                        <MenuItem >
-                          <Link to='/admin/userlist' className='menu-item-nav'>
-                            Users
-                          </Link>
-                        </MenuItem>
-                        <MenuItem >
-                          <Link to='/admin/orderlist' className='menu-item-nav'>
-                            Orders
-                          </Link>
-                        </MenuItem>
-                      </Menu>
                     </div>
-                  )}
-                </List>
+
+
+                    {userInfo ? (
+                      <div className='userInfo'>
+                        <Button
+                          size="large"
+                          aria-label="account of current user"
+                          aria-controls="menu-appbar"
+                          aria-haspopup="true"
+                          onClick={handleMenu}
+                          className='auth-user'>
+                          {userInfo.name}
+                          <FaUserPlus />
+                        </Button>
+                        <Menu
+                          id="menu-appbar"
+                          anchorEl={anchorEl}
+                          open={Boolean(anchorEl)}
+                          onClose={handleClose}
+                          PaperProps={{
+                            elevation: 0,
+                            sx: {
+                              overflow: 'visible',
+                              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                              mt: 1.5,
+                              '& .MuiAvatar-root': {
+                                width: 32,
+                                height: 32,
+                                ml: -0.5,
+                                mr: 1,
+                              },
+                              '&:before': {
+                                content: '""',
+                                display: 'block',
+                                position: 'absolute',
+                                top: 0,
+                                right: 14,
+                                width: 10,
+                                height: 10,
+                                bgcolor: 'background.paper',
+                                transform: 'translateY(-50%) rotate(45deg)',
+                                zIndex: 0,
+                              },
+                            },
+                          }}
+                          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                        >
+                          <MenuItem onClick={handleClose} >
+                            <Link to='/profile' className='menu-item-nav'>
+                              <Avatar />
+                              Profile
+                            </Link>
+                          </MenuItem>
+                          <MenuItem onClick={logoutHandler}>
+                            <ListItemIcon>
+                              <Logout fontSize="small" />
+                            </ListItemIcon>
+                            Logout
+                          </MenuItem>
+                        </Menu>
+                      </div>
+                    ) : (
+                      <li style={{ padding: ' 0 15px' }} >
+                        <Link to="/login" className='auth-btn'>
+                          Login
+                          <FaUserPlus />
+                        </Link>
+                      </li>
+                    )}
+
+                    {userInfo && userInfo.isAdmin && (
+                      <div className='userInfo'>
+                        <Button
+                          size="large"
+                          aria-label="account of current user"
+                          aria-controls="menu-appbaradmin"
+                          aria-haspopup="true"
+                          onClick={handleMenuSecond}
+                          className='auth-user'
+                        >
+                          {userInfo.name} User
+                          <FaUserPlus />
+                        </Button>
+                        <Menu
+                          id="menu-appbaradmin"
+                          anchorEl={anchorElSecond}
+                          open={Boolean(anchorElSecond)}
+                          onClose={handleCloseSecond}
+                          PaperProps={{
+                            elevation: 0,
+                            sx: {
+                              overflow: 'visible',
+                              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                              mt: 1.5,
+
+                              '&:before': {
+                                content: '""',
+                                display: 'block',
+                                position: 'absolute',
+                                top: 0,
+                                right: 14,
+                                width: 10,
+                                height: 10,
+                                bgcolor: 'background.paper',
+                                transform: 'translateY(-50%) rotate(45deg)',
+                                zIndex: 0,
+                              },
+                            },
+                          }}
+                          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                        >
+                          <MenuItem>
+                            <Link to='/admin/productlist' className='menu-item-nav'>
+                              Products
+                            </Link>
+                          </MenuItem>
+                          <MenuItem >
+                            <Link to='/admin/userlist' className='menu-item-nav'>
+                              Users
+                            </Link>
+                          </MenuItem>
+                          <MenuItem >
+                            <Link to='/admin/orderlist' className='menu-item-nav'>
+                              Orders
+                            </Link>
+                          </MenuItem>
+                        </Menu>
+                      </div>
+                    )}
+                  </List>
+                </Box>
               </Box>
-            </Box>
-          </Container>
-        </AppBar>
-        <nav>
-          <Drawer
-            container={container}
-            open={mobileOpen}
-            onClose={handleDrawerOpen} >
-            {drawer}
-          </Drawer>
-        </nav>
-      </Box >
-    </Wrapper>
-        </>
+            </Container>
+          </AppBar>
+          <nav>
+            <Drawer
+              container={container}
+              open={mobileOpen}
+              onClose={handleDrawerOpen} >
+              {drawer}
+            </Drawer>
+          </nav>
+        </Box >
+      </Wrapper>
+    </>
   );
 }
 const flexContainer = {

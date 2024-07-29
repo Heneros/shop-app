@@ -1,5 +1,5 @@
-import React, {  useState } from 'react'
-import { useDispatch} from 'react-redux';
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
 import { Link, useParams } from 'react-router-dom'
 import { styled } from 'styled-components';
 import { FaPlus, FaMinus } from 'react-icons/fa'
@@ -17,7 +17,6 @@ import { toast } from 'react-toastify';
 
 export default function SingleProduct() {
   const { id: productId } = useParams();
-  const [isLoading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
   const [qty, setQty] = useState(1);
@@ -48,14 +47,14 @@ export default function SingleProduct() {
 
   return (
     <Wrapper>
-      <PageHero title={name}  />
+      <PageHero title={name} />
       <div className='section section-center page'>
         <Link to='/' className='btn'>
           back to products
         </Link>
         <div className='product-center'>
           <div>
-            <img src={imageUrl} alt="main image" className='main' />
+            <img src={imageUrl} alt="" className='main' />
           </div>
           <div className="content">
             <h2>{name}</h2>
